@@ -76,7 +76,200 @@ body{background-image: url(https://i.postimg.cc/sXxnynQN/S9CS.gif); background-s
     text-shadow: 0 0 5px #FFF, 0 0 10px #FFF, 0 0 15px #FFF, 0 0 20px #49ff18, 0 0 30px #49FF18, 0 0 40px #49FF18, 0 0 55px #49FF18, 0 0 75px #49ff18;font-size:7vw;position:absolute;font-family:Gill Sans Extrabold, Helvetica, sans-serif;left:44.5vw;top:5vh}
     #todocir {position:absolute; width:10vw; height:3vw; left:36vw; top:70vh; }.cirs{ background-color:#ffffff; width:1.7vw; height:1.7vw; margin-bottom:.3vw; border-radius:50%; margin-left:.5vw;float:left;box-shadow: 0px 0px 35px 12px #80f04c;}
 
+  /*------- MUSIC PLAYER -------*/
+    .badbitch {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: var(--Music-Player-Background-Color);
+        z-index: 69;
+    }
 
+    .deadweight {
+        padding: var(--Music-Player-Padding);
+        padding-right: calc(var(--Music-Player-Padding) * 1.5);
+    }
+
+    .song {
+        display: none;
+    }
+
+        .song:first-of-type {
+            display: block;
+        }
+
+    .deadweight > div {
+        flex: 1
+    }
+
+    .flex {
+        display: flex;
+        align-items: center;
+    }
+
+    .album-image {
+        margin-right: var(--Album-Image-Right-Gap);
+        width: var(--Album-Image-Size);
+        height: var(--Album-Image-Size);
+        border-radius: 3px;
+    }
+
+    .music-text {
+        line-height: 1.7em;
+    }
+
+    .song-name {
+        font-family: abel;
+        font-size: var(--Song-Name-Font-Size);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--Song-Name-Color);
+    }
+
+    .artist-name {
+        font-family: sintony;
+        font-size: var(--Artist-Name-Font-Size);
+        color: var(--Artist-Name-Color);
+    }
+
+    /*--------- MUSIC CONTROLS ---------*/
+    .mmid {
+        display: block;
+        margin: auto;
+        padding: 0 10px;
+        text-align: center;
+        line-height: 1em;
+    }
+
+    .mcontrols {
+        display: inline-block;
+    }
+
+    .playbutt {
+        position: relative;
+    }
+
+        .playbutt:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            margin-top: -1px;
+            left: 0;
+            margin-left: -1px;
+            width: 100%;
+            height: 100%;
+            border-radius: 100%;
+            border: 1px solid var(--Music-Controls-Color);
+            opacity: 0.7;
+            z-index: -1;
+        }
+
+    .fen {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: calc((var(--Music-Controls-Size) - 4px) + (var(--Play-Button-Padding) * 2));
+        height: calc((var(--Music-Controls-Size) - 4px) + (var(--Play-Button-Padding) * 2));
+    }
+
+    .playy i {
+        margin-left: 1px;
+        font-size: calc(var(--Music-Controls-Size) - 4px);
+        color: var(--Music-Controls-Color);
+    }
+
+    .pausee {
+        display: none;
+    }
+
+        .pausee i {
+            font-size: calc(var(--Music-Controls-Size) - 2px);
+            color: var(--Music-Controls-Color);
+        }
+
+    .prev, .next {
+        margin: 0 calc(var(--Music-Controls-Spacing) / 2);
+        padding: calc(var(--Music-Controls-Spacing) / 2);
+    }
+
+        .prev svg, .next svg {
+            width: var(--Music-Controls-Size);
+            height: var(--Music-Controls-Size);
+            color: var(--Music-Controls-Color);
+            stroke-width: 1.5;
+        }
+
+    .brococho {
+        margin: auto;
+        margin-top: calc(var(--Progress-Bar-Top-Gap) - 10px);
+        margin-bottom: -10px;
+        padding: 10px 0;
+        width: var(--Progress-Bar-Length);
+        height: var(--Progress-Bar-Height);
+    }
+
+    .barley {
+        width: 100%;
+        height: 100%;
+        background: var(--Progress-Bar-Empty);
+        border-radius: var(--Progress-Bar-Height);
+        overflow: hidden;
+    }
+
+    .barfill {
+        width: 0;
+        height: 100%;
+        background: var(--Progress-Bar-Fill);
+        border-radius: var(--Progress-Bar-Height);
+    }
+
+    /*--------- VOLUME CONTROLS ---------*/
+    .mright {
+        justify-content: flex-end;
+    }
+
+    .mutemax {
+    }
+
+        .mutemax svg {
+            padding: 7px;
+            width: var(--Volume-Icon-Size);
+            height: var(--Volume-Icon-Size);
+            color: var(--Volume-Icon-Color);
+        }
+
+    .mute, .low {
+        display: none;
+    }
+
+    .volbar {
+        margin-left: calc(var(--Volume-Icon-Spacing) - 7px);
+        width: var(--Volume-Bar-Length);
+        height: var(--Volume-Bar-Height);
+        border-radius: var(--Volume-Bar-Height);
+        background: var(--Volume-Bar-Empty);
+        overflow: hidden;
+    }
+
+    .volfill {
+        height: 100%;
+        background: #6e668f;
+        border-radius: var(--Volume-Bar-Height);
+    }
+
+    .glenjamin {
+        margin-left: var(--Volume-Icon-Spacing);
+        margin-right: -7px;
+    }
+
+        .glenjamin svg {
+            padding: 7px;
+            width: calc(var(--Volume-Icon-Size) - 2px);
+            height: calc(var(--Volume-Icon-Size) - 2px);
+            fill: var(--Volume-Icon-Color);
+            opacity: 0.9;
+        }
 
     div#nowayfixed {
 </style>
@@ -107,5 +300,141 @@ body{background-image: url(https://i.postimg.cc/sXxnynQN/S9CS.gif); background-s
         <a href="https://xat.me/iwontfallnever"><div class="cirs"></div> </a>
         <a href="https://xat.me/necessarius"> <div class="cirs"> </div></a><a href="https://xat.me/taiga"><div class="cirs"> </div></a><a href="https://xat.me/xevangelist"> <div class="cirs"></div></a>
     </div>
+<div class="badbitch">
+        <div class="deadweight flex">
+            <div class="tracklist">
+                <div class="song">
+                    <div class="call-it-a flex">
+                        <img class="album-image" src="https://cdn.discordapp.com/attachments/382037367940448256/755716276214824960/album_cover_b.png">
+                        <div class="music-text">
+                            <div class="song-name">The Baddest</div>
+                            <div class="artist-name">K/DA, (G)I-DLE & Wolftyla</div>
+                        </div>
+
+                        <audio src="https://dl.dropbox.com/s/q9q1w86fvi7vluy/THE%20BADDEST.mp3"></audio>
+                    </div><!--flex-->
+                </div><!--song-->
+
+
+                <div class="song">
+                    <div class="call-it-a flex">
+                        <img class="album-image" src="https://cdn.discordapp.com/attachments/382037367940448256/756065096366555137/1x1.png">
+                        <div class="music-text">
+                            <div class="song-name">POP/STARS</div>
+                            <div class="artist-name">K/DA, Madison Beer & (G)I-DLE</div>
+                        </div>
+
+                        <audio src="https://dl.dropbox.com/s/rua34en7muqmj3l/POPSTARS.mp3"></audio>
+                    </div><!--flex-->
+                </div><!--song-->
+
+
+                <div class="song">
+                    <div class="call-it-a flex">
+                        <img class="album-image" src="https://cdn.discordapp.com/attachments/382037367940448256/771664487451328522/more_cover_sq.png">
+                        <div class="music-text">
+                            <div class="song-name">MORE</div>
+                            <div class="artist-name">K/DA, Madison Beer, (G)I-DLE, Lexie Liu, Jaira Burns, Seraphine</div>
+                        </div>
+
+                        <audio src="https://dl.dropbox.com/s/uemtac9swp65ab9/MORE.mp3"></audio>
+                    </div><!--flex-->
+                </div><!--song-->
+            </div><!--tracklist-->
+
+            <div class="mmid">
+                <div class="mcontrols">
+                    <div class="flex">
+                        <a class="prev">
+                            <i data-feather="skip-back"></i>
+                        </a>
+
+                        <a class="playbutt">
+                            <div class="playy">
+                                <div class="fen"><i class="fas fa-play"></i></div>
+                            </div>
+
+                            <div class="pausee">
+                                <div class="fen"><i class="dripicons dripicons-media-pause"></i></div>
+                            </div>
+                        </a>
+
+                        <a class="next">
+                            <i data-feather="skip-forward"></i>
+                        </a>
+                    </div>
+                </div><!--mcontrols-->
+
+                <div class="brococho">
+                    <div class="barley">
+                        <div class="barfill"></div>
+                    </div>
+                </div>
+            </div><!--mmid-->
+
+            <div class="mright flex">
+                <div class="mutemax">
+                    <div class="mute"><i data-feather="volume-x"></i></div>
+                    <div class="max"><i data-feather="volume-2"></i></div>
+                    <div class="low"><i data-feather="volume-1"></i></div>
+                </div>
+
+                <div class="volbar">
+                    <div class="volfill"></div>
+                </div>
+
+                <a class="glenjamin" href="//glenthemes.tumblr.com" title="coded by glenthemes">
+                    <div class="glencannotcook"></div>
+                </a>
+            </div><!--mright-->
+        </div><!--deadweight-->
+    </div><!--badbitch-->
+
+    <div class="banyasuo"></div>
+
+    <script>feather.replace()</script>
+
+    <iframe scrolling="no" width="1" height="1" frameborder="0" style="background-color:transparent; overflow:hidden; position:absolute; top:0; left:0; z-index:9999;" id="ga_target"></iframe>
+    <script type="text/javascript">
+    (function(){
+        var analytics_frame = document.getElementById('ga_target');
+        var analytics_iframe_loaded;
+        var user_logged_in;
+        var blog_is_nsfw = 'No';
+
+        var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+        var eventer = window[eventMethod];
+        var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+        eventer(messageEvent,function(e) {
+            var message = (e.data && e.data.split) ? e.data.split(';') : '';
+            switch (message[0]) {
+                case 'analytics_iframe_loaded':
+                    analytics_iframe_loaded = true;
+                    postCSMessage();
+                    postGAMessage();
+                    break;
+                case 'user_logged_in':
+                    user_logged_in = message[1];
+                    postGAMessage();
+                    break;
+            }
+        }, false);
+
+        analytics_frame.src = "https://assets.tumblr.com/analytics.html?_v=9f5febfd57a8a649c598d888f2d9e062#" +
+                              "https://glenthpvs.tumblr.com";
+        function postGAMessage() {
+            if (analytics_iframe_loaded && user_logged_in) {
+                var is_ajax = false;
+                analytics_frame.contentWindow.postMessage(['tick_google_analytics', is_ajax, user_logged_in, blog_is_nsfw, '/heartbreaker?route=custom_page'].join(';'), analytics_frame.src.split('/analytics.html')[0]);
+            }
+        }
+        function postCSMessage() {
+            COMSCORE = true;
+            analytics_frame.contentWindow.postMessage('enable_comscore;' + window.location, analytics_frame.src.split('/analytics.html')[0]);
+        }
+    })();
+    </script>
+    <script type="text/javascript" nonce="uGcjBVWEWpLPRKuSILbw7R0ZP4">!function(s){s.src='https://px.srvcs.tumblr.com/impixu?T=1630772257&J=eyJ0eXBlIjoidXJsIiwidXJsIjoiaHR0cDovL2dsZW50aHB2cy50dW1ibHIuY29tL2hlYXJ0YnJlYWtlciIsInJlcXR5cGUiOjAsInJvdXRlIjoiY3VzdG9tX3BhZ2UifQ==&U=JCMBAODCHB&K=8c7fb5bd72d8040caaf4d18948568bc0b5346558b0843c929c34b94720567276&R=https%3A%2F%2Fwww.tumblr.com%2F'.replace(/&R=[^&$]*/,'').concat('&R='+escape(document.referrer)).slice(0,2000).replace(/%.?.?$/,'');}(new Image());</script><noscript><img style="position:absolute;z-index:-3334;top:0px;left:0px;visibility:hidden;" src="https://px.srvcs.tumblr.com/impixu?T=1630772257&J=eyJ0eXBlIjoidXJsIiwidXJsIjoiaHR0cDovL2dsZW50aHB2cy50dW1ibHIuY29tL2hlYXJ0YnJlYWtlciIsInJlcXR5cGUiOjAsInJvdXRlIjoiY3VzdG9tX3BhZ2UiLCJub3NjcmlwdCI6MX0=&U=JCMBAODCHB&K=b74d7b4b51b397fe6615a38dbcbf8f5047fdbf91356951316b3fc4c3a1ef21dc&R=https%3A%2F%2Fwww.tumblr.com%2F"></noscript><noscript id="bootloader" data-bootstrap="{&quot;Components&quot;:{&quot;PostActivity&quot;:[],&quot;NotificationPoller&quot;:{&quot;messaging_keys&quot;:[],&quot;token&quot;:&quot;c86f8a500596474a7ef5034081f694bd&quot;,&quot;inbox_unread&quot;:0},&quot;DesktopDashboardLogo&quot;:{&quot;animations&quot;:[[&quot;https:\/\/assets.tumblr.com\/images\/logo\/hover-animations\/1.png?_v=161861acded461bb6e995593a3bae835&quot;,&quot;https:\/\/assets.tumblr.com\/images\/logo\/hover-animations\/1@2x.png?_v=496a774637302a598c851381d00009b0&quot;]]},&quot;TumblelogIframe&quot;:{&quot;unified&quot;:true,&quot;variant&quot;:null,&quot;isCompact&quot;:true,&quot;tumblelogBundleSrc&quot;:&quot;https:\/\/assets.tumblr.com\/client\/prod\/standalone\/tumblelog\/index.build.js?_v=3adb836a96eddc27a1180d62826b0901&quot;,&quot;tumblelogName&quot;:&quot;glenthpvs&quot;,&quot;isLoggedIn&quot;:false,&quot;isFriend&quot;:false,&quot;formKey&quot;:&quot;&quot;,&quot;canSubscribe&quot;:false,&quot;isSubscribed&quot;:false,&quot;tumblelogTitle&quot;:&quot;preview blog&quot;,&quot;tumblelogAvatar&quot;:&quot;https:\/\/64.media.tumblr.com\/avatar_72ac7f59cce3_64.pnj&quot;,&quot;tumblelogAvatar128&quot;:&quot;https:\/\/64.media.tumblr.com\/avatar_72ac7f59cce3_128.pnj&quot;,&quot;tumblelogHost&quot;:&quot;https:\/\/glenthpvs.tumblr.com&quot;,&quot;isOptica&quot;:false,&quot;isCustomTheme&quot;:true,&quot;themeHeaderImage&quot;:&quot;&quot;,&quot;themeBackgroundColor&quot;:&quot;#FAFAFA&quot;,&quot;themeTitleColor&quot;:&quot;#444444&quot;,&quot;themeAccentColor&quot;:&quot;#000000&quot;,&quot;brag&quot;:false,&quot;adsEnabled&quot;:false,&quot;canShowAd&quot;:true,&quot;isPremium&quot;:false,&quot;showLrecAds&quot;:false,&quot;showStickyLrecBackfill&quot;:false,&quot;showGeminiAds&quot;:false,&quot;geminiSectionCodeDesktop&quot;:&quot;a10bca9c-0c5d-4a02-ab13-14ab8513d81d&quot;,&quot;geminiSectionCodeMobile&quot;:&quot;ced63809-b609-4aca-96a0-abc099acba6b&quot;,&quot;currentPageType&quot;:null,&quot;currentPage&quot;:false,&quot;searchQuery&quot;:&quot;&quot;,&quot;tag&quot;:&quot;&quot;,&quot;query&quot;:&quot;&quot;,&quot;chrono&quot;:false,&quot;postId&quot;:&quot;&quot;,&quot;src&quot;:&quot;https:\/\/glenthpvs.tumblr.com\/heartbreaker&quot;,&quot;postUrl&quot;:&quot;&quot;,&quot;isBlocked&quot;:null,&quot;isAdmin&quot;:false,&quot;lookupButtonUrl&quot;:&quot;&quot;,&quot;showSpamButton&quot;:false,&quot;showRootPostButton&quot;:false,&quot;rootPostUrl&quot;:&quot;&quot;,&quot;showRadarPostButton&quot;:false,&quot;radarKeys&quot;:&quot;&quot;,&quot;isUniblocked&quot;:false,&quot;isNsfw&quot;:false,&quot;isAdult&quot;:false,&quot;isSpam&quot;:false,&quot;isPrimaryBlog&quot;:false,&quot;canEdit&quot;:false,&quot;canReblogSelf&quot;:false,&quot;showLikeButton&quot;:false,&quot;showReblogButton&quot;:false,&quot;reblogUrl&quot;:&quot;&quot;,&quot;showMessagingButton&quot;:false,&quot;loginCheckIframeSrc&quot;:&quot;https:\/\/assets.tumblr.com\/assets\/html\/iframe\/login_check.html?_v=3de94a184d600617102ddd5b48fb36e9&quot;,&quot;appInstallUrls&quot;:{&quot;android&quot;:&quot;https:\/\/play.google.com\/store\/apps\/details?id=com.tumblr\u0026referrer=utm_source%3Dtumblr%26utm_medium%3Diframe%26utm_campaign%3Dbn_continue_or_install_cta&quot;,&quot;ios&quot;:&quot;https:\/\/apps.apple.com\/app\/apple-store\/id305343404?pt=212308\u0026ct=bn_continue_or_install_cta\u0026mt=8&quot;},&quot;appOpenReferrer&quot;:&quot;bn_header_open_btn&quot;,&quot;isShowSearch&quot;:true,&quot;supplyLogging&quot;:[],&quot;secondsSinceLastActivity&quot;:-1,&quot;installUrlOpenFailed&quot;:{&quot;android&quot;:&quot;https:\/\/play.google.com\/store\/apps\/details?id=com.tumblr\u0026referrer=utm_source%3Dtumblr%26utm_medium%3Diframe%26utm_campaign%3Dbn_header_app_open_failed&quot;,&quot;ios&quot;:&quot;https:\/\/apps.apple.com\/app\/apple-store\/id305343404?pt=212308\u0026ct=bn_header_app_open_failed\u0026mt=8&quot;},&quot;loginWallVariant&quot;:&quot;small_center&quot;}},&quot;Flags&quot;:{&quot;features&quot;:&quot;eyJmaWx0ZXJfbnNmdyI6dHJ1ZSwibW9iaWxlX3dlYl9nYXRlIjp0cnVlLCJzYWZlX21vZGUiOnRydWUsInNhZmVfbW9kZV9lbmFibGVkIjp0cnVlLCJrZXljb21tYW5kX2F1dG9fcGFnaW5hdGUiOnRydWUsImxvZ2dlZF9vdXRfc2VhcmNoIjp0cnVlLCJrcmFrZW5fd2ViX2xvZ2dpbmdfbGlicmFyeSI6dHJ1ZSwibGl2ZXBob3Rvc193ZWIiOnRydWUsInVzZXJfdGFnX2ZpbHRlcmluZyI6dHJ1ZSwic2FmZV9tb2RlX293bl9wb3N0Ijp0cnVlLCJwcm9qZWN0X3hfYXBwZWFsIjp0cnVlLCJtb2JpbGVfd2ViX3Bob3Rvc2V0cyI6dHJ1ZSwiaGlkZV9kZWZhdWx0X2hlYWRlcnNfYmxvZ19jYXJkcyI6dHJ1ZSwibm90aWZpY2F0aW9uX3JlcGx5X2xpbmtfdG9fbm90ZXMiOnRydWUsInR5cGluZ19pbmRpY2F0b3Jfd3JpdGUiOnRydWUsInR1bWJscl92aWRlb19zcG9uc29yZWRfZGF5Ijp0cnVlLCJjYXB0Y2hhOnVzZV9yZWNhcHRjaGEyIjp0cnVlLCJsaXR0bGVfc2lzdGVyIjp0cnVlLCJlbmFibGVfanNfZXJyb3JzX2xvZyI6dHJ1ZSwibG9nX2xhZHkiOnRydWUsInJlZHBvcF9wb3N0X2Zvcm1fbW9iaWxlX2NyZWF0ZSI6dHJ1ZSwibGVnYWN5X3Bvc3RfZm9ybV9idXR0b25zX2xpbmtfdG9fcmVkcG9wIjp0cnVlLCJkYXJsYV9hZF9mZWVkYmFjayI6dHJ1ZSwic3RhdHVzX2luZGljYXRvciI6dHJ1ZSwiY29udmVyc2F0aW9uYWxfbm90aWZpY2F0aW9ucyI6dHJ1ZSwiZGlzYWJsZV95YWhvb19iX2Nvb2tpZSI6dHJ1ZSwibGl2ZXBob3RvcyI6dHJ1ZX0=&quot;},&quot;Context&quot;:{&quot;name&quot;:&quot;default&quot;,&quot;time&quot;:1630772257000,&quot;userinfo&quot;:{&quot;primary&quot;:&quot;&quot;,&quot;name&quot;:&quot;&quot;,&quot;channels&quot;:[]},&quot;hosts&quot;:{&quot;assets_host&quot;:&quot;https:\/\/assets.tumblr.com&quot;,&quot;secure_assets_host&quot;:&quot;https:\/\/assets.tumblr.com&quot;,&quot;www_host&quot;:&quot;https:\/\/www.tumblr.com&quot;,&quot;secure_www_host&quot;:&quot;https:\/\/www.tumblr.com&quot;,&quot;embed_host&quot;:&quot;https:\/\/embed.tumblr.com&quot;,&quot;safe_host&quot;:&quot;https:\/\/safe.txmblr.com&quot;,&quot;platform_host&quot;:&quot;https:\/\/platform.tumblr.com&quot;},&quot;language&quot;:&quot;es_ES&quot;,&quot;language_simple&quot;:&quot;es&quot;,&quot;assets&quot;:&quot;https:\/\/assets.tumblr.com\/client\/prod\/&quot;},&quot;Translations&quot;:{&quot;Cancel&quot;:&quot;Cancelar&quot;,&quot;Nevermind&quot;:&quot;Cancelar&quot;,&quot;Ignore&quot;:&quot;Ignorar&quot;,&quot;Unfollow&quot;:&quot;Dejar de seguir&quot;,&quot;Are you sure you want to unfollow %1$s?&quot;:&quot;\u00bfSeguro que quieres dejar de seguir a %1$s?&quot;,&quot;Sorry, we seem to be having technical trouble.  Please try again later.&quot;:&quot;Lo sentimos, parece que estamos experimentando problemas t\u00e9cnicos. Vuelve a intentarlo m\u00e1s tarde.&quot;,&quot;Follow&quot;:&quot;Seguir&quot;,&quot;Follow %1$s&quot;:&quot;Seguir a %1$s&quot;,&quot;Put it back&quot;:&quot;Vuelve a tu sitio&quot;,&quot;See all&quot;:&quot;Ver todas&quot;,&quot;Block&quot;:&quot;Bloquear&quot;,&quot;%1$sAre you sure you want to block %2$s from %3$s?%4$sThey won&#039;t be able to follow %3$s, send %3$s messages, see %3$s in search results, or interact with any of %3$s&#039;s posts.%5$s&quot;:&quot;%1$s\u00bfSeguro que quieres bloquear a %2$s de %3$s?%4$sNo podr\u00e1 seguir a %3$s, enviar mensajes a %3$s, ver a %3$s en los resultados de b\u00fasqueda o interactuar de forma alguna con las publicaciones de %3$s.%5$s&quot;,&quot;%1$sBlock messages from this sender?%2$sAny further messages sent from their IP address will be blocked from your inbox. This can&#039;t be undone, by the way.%3$s&quot;:&quot;\u00bf%1$sQuieres bloquear los mensajes de este remitente?%2$sDejar\u00e1s de recibir mensajes enviados desde su misma direcci\u00f3n IP en tu bandeja de entrada. No olvides que no es posible deshacer este cambio.%3$s&quot;,&quot;Okay! We&#039;ll review the status of this and email you when we&#039;re done.&quot;:&quot;\u00a1Perfecto! Analizaremos el caso y te enviaremos un correo electr\u00f3nico cuando el proceso haya terminado.&quot;,&quot;This is marked as sensitive content. If that seems like a mistake, you can request a review.&quot;:&quot;Esta publicaci\u00f3n est\u00e1 marcada como contenido delicado. Si crees que se trata de un error, puedes pedirnos que la revisemos.&quot;,&quot;Request Review&quot;:&quot;Solicitar revisi\u00f3n&quot;,&quot;This post is still marked as sensitive, but is currently being reviewed.&quot;:&quot;Esta publicaci\u00f3n sigue marcada como contenido delicado, pero la estamos revisando.&quot;,&quot;After review, it was determined that this post contains sensitive content.&quot;:&quot;Tras revisarlo, hemos corroborado que el contenido de esta publicaci\u00f3n puede ser delicado.&quot;,&quot;This is marked as %1$ssensitive%2$s&quot;:&quot;Esta publicaci\u00f3n incluye %1$scontenido delicado%2$s&quot;,&quot;This Tumblr may contain sensitive media.&quot;:&quot;El contenido de este Tumblr puede ser delicado.&quot;,&quot;Sensitive posts are hidden. If you want to change that, disable Safe Mode in your settings.&quot;:&quot;Las publicaciones con contenidos que pueden resultar delicados est\u00e1n ocultas. Para mostrarlas, desactiva el modo seguro en el apartado de configuraci\u00f3n.&quot;,&quot;Hey, this post may contain adult content, so we&#039;ve hidden it from public view.&quot;:&quot;Vaya... Es posible que esta publicaci\u00f3n incluya contenido para adultos y, por eso, la hemos ocultado.&quot;,&quot;Learn more&quot;:&quot;M\u00e1s informaci\u00f3n&quot;,&quot;%1$sLearn more%2$s&quot;:&quot;%1$sM\u00e1s informaci\u00f3n%2$s&quot;,&quot;Safe Mode is on&quot;:&quot;Modo seguro activado&quot;,&quot;%1$sSafe mode is on%2$s&quot;:&quot;%1$sModo seguro activado%2$s&quot;,&quot;View this Tumblr&quot;:&quot;Ver este Tumblr&quot;,&quot;This content contains adult content which violates our Community Guidelines.&quot;:&quot;Esta publicaci\u00f3n incluye contenido para adultos y, por tanto, infringe las Normas de la comunidad.&quot;,&quot;This post was flagged because we think it contains adult content which violates our Community Guidelines. It has been hidden from others, but not deleted. If you think this was done in error, tap Appeal and a real, live human will review it.&quot;:&quot;Hemos marcado esta publicaci\u00f3n porque creemos que incluye contenido para adultos y, por lo tanto, incumple las Normas de la comunidad. De momento, est\u00e1 oculta para el resto de usuarios, pero no la hemos eliminado. Si crees que se trata de un error, utiliza el bot\u00f3n para solicitar una revisi\u00f3n y un miembro de nuestro equipo se encargar\u00e1 de comprobarla.&quot;,&quot;Your post is in content appeal. Once a decision has been made, we&#039;ll send you an email.&quot;:&quot;Esta publicaci\u00f3n se encuentra en revisi\u00f3n. Te enviaremos un correo electr\u00f3nico cuando hayamos tomado una decisi\u00f3n.&quot;,&quot;This post was flagged because it contains adult content which violates our Community Guidelines. It has not been deleted but is now only viewable to you. This decision cannot be appealed.&quot;:&quot;Hemos marcado esta publicaci\u00f3n porque incluye contenido para adultos y, por lo tanto, incumple las Normas de la comunidad. No la hemos eliminado, pero, a partir de ahora, solo podr\u00e1s verla t\u00fa. Esta decisi\u00f3n es definitiva y no podr\u00e1s solicitar que se revise.&quot;,&quot;This post was flagged because somewhere in your reblog there might be adult content which is a violation of our Community Guidelines.&quot;:&quot;Hemos marcado esta publicaci\u00f3n porque el reblogueo inclu\u00eda contenido para adultos y, por lo tanto, incumpl\u00eda las Normas de la comunidad.&quot;,&quot;This reblog is in content appeal&quot;:&quot;Este reblogueo se ha enviado al equipo de revisi\u00f3n&quot;,&quot;Your post is in content appeal&quot;:&quot;Tu contenido se ha enviado al equipo de revisi\u00f3n&quot;,&quot;This post was flagged because somewhere in your reblog there might be adult content.&quot;:&quot;Hemos marcado esta publicaci\u00f3n porque parece que el reblogueo inclu\u00eda contenido para adultos.&quot;,&quot;It looks like your post might be in violation of our Community Guidelines and is now hidden.&quot;:&quot;Parece que tu publicaci\u00f3n podr\u00eda incumplir nuestras Normas de la comunidad, as\u00ed que hemos decidido ocultarla.&quot;,&quot;Based on our Community Guidelines this post contains adult content and is now only viewable to you.&quot;:&quot;Seg\u00fan nuestras Normas de la comunidad, esta publicaci\u00f3n incluye contenido para adultos y, a partir de ahora, solo t\u00fa podr\u00e1s verla.&quot;,&quot;Your appeal was accepted! This post is no longer hidden.&quot;:&quot;Hemos valorado tu solicitud de revisi\u00f3n y \u00a1ten\u00edas raz\u00f3n! Este contenido ya no est\u00e1 oculto.&quot;,&quot;Dismiss&quot;:&quot;Descartar&quot;,&quot;Appeal&quot;:&quot;Solicitar revisi\u00f3n&quot;,&quot;This post contains filtered tags&quot;:&quot;Esta publicaci\u00f3n contiene etiquetas filtradas&quot;,&quot;Are you sure you want to log out?&quot;:&quot;\u00bfSeguro que quieres cerrar la sesi\u00f3n?&quot;,&quot;Likes&quot;:&quot;Me gusta&quot;,&quot;Following&quot;:&quot;Siguiendo&quot;,&quot;New&quot;:&quot;A\u00f1adir blog&quot;,&quot;Account&quot;:&quot;Cuenta&quot;,&quot;Settings&quot;:&quot;Configuraci\u00f3n&quot;,&quot;Help&quot;:&quot;Ayuda&quot;,&quot;Log out&quot;:&quot;Cerrar sesi\u00f3n&quot;,&quot;Posts&quot;:&quot;Publicaciones&quot;,&quot;Reach&quot;:&quot;Alcance&quot;,&quot;Followers&quot;:&quot;Seguidores&quot;,&quot;Activity&quot;:&quot;Actividad&quot;,&quot;Members&quot;:&quot;Miembros&quot;,&quot;Drafts&quot;:&quot;Borradores&quot;,&quot;Queue&quot;:&quot;En cola&quot;,&quot;Processing&quot;:&quot;Procesando&quot;,&quot;Review flagged posts&quot;:&quot;Comprobar publicaciones marcadas&quot;,&quot;Analytics&quot;:&quot;Estad\u00edsticas&quot;,&quot;Sponsor&quot;:&quot;Patrocinador&quot;,&quot;Sponsored&quot;:&quot;Patrocinado&quot;,&quot;About Tumblr Ads&quot;:&quot;Acerca de la publicidad en Tumblr&quot;,&quot;Edit appearance&quot;:&quot;Modificar apariencia&quot;,&quot;Your blog info, account info, and recent activity are in these menus.&quot;:&quot;La informaci\u00f3n de tu blog, los datos de tu cuenta y tu actividad reciente se encuentran en estos men\u00fas.&quot;,&quot;Wait, why?&quot;:&quot;Pero \u00bfpor qu\u00e9?&quot;,&quot;Okay, phew&quot;:&quot;\u00a1Ah, vale!&quot;,&quot;Why?&quot;:&quot;\u00bfQu\u00e9 ofrecemos?&quot;,&quot;It&#039;s so you never have to scroll to the top of the dashboard to access this stuff.&quot;:&quot;Lo hemos juntado todo aqu\u00ed para que no tengas que desplazarte hacia la parte superior del Escritorio cada vez que quieras acceder a estas opciones.&quot;,&quot;Ohhh&quot;:&quot;Aaaah&quot;,&quot;Loading\u2026&quot;:&quot;Cargando...&quot;,&quot;%1$s notes&quot;:&quot;%1$s notas&quot;,&quot;%1$s note&quot;:&quot;%1$s nota&quot;,&quot;%1$s views&quot;:&quot;%1$s visitas&quot;,&quot;%1$s view&quot;:&quot;%1$s visita&quot;,&quot;%1$s added this GIF to a post&quot;:&quot;%1$s ha utilizado este GIF en una publicaci\u00f3n&quot;,&quot;%1$s posted this&quot;:&quot;%1$s ha publicado esto&quot;quot;,&quot;%1$s%2$s likes%3$s&quot;:&quot;%1$s%2$s Me gusta%3$s&quot;,&quot;%1$s%2$s like%3$s&quot;:&quot;%1$s%2$s Me gusta%3$s&quot;,&quot;%1$s%2$s reblogs%3$s&quot;:&quot;%1$s%2$s reblogueos%3$s&quot;,&quot;%1$s%2$s reblog%3$s&quot;:&quot;%1$s%2$s reblogueo%3$s&quot;,&quot;%1$s%2$s likes%3$s and %4$s%5$s reblogs%3$s&quot;:&quot;%1$s%2$s Me gusta%3$s y %4$s%5$s reblogueos%3$s&quot;,&quot;%1$s%2$s likes%3$s and %4$s%5$s reblog%3$s&quot;:&quot;%1$s%2$s Me gusta%3$s y %4$s%5$s reblogueo%3$s&quot;,&quot;%1$s%2$s like%3$s and %4$s%5$s reblogs%3$s&quot;:&quot;%1$s%2$s Me gusta%3$s y %4$s%5$s reblogueos%3$s&quot;,&quot;Reply&quot;:&quot;Responder&quot;,&quot;Add to the discussion&quot;:&quot;Comparte tu opini\u00f3n&quot;,&quot;Unleash a compliment&quot;:&quot;Haz un cumplido&quot;,&quot;Have something to say?&quot;:&quot;\u00bfAlgo que decir?&quot;,&quot;Reply your heart out&quot;:&quot;Abre tu coraz\u00f3n&quot;,&quot;Add something wonderful&quot;:&quot;Comparte algo espectacular&quot;,&quot;Send something nice&quot;:&quot;Di algo bonito&quot;,&quot;Your words here&quot;:&quot;Aqu\u00ed es donde van las palabras&quot;,&quot;Say your thing&quot;:&quot;\u00bfAlgo que decir?&quot;,&quot;Block %1$s&quot;:&quot;Bloquear a %1$s&quot;,&quot;Report&quot;:&quot;Denunciar&quot;,&quot;%1$sReport %2$s&#039;s post?%3$sIf it violates our community guidelines, we&#039;ll remove it.%4$s&quot;:&quot;%1$s\u00bfSeguro que quieres denunciar el blog de %2$s?%3$sSi infringe las normas de la comunidad, lo eliminaremos.%4$s&quot;,&quot;%1$sReport %2$s&#039;s reply?%3$sIf it violates our community guidelines, we&#039;ll remove it.%4$s&quot;:&quot;%1$s\u00bfSeguro que quieres denunciar el blog de %2$s?%3$sSi infringe las normas de la comunidad, lo eliminaremos.%4$s&quot;,&quot;Hide note&quot;:&quot;Ocultar nota&quot;,&quot;Delete reply&quot;:&quot;Borrar respuesta&quot;,&quot;%1$sYou definitely want to hide this note?%2$s&quot;:&quot;%1$s\u00bfSeguro que quieres ocultar esta nota?%2$s&quot;,&quot;%1$sYou definitely want to delete this reply?%2$s&quot;:&quot;%1$s\u00bfSeguro que quieres borrar esta respuesta?%2$s&quot;,&quot;Hide it&quot;:&quot;S\u00ed, ocultadla&quot;,&quot;Delete it&quot;:&quot;S\u00ed, borradla&quot;}}"></noscript>
+    <script src="https://assets.tumblr.com/client/prod/standalone/tumblelog/index.build.js?_v=3adb836a96eddc27a1180d62826b0901"></script></body>
+
 </div>
-[youtube:0:0:vRBgZ4aMPio:&autoplay=1]
