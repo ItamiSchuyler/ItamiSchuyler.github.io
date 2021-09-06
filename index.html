@@ -1,5 +1,5 @@
 <style>
-body {
+    body {
         background-image: url(https://i.postimg.cc/630sY3CL/baaaack.png);
         background-size: cover;
     }
@@ -26,27 +26,29 @@ body {
         left: 15vw;
         z-index: -9999;
     }
+
     #posts {
         text-align: center;
         width: 30vw;
         height: 39vh;
-        background-color: #transparent;
+        background-color: #fc7a80;
         margin: 1vw;
         opacity: 9999;
         overflow: auto;
-        margin-left: 23vw;
+        margin-left: 20vw;
         top: 10vh;
         z-index: -9999999;
-        margin-top:25vh;
+        margin-top: 25vh;
+        border-radius: 2%
     }
 
     #imgpost {
         height: auto;
-        margin-right: 2.9vw;
-        padding: 0.5vw;
+        margin-right: 1.5vw;
+        margin-top:1.3vw;
         max-width: 60%;
         height: auto;
-        border: 0.1vw solid #ffffff;
+        background-color:#ffffff;
         width: auto;
         z-index: -9999999;
         border-radius: 1vw;
@@ -54,30 +56,64 @@ body {
 
     ::-webkit-scrollbar-thumb {
         width: 5px;
-        background-color: #99bfea;
-        background-image: linear-gradient(to bottom, #f8555d, #f8555d);
+        background-color: #ffffff;
+        background-image: linear-gradient(to bottom, #ffffff, #ffffff);
         border-radius: 1vw
     }
 
     ::-webkit-scrollbar {
         width: 5px;
         background: transparent;
-            
+    }
+
+    #desc {
+        position: absolute;
+        z-index:10;
+        top: 40vh;
+        left: 14vw;
+        width: 200px;
+        height: auto;
+        max-height: 150px;
+        overflow: auto;
+        padding: 20px 20px 20px 30px;
+        border-radius: 5px;
+        background-color: rgba(255,255,255,0.5);
+        backdrop-filter: blur(6px);
+        box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.1);
+    }
+
+    #desctext{text-decoration:none;font-size:0.5vw;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;color:crimson}
 </style>
 
 
 <div id="main">
-      
-  
+
+    <div id="desc">
+        <div id="desctext">
+            Here comes a thought
+            That might alarm you
+            What someone said
+            And how it harmed you
+            Something you did
+            That failed to be charming
+            Things that you said are
+            Suddenly swarming
+            And, oh, you're losing sight, you're losing touch
+            All these little things seem to matter so much
+            That they confuse you
+            That I might lose you
+            Take a moment and find yourself.
+        </div>
+    </div>
     <img id="imagen" src="https://i.postimg.cc/P5c0rvTx/demonn.gif" />
     <div id="posts">
-        <img id="imgpost" src="https://i.postimg.cc/vZrcb7yQ/Screenshot-392.png" />
+        <img id="imgpost" src="https://i.postimg.cc/3rFVVCJj/tumblr-pdle1jewd81xduv3xo1-400.jpg" />
         </br></br></br>
-        <img id="imgpost" src="https://i.postimg.cc/cJGwc4xJ/Screenshot-394.png" />
+        <img id="imgpost" src="https://i.postimg.cc/vTx1gHBb/tumblr-f282dab6b7dff3f2edd899ca82bafc73-8e6f50e0-500.gif" />
         </br></br></br>
-        <img id="imgpost" src="https://i.postimg.cc/MG1bkfPR/dfijgs.png" />
+        <img id="imgpost" src="https://i.postimg.cc/mrSpJTTL/tumblr-5e11ca431ac1d54361e0dbc272e930d6-a246d0a3-640.jpg" />
         </br></br></br>
-        <img id="imgpost" src="https://i.postimg.cc/ZYWPZQM4/Screenshot-393.png" />
+        <img id="imgpost" src="https://i.postimg.cc/jj9cG2Gr/tumblr-4585e6093c82667d0c35d6f76bf6b17e-11864d0e-400.gif" />
         </br></br></br>
 
     </div>
