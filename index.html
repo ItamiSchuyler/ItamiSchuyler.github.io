@@ -1,96 +1,12 @@
 <style>
     body {
-        background-image: url(https://i.postimg.cc/630sY3CL/baaaack.png);
-        background-size: cover;
+        background-size: auto;
+        background-color: #000000;
     }
 
     * /*ROBADME ESTA HDPS, EL SPACE ES OBRA DE ITAMI, SI QUIERES UNO, PÁGALO .i.*/ {
         cursor: url(https://i.postimg.cc/hPND081G/cur817.gif),auto
     }
-   
-
-    * {
-        margin: 0px;
-        padding: 0px;
-    }
-
-    #header {margin-top:15vh;
-        margin-left:33vw;
-        width: 500px;
-        font-family: Consolas;
-        animation: header 2s ease 0s 1 normal forwards;
-
-
-       
-    }
-
-    @keyframes header {
-        0%, 100% {
-            transform: translateX(0);
-        }
-
-        10%, 30%, 50%, 70% {
-            transform: translateX(-10px);
-        }
-
-        20%, 40%, 60% {
-            transform: translateX(10px);
-        }
-
-        80% {
-            transform: translateX(8px);
-        }
-
-        90% {
-            transform: translateX(-8px);
-        }
-    }
-    ul, ol {
-        list-style: none;
-    }
-
-    .nav {
-        width: 500px; /*Le establecemos un ancho*/
-        margin: 0 auto; /*Centramos automaticamente*/
-    }
-
-        .nav > li {
-            float: left;
-        }
-
-        .nav li a {
-            background-color:#f8555d;
-            color: #fff;
-            text-decoration: none;
-            padding: 10px 12px;
-            display: block;
-        }
-
-            .nav li a:hover {
-                background-color: crimson;
-            }
-
-        .nav li ul {
-            display: none;
-            position: absolute;
-            min-width: 140px;
-        }
-
-        .nav li:hover > ul {
-            display: block;
-        }
-
-        .nav li ul li {
-            position: relative;
-        }
-
-            .nav li ul li ul {
-                right: -140px;
-                top: 0px;
-            }
-
-
-
 
     #main {
         background: #transparent;
@@ -99,109 +15,129 @@
         height: 100%;
         position: fixed;
         overflow: hidden;
-        text-align: center
+        text-align: center;
+        margin-left: 33vw;
+        margin-top: 14vh
     }
 
 
 
-  
-   
-    #imagen {
+
+
+    #contepost {
         position: absolute;
-        width: 69vw;
-        height: 80vh;
-        top: 5vh;
-        left: 15vw;
-        z-index: -9999;
-        animation: imagen 3s ease 0s 1 normal none;
-    }
-
-    @keyframes imagen {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
+        z-index: 99999999999999999999999;
+        background-color: transparent;
+        width: 26vw;
+        height: 510px;
+        top: 10px;
+        overflow: auto;
+        overflow-x: hidden;
+        margin-top: 0px;
     }
 
     #posts {
-        text-align: center;
-        width: 30vw;
-        height: 39vh;
-        background-color: #fc7a80;
-        margin: 1vw;
-        opacity: 9999;
-        overflow: auto;
-        margin-left: 20vw;
-        top: 10vh;
-        z-index: -9999999;
-        margin-top: 25vh;
-        border-radius: 2%
+        position: relative;
+        z-index: 99999999999999999999999;
+        background-color: #070707;
+        width: 21vw;
+        padding: 15px;
+        margin-top: 30px;
+        border-radius: 5px;
+        overflow-x: none;
+        animation: posts 2s ease 0s 1 normal forwards;
+        border: 1px solid #222222;
+        background-color: #000000;
+        background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
     }
 
-    #imgpost {
-        height: auto;
-        margin-right: 1.5vw;
-        margin-top: 1.3vw;
-        max-width: 60%;
-        height: auto;
-        background-color: #ffffff;
-        width: auto;
-        z-index: -9999999;
-        border-radius: 1vw;
-        box-shadow: 5px 12px 0px 6px #f8555d;
-        animation: imgpost 2s ease 0s 1 normal none;
-    }
-
-    @keyframes imgpost {
+    @keyframes posts {
         0% {
-            animation-timing-function: ease-in;
-            opacity: 1;
-            transform: translateY(-45px);
+            transform: scale(1);
         }
 
-        24% {
-            opacity: 1;
-        }
-
-        40% {
-            animation-timing-function: ease-in;
-            transform: translateY(-24px);
-        }
-
-        65% {
-            animation-timing-function: ease-in;
-            transform: translateY(-12px);
-        }
-
-        82% {
-            animation-timing-function: ease-in;
-            transform: translateY(-6px);
-        }
-
-        93% {
-            animation-timing-function: ease-in;
-            transform: translateY(-4px);
-        }
-
-        25%, 55%, 75%, 87% {
-            animation-timing-function: ease-out;
-            transform: translateY(0px);
+        50% {
+            transform: scale(1.1);
         }
 
         100% {
-            animation-timing-function: ease-out;
-            opacity: 1;
-            transform: translateY(0px);
+            transform: scale(1);
         }
     }
+
+
+
+
+
+
+    #postimg {
+        max-width: 90%;
+        height: auto;
+        padding-top: 2vh;
+    }
+
+    img:hover {
+        filter: drop-shadow(0px 0px 15px #450b4a);
+        filter: grayscale(100%) contrast(129%);
+        -webkit-filter: grayscale(100%) contrast(129%);
+        -moz-filter: grayscale(100%) contrast(129%);
+        -webkit-transition: .3s ease-in-out;
+        transition: .3s ease-in-out;
+    }
+
+    @-webkit-keyframes shadow-pop-tr {
+        0% {
+            -webkit-box-shadow: 0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e;
+            box-shadow: 0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e;
+            -webkit-transform: translateX(0) translateY(0);
+            transform: translateX(0) translateY(0)
+        }
+
+        100% {
+            -webkit-box-shadow: 1px -1px #3e3e3e,2px -2px #3e3e3e,3px -3px #3e3e3e,4px -4px #3e3e3e,5px -5px #3e3e3e,6px -6px #3e3e3e,7px -7px #3e3e3e,8px -8px #3e3e3e;
+            box-shadow: 1px -1px #3e3e3e,2px -2px #3e3e3e,3px -3px #3e3e3e,4px -4px #3e3e3e,5px -5px #3e3e3e,6px -6px #3e3e3e,7px -7px #3e3e3e,8px -8px #3e3e3e;
+            -webkit-transform: translateX(-8px) translateY(8px);
+            transform: translateX(-8px) translateY(8px)
+        }
+    }
+
+    @keyframes shadow-pop-tr {
+        0% {
+            -webkit-box-shadow: 0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e;
+            box-shadow: 0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e,0 0 #3e3e3e;
+            -webkit-transform: translateX(0) translateY(0);
+            transform: translateX(0) translateY(0)
+        }
+
+        100% {
+            -webkit-box-shadow: 1px -1px #3e3e3e,2px -2px #3e3e3e,3px -3px #3e3e3e,4px -4px #3e3e3e,5px -5px #3e3e3e,6px -6px #3e3e3e,7px -7px #3e3e3e,8px -8px #3e3e3e;
+            box-shadow: 1px -1px #3e3e3e,2px -2px #3e3e3e,3px -3px #3e3e3e,4px -4px #3e3e3e,5px -5px #3e3e3e,6px -6px #3e3e3e,7px -7px #3e3e3e,8px -8px #3e3e3e;
+            -webkit-transform: translateX(-8px) translateY(8px);
+            transform: translateX(-8px) translateY(8px)
+        }
+    }
+
+    #tags {
+        color: #ffffff;
+        text-align: center;
+        font-variant: small-caps;
+        font-family: Lucida Console;
+        font-size: 1.5vh;
+        text-shadow: #ffffff 0px 0px 5px;
+        border-bottom: 1px solid #222222;
+        width: 100%;
+        padding: 20px;
+        margin-left: -15px;
+        margin-top: -16px;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+    }
+
 
     ::-webkit-scrollbar-thumb {
         width: 5px;
         background-color: #ffffff;
-        background-image: linear-gradient(to bottom, #ffffff, #ffffff);
+        background-image: linear-gradient(to bottom, #000000, #450b4a);
         border-radius: 1vw
     }
 
@@ -210,138 +146,267 @@
         background: transparent;
     }
 
-    #desc {
+    #imgdeco {
+        width: 13vw;
+        height: 14vh;
+        border-radius: 1vw;
+        animation: imgdeco 0.7s ease 0s infinite normal forwards;
+        background-color: #450b4a;
         position: absolute;
-        z-index: 10;
-        top: 40vh;
-        left: 14vw;
-        width: 200px;
-        height: auto;
-        max-height: 150px;
-        overflow: auto;
-        padding: 20px 20px 20px 30px;
-        border-radius: 5px;
-        background-color: rgba(255,255,255,0.5);
-        backdrop-filter: blur(6px);
-        box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.1);
-        animation: desc 2s ease 0s infinite normal forwards;
+        left: 30vw;
+        z-index: -99999;
+        top: 5vh
     }
-    @keyframes desc {
+
+    @keyframes imgdeco {
         0% {
-            transform: translate(0);
+            opacity: 1;
+            transform: scale(0.2);
         }
 
         10% {
-            transform: translate(-2px, -2px);
-        }
-
-        20% {
-            transform: translate(2px, -2px);
-        }
-
-        30% {
-            transform: translate(-2px, 2px);
-        }
-
-        40% {
-            transform: translate(2px, 2px);
+            opacity: 0.7;
+            transform: scale(1.2);
         }
 
         50% {
-            transform: translate(-2px, -2px);
+            opacity: 0.5;
+            transform: scale(1.2);
         }
 
-        60% {
-            transform: translate(2px, -2px);
-        }
 
-        70% {
-            transform: translate(-2px, 2px);
-        }
-
-        80% {
-            transform: translate(-2px, -2px);
-        }
 
         90% {
-            transform: translate(2px, -2px);
+            opacity: 0.2;
+            transform: scale(1.2);
         }
 
         100% {
-            transform: translate(0);
+            transform: scale(2.2);
+            opacity: 0.1
         }
     }
 
-    #desctext {
+
+    #foto {
+        width: 13vw;
+        height: 14vh;
+        border-radius: 1vw;
+        background-color: #450b4a;
+        position: absolute;
+        left: 30vw;
+        top: 5vh
+    }
+
+    #desc {
+        width: 13vw;
+        height: 14vh;
+        opacity: 0.9;
+        position: absolute;
+        left: 30vw;
+        top: 23vh;
+        border-radius: 1vw;
+        background-color: #000000;
+        background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
+        z-index: -99999
+    }
+
+    #title {
+        color: #ffffff;
+        font-variant: small-caps;
+        font-family: palatino;
+        font-size: 2vh;
+        text-shadow: #ffffff 0px 0px 5px;
+        padding: 20vw;
+        margin-left: 13vw;
+        letter-spacing: 12px;
+        margin-top: -42vh;
+        position: absolute
+    }
+
+
+
+
+    #menu {
+        width: 100px;
+        height: 100px;
+        position: fixed;
+        left: 24vw;
+        top: 36%;
+        margin: -75px 0 0 -75px;
+        list-style: none;
+        font-size: 200%;
+    }
+
+    .menu-button {
+        opacity: 0;
+        z-index: -1;
+    }
+
+    .menu-button {
+        width: 140px;
+        height: 140px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin: -75px 0 0 -75px;
+        border-radius: 50%;
+        background: #450b4a;
+        background-size: 100%;
+        overflow: hidden;
         text-decoration: none;
         font-size: 0.5vw;
-        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-        color: crimson
+        color: #000000;
+        font-variant: small-caps;
+    }
+
+    #menu:not(:target) > a:first-of-type,
+    #menu:target > a:last-of-type {
+        opacity: 1;
+        z-index: 1;
+    }
+
+    #menu:not(:target) > .icon-plus:before,
+    #menu:target > .icon-minus:before {
+        opacity: 1;
+    }
+
+    .menu-item {
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        left: 55%;
+        line-height: 5px;
+        top: 50%;
+        margin: -50px 0 0 -50px;
+        border-radius: 50%;
+        background-color: #450b4a;
+        transform: translate(0px, 0px);
+        transition: transform 500ms;
+        z-index: -2;
+        transition: .5s;
+    }
+
+        .menu-item:hover {
+            opacity: 0.5;
+            box-shadow: 0 5px 10px black;
+        }
+
+
+        .menu-item a {
+            color: #450b4a;
+            position: absolute;
+            text-decoration: none;
+            font-size: 10vw;
+            opacity: 0.0
+        }
+
+    #menu:target > .menu-item:nth-child(6) {
+        transform: rotate(60deg) translateY(-150px) rotate(300deg);
+        transition-delay: 0s;
+    }
+
+    #menu:target > .menu-item:nth-child(5) {
+        transform: rotate(20deg) translateY(-155px) rotate(-20deg);
+        transition-delay: 0.1s;
+    }
+
+    #menu:target > .menu-item:nth-child(3) {
+        transform: rotate(-20deg) translateY(-155px) rotate(20deg);
+        transition-delay: 0.2s;
+    }
+
+    #menu:target > .menu-item:nth-child(4) {
+        transform: rotate(-60deg) translateY(-150px) rotate(60deg);
+        transition-delay: 0.3s;
+    }
+
+    .content {
+        position: absolute;
+        text-align: center;
+        margin: -10px 0 0 -30px;
+        top: 70%;
+        left: 50%;
+        font-size: 20px;
+    }
+
+    #search{top:40vh;position:fixed;left:65vw;width:10vw;}
+    #radio {
+        top: 45vh;
+        position: fixed;
+        left: 65vw;width:10vw;
     }
 </style>
-
-
 <div id="main">
-    <div id="header">
-        <nav>
-            <!-- Aqui estamos iniciando la nueva etiqueta nav -->
-            <ul class="nav">
-                <li> <a href="https://xat.com/taka_death_mistery"> home</a> </li>
-                <li>
-                    <a href="http://xat.me/itami"> friends</a>
-                    <ul>
-                        <li> <a href="http://xat.me/iwontfallnever"> Husband</a> </li>
-                        <li> <a href="http://xat.me/necessarius"> Chris</a> </li>
-                        <li> <a href="http://xat.me/nashe"> Naye</a> </li>
-                        <li> <a href="http://xat.me/taiga"> Taiga</a> </li>
-                        <li> <a href="http://xat.me/xevangelist"> Rain</a> </li>
-                        <li>
-                          
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href=""> Diseños</a>
-                    <ul>
-                        <li> <a href="https://www.deviantart.com/dezachi"> Devianart</a> </li>
-                        <li> <a href="https://www.facebook.com/Dezachidesigns"> Facebook</a> </li>
-                       
-                    </ul>
-                </li>
-                <li> <a href="https://www.flickr.com/photos/itamixat/">Spaces y precios</a> </li>
-            </ul>
-        </nav><!-- Aqui estamos cerrando la nueva etiqueta nav -->
+
+ 
+
+    <input id="search" type="search" name="myInput" placeholder="Search" size="30" required>
+
+    <audio id="radio" autoplay controls>
+        <source src="Hyouka ending 1 sub español_70k.ogg" type="audio/ogg">
+        <source src="ending.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="contepost">
+        <div id="posts"><div id="tags"> no importa donde estas</div><img id="postimg" src="https://i.postimg.cc/Px1CxfxX/NV7ysdx.jpg" /><div id="tags"></div><img id="postimg" src="https://i.postimg.cc/VsRNHV0V/maxresdefault-1.jpg" /></div>
+        <div id="posts"><div id="tags">lo sabe solo dios</div><img id="postimg" src="https://i.postimg.cc/jdqj00p7/hyoed-13.jpg" /><div id="tags"></div><img id="postimg" src="https://i.postimg.cc/vmgz0nP0/hyoed-21.jpg" /></div>
+        <div id="posts"><div id="tags">no importa donde estas</div><img id="postimg" src="https://i.postimg.cc/HLwm8rQh/aSPuGaA.jpg" /><div id="tags"></div><img id="postimg" src="https://i.postimg.cc/XY4dPY36/Tbeb.gif" /></div>
+
+        <div id="posts"><div id="tags">puedo oir tu voz</div><img id="postimg" src="https://i.postimg.cc/zfFmX9Nm/unnamed.jpg" /><div id="tags"></div><img id="postimg" src="https://i.postimg.cc/rFLrdwDR/199390.gif" /></div>
     </div>
+
+
+
+    <div id="imgdeco">
+
+
+    </div>
+
+    <div id="title">apollo<sup style="font-size: 0.4vw; font-family: verdana; font-style: italic; letter-spacing: 1px; ">itami</sup></div>
+    <img id="foto" src="https://i.postimg.cc/LXH5DWyF/tumblr-nemtu4-QA1-X1rfx24fo1-500.gif" />
 
     <div id="desc">
-        <div id="desctext">
-            Here comes a thought
-            That might alarm you
-            What someone said
-            And how it harmed you
-            Something you did
-            That failed to be charming
-            Things that you said are
-            Suddenly swarming
-            And, oh, you're losing sight, you're losing touch
-            All these little things seem to matter so much
-            That they confuse you
-            That I might lose you
-            Take a moment and find yourself.
-        </div>
-    </div>
-    <img id="imagen" src="https://i.postimg.cc/P5c0rvTx/demonn.gif" />
-    <div id="posts">
-        <img id="imgpost" src="https://i.postimg.cc/0jSb8Y9P/104116223-1153484645016875-1296358579602054823-n.png" />
-        </br></br></br>
-        <img id="imgpost" src="https://i.postimg.cc/vTx1gHBb/tumblr-f282dab6b7dff3f2edd899ca82bafc73-8e6f50e0-500.gif" />
-        </br></br></br>
-        <img id="imgpost" src="https://i.postimg.cc/mrSpJTTL/tumblr-5e11ca431ac1d54361e0dbc272e930d6-a246d0a3-640.jpg" />
-        </br></br></br>
-        <img id="imgpost" src="https://i.postimg.cc/MT3qhvRx/b78865f964f6f325d6b6fc56583e27a3.jpg" />
-        </br></br></br>
-        <img id="imgpost" src="https://i.postimg.cc/wT1xhcNV/cd258c7406cc1d97d1854f6ed00efbe8.jpg" />
-        </br></br></br>
+
+
     </div>
 
+
+    <div class="container">
+        <div class="container">
+            <ul id="menu">
+                <a class="menu-button icon-plus" href="#menu" title="Show navigation"></a>
+                <a class="menu-button icon-minus" href="#0" title="Hide navigation"></a>
+                <li class="menu-item">
+                    <a href="https://xat.me/taiga">
+                        •
+
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://xat.me/necessarius">
+                        •
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://xat.me/iwontfallnever">
+                        •
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://xat.me/damitaozcura">
+                        •
+
+                    </a>
+                </li>
+            </ul>
+
+            <div class="content">
+                <div class="text">
+                    <h3> Click circle!</h3>
+                    <h6>Tada...!</h6>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
