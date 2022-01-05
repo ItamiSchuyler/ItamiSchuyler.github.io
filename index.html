@@ -1,492 +1,235 @@
-<style>
 
-    /*ROBADME ESTA HDPS, EL SPACE ES OBRA DE ITAMI, SI QUIERES UNO, PÁGALO .i.*/
+    <style>
+    
 
-
-
-    svg, html, body {
-        box-sizing: border-box;
-        height: 100%;
+    body {
         width: 100%;
-        background-color: #000000;
-        background-image: url("https://www.transparenttextures.com/patterns/old-wall.png");
-        position: fixed;
-        cursor: url(https://i.postimg.cc/hPND081G/cur817.gif), auto
-        /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
-    }
-    circle {
-        fill: white;
-        position: absolute;
-        z-index: -999;
+        height: 100%;
+        margin: 0;
+        background-color: #ffc4fe;
+        background-color: #e8ace6;
+        background-image: radial-gradient(#ffffff 0.5px, #e8ace6 0.5px);
+        background-size: 10px 10px;
+        overflow: hidden
     }
 
-
-    #cuadrado {
-        background-color: #000000;
-        box-shadow: 0px 1px 55px 9px #48e82a;
-        height: 10vh;
-        width: 20vw;
-        z-index: 99999999;
-        position: absolute;
-        border-radius: 30px;
-        top: 30vh;
-        left: 38vw;
-        
-        overflow: hidden;
-        animation: cuadrado 4s ease 0s 1 normal forwards;
+    #cuadrouno {
+        width: 45vw;
+        height: 6vh;
+        background-color: #d686d8;
+        margin-top: 6vh;
+        border-radius: 2vw;margin-left:26vw;position:absolute
     }
+
    
-    @keyframes cuadrado {
-        0% {
-            transform: translateX(0);
-        }
+  #cuadrodos {background-color:#ffffff;position:absolute;margin-top:6vh;margin-left:26vw;width:45vw;height:26vh;z-index:-99999;border-radius:2vw}
 
-        100% {
-            transform: translateX(8vw);
-        }
-    }
-
-    #icon {
+    #circuloimg {
+        animation: circuloimg 1s ease 0s normal forwards;
         border-radius: 100%;
-        box-shadow: 0px 1px 55px 9px #48e82a;
-        top: 31vh;
-        left: 38vw;
+        width: 8.5vw;
+        height: 17vh;
         position: absolute;
-        z-index: 100;
-        animation: icon 2s ease 0s infinite normal forwards;
+        margin-top: 21vh;
+        margin-left: 43.5vw;
+        border-radius: 100%;
+        border: 0.7vw #ffffff solid
     }
-
-
-    @keyframes icon {
-        0% {
-            transform: translate(0);
-        }
-
-        20% {
-            transform: translate(-2px, 2px);
-        }
-
-        40% {
-            transform: translate(-2px, -2px);
-        }
-
-        60% {
-            transform: translate(2px, 2px);
-        }
-
-        80% {
-            transform: translate(2px, -2px);
-        }
-
-        100% {
-            transform: translate(0);
-        }
-    }
-
-    .deconstructed {
+ #palouno {background-color:#ffffff;position:absolute;width:0.5vw;height:20vh;margin-top:30vh;margin-left:35vw}
+    #palodos {
+        background-color: #ffffff;
         position: absolute;
-        margin-left: 6vw;
-        height: 0.88em;
-        color: transparent;
-        font-family: 'Cambay', sans-serif;
-        font-size: 3vw;
-        font-weight: 300;
-        letter-spacing: -0.04em;
-        line-height: 1.03em;margin-top:2vh
+        width: 0.5vw;
+        height: 20vh;
+        margin-top: 30vh;
+        margin-left: 60vw
     }
 
-        .deconstructed > div {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            color: #48e82a;
-            pointer-events: none;
-        }
-
-            .deconstructed > div:nth-child(1) {
-                -webkit-mask-image: linear-gradient(black 25%, transparent 25%);
-                mask-image: linear-gradient(black 25%, transparent 25%);
-                animation: deconstructed1 5s infinite;
-            }
-
-            .deconstructed > div:nth-child(2) {
-                -webkit-mask-image: linear-gradient(transparent 25%, black 25%, black 50%, transparent 50%);
-                mask-image: linear-gradient(transparent 25%, black 25%, black 50%, transparent 50%);
-                animation: deconstructed2 5s infinite;
-            }
-
-            .deconstructed > div:nth-child(3) {
-                -webkit-mask-image: linear-gradient(transparent 50%, black 50%, black 75%, transparent 75%);
-                mask-image: linear-gradient(transparent 50%, black 50%, black 75%, transparent 75%);
-                animation: deconstructed3 5s infinite;
-            }
-
-            .deconstructed > div:nth-child(4) {
-                -webkit-mask-image: linear-gradient(transparent 75%, black 75%);
-                mask-image: linear-gradient(transparent 75%, black 75%);
-                animation: deconstructed4 5s infinite;
-            }
-
-    @keyframes deconstructed1 {
-        0% {
-            transform: translateX(100%);
-        }
-
-        26% {
-            transform: translateX(0%);
-        }
-
-        83% {
-            transform: translateX(-0.1%);
-        }
-
-        100% {
-            transform: translateX(-120%);
-        }
-    }
-
-    @keyframes deconstructed2 {
-        0% {
-            transform: translateX(100%);
-        }
-
-        24% {
-            transform: translateX(0.5%);
-        }
-
-        82% {
-            transform: translateX(-0.2%);
-        }
-
-        100% {
-            transform: translateX(-125%);
-        }
-    }
-
-    @keyframes deconstructed3 {
-        0% {
-            transform: translateX(100%);
-        }
-
-        22% {
-            transform: translateX(0%);
-        }
-
-        81% {
-            transform: translateX(0%);
-        }
-
-        100% {
-            transform: translateX(-130%);
-        }
-    }
-
-    @keyframes deconstructed4 {
-        0% {
-            transform: translateX(100%);
-        }
-
-        20% {
-            transform: translateX(0%);
-        }
-
-        80% {
-            transform: translateX(0%);
-        }
-
-        100% {
-            transform: translateX(-135%);
-        }
-    }
-
-    #link {
-        color: #48e82a;
-        font-size: 3vw;
+#post {background-color:#ffffff;border-radius:2vw;position:absolute;width:45vw;height:50vh;margin-top:46vh;margin-left:26vw}
+    #cuapost {
+        background-color: #ffc4fe;
+        background-color: #e8ace6;
+        background-image: radial-gradient(#ffffff 0.5px, #e8ace6 0.5px);
+        background-size: 10px 10px;
         position: absolute;
-        top: 40vh;
-        left:48vw;text-decoration:none;z-index:99999999999999;
+        border-radius: 2vw;
+        width: 40vw;
+        height: 47vh;
+        overflow: auto;
+        margin-left: 2.5vw;
+        margin-top: 1.5vh
     }
-    #linkdos {
-        color: #48e82a;
-        font-size: 3vw;
+    #postimgback {
+        animation: postimgback 2s ease 0s 1 normal forwards;
+        background-color: #ffffff;
         position: absolute;
-        top: 40vh;
-        left: 50vw;
+        width: 30vw;
+        height: 40vh;
+        border-radius: 2vw;
+        margin-top: 4vh;
+        left: 5vw;
+    }
+    @keyframes circuloimg {
+        0% {
+            box-shadow: 0 0 0 0 rgba(242, 167, 206, 0.8);
+        }
+
+        100% {
+            box-shadow: 0 0 20px 0px rgba(242, 167, 206, 0.8);
+        }
+    }
+
+    ::-webkit-scrollbar {
+        width: 5px;
+        background: transparent;
+    }
+
+    @keyframes postimgback {
+        0% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.2;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+    #cuadrolinkdos {
+        background-color: #d686d8;
+        border-radius: 2vw;
+        width: 15vw;
+        height: 5vh;
+        position: absolute;
+        margin-top: 30vh;
+        margin-left: 80vw;
+        z-index: 9999999;animation: cualinkdos 9000ms ease 0s infinite normal forwards;
+    }
+    #xdos {
+        margin-left: 12vw;
+        font-size: 1.5vw;
+        color: #ffffff;
+        font-family: arial;
+        position: absolute;
+        margin-top: 1vh
+    }
+    #cualink {
+        animation: cualink 9000ms ease 0s infinite normal forwards;
+        background-color: #ffffff;
+        border-radius: 2vw;
+        position: absolute;
+        width: 15vw;
+        height: 30vh;
+        margin-top: 30vh;
+        margin-left: 80vw
+    }
+    #imgpost {
+        height: 30vh;
+        width: 30vw;
+        position: absolute;
+        border-radius: 2vw;
+        outline: 1px solid #ffffff;
+        transition: outline 1s ease 0s;
+    }
+
+    a:hover {
+        color:#ffc4fe;
+        
+    }
+        #imgpost:hover {
+            outline: 10px solid #d686d8;
+        }
+    #x {margin-left:42vw;font-size:1.5vw;color:#ffffff;font-family:arial;position:absolute;margin-top:1.5vh}
+#itami{font-style:italic;letter-spacing:5px;margin-left:17vw;margin-top:0.5vh;position:absolute;font-size:1.5vw;color:#ffffff;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif}
+#desc{color:#d686d8;font-size:0.8vw;padding:5vw;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;position:absolute;margin-top:23vh}
+    @keyframes cualink {
+        0% {
+            animation-timing-function: ease-out;
+            transform: scale(1);
+            transform-origin: center center;
+        }
+
+        10% {
+            animation-timing-function: ease-in;
+            transform: scale(0.91);
+        }
+
+        17% {
+            animation-timing-function: ease-out;
+            transform: scale(0.98);
+        }
+
+        33% {
+            animation-timing-function: ease-in;
+            transform: scale(0.87);
+        }
+
+        45% {
+            animation-timing-function: ease-out;
+            transform: scale(1);
+        }
+    }
+    @keyframes cualinkdos {
+        0% {
+            animation-timing-function: ease-out;
+            transform: scale(1);
+            transform-origin: center center;
+        }
+
+        10% {
+            animation-timing-function: ease-in;
+            transform: scale(0.91);
+        }
+
+        17% {
+            animation-timing-function: ease-out;
+            transform: scale(0.98);
+        }
+
+        33% {
+            animation-timing-function: ease-in;
+            transform: scale(0.87);
+        }
+
+        45% {
+            animation-timing-function: ease-out;
+            transform: scale(1);
+        }
+    }
+
+    #links {
+        color: #d686d8;
+        font-size: 1.7vw;
+        padding: 5vw;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        position: absolute;
         text-decoration: none;
-        z-index: 99999999999999;
+        margin-left: 1vw;
+        font-style: oblique;
+        
     }
-    #linktre {
-        color: #48e82a;
-        font-size: 3vw;
-        position: absolute;
-        top: 40vh;
-        left: 52vw;
-        text-decoration: none;
-        z-index: 99999999999999;
-    }
-    
-
 </style>
-
-<body>
-    
-        <a id="link" href="https://www.flickr.com/photos/itamixat/">•</a>
-        <a id="linkdos" href="https://xat.me/taiga">•</a>
-        <a id="linktre" href="https://xat.me/necessarius">•</a>
-   
-
-
-    <img id="icon" src="https://i.postimg.cc/J0dRVHG8/91752644-p0-master1200.png" />
-    <div id="cuadrado">
-        <div class="deconstructed">
-            Hiatus
-            <div>Hiatus</div>
-            <div>Hiatus</div>
-            <div>Hiatus</div>
-            <div>Hiatus</div>
-        </div>
-    </div>
-    <svg id="svg">
-
-    </svg>
-</body>
-
-
-
-<script>
-    //////////////////////////////////////// variables
-
-
-
-
-
-    var svg = document.getElementById('svg');
-    var dotMatrix = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
-    var dots = [];
-    var lineMatrix = document.createElementNS("http://www.w3.org/2000/svg", 'line');
-    var lines = [];
-    var dotNumber = 300;
-    var lineNumber = 5;
-
-    var screenW;
-    var screenH;
-    var dotColumns;
-    var dotRows;
-    var dotRandomMax = 2;
-
-    var mouseMoving = false;
-    var mouse = {};
-    mouse.distances = [];
-    mouse.power = 10;
-
-
-
-
-
-    //////////////////////////////////////// init
-
-
-    function init() {
-        console.log('--- init')
-        screenW = window.innerWidth;
-        screenH = window.innerHeight;
-
-        dotRows = Math.sqrt(dotNumber * (screenH / screenW));
-        dotColumns = dotNumber / dotRows;
-        var dotPosStepX = Math.round(screenW / dotColumns);
-        var dotPosStepY = Math.round(screenH / dotRows);
-        dotRows = Math.round(dotRows);
-        dotColumns = Math.round(dotColumns);
-        console.log('--- calc done');
-
-
-
-
-        for (i = 0, j = 0, k = 0; i < dotNumber; i++, k++) {
-            if (i % dotColumns === 0) {
-                j++;
-                k = 0;
-            }
-            dots[i] = {};
-            dots[i].distances = [];
-            dots[i].el = dotMatrix.cloneNode(false);
-            dots[i].X = k * dotPosStepX + dotPosStepX / 2;
-            dots[i].X += Math.floor((Math.random() * dotRandomMax) + 1 - dotRandomMax / 2);
-            dots[i].Y = j * dotPosStepY - dotPosStepY / 2;
-            dots[i].Y += Math.floor((Math.random() * dotRandomMax) + 1 - dotRandomMax / 2);
-            dots[i].r = 1;
-            dots[i].lines = [];
-            dots[i].el.setAttribute('cx', dots[i].X);
-            dots[i].el.setAttribute('cy', dots[i].Y);
-            dots[i].el.setAttribute('r', dots[i].r);
-            svg.appendChild(dots[i].el);
-            for (l = 0; l < lineNumber; l++) {
-                dots[i].lines[l] = {};
-                dots[i].lines[l].el = lineMatrix.cloneNode(false);
-                dots[i].lines[l].X1 = dots[i].X;
-                dots[i].lines[l].Y1 = dots[i].Y;
-                dots[i].lines[l].X2 = dots[i].X;
-                dots[i].lines[l].Y2 = dots[i].Y;
-                dots[i].lines[l].el.setAttribute('x1', dots[i].lines[l].X1);
-                dots[i].lines[l].el.setAttribute('y1', dots[i].lines[l].Y1);
-                svg.appendChild(dots[i].lines[l].el);
-            }
-        }
-        console.log('--- dots positioned');
-
-    }
-
-    function destroy() {
-
-        while (svg.firstChild) {
-            svg.removeChild(svg.firstChild);
-        }
-        dots.length = 0;
-        lines.length = 0;
-        console.log('--- destroying')
-    }
-
-    init();
-
-    //////////////////////////////////////// update dots and lines position
-
-
-
-
-
-    function dotUpdate() {
-        for (i = 0; i < dotNumber; i++) {
-            dots[i].el.setAttribute('cx', dots[i].X);
-            dots[i].el.setAttribute('cy', dots[i].Y);
-            dots[i].el.setAttribute('r', dots[i].r);
-            for (l = 0; l < lineNumber; l++) {
-                dots[i].lines[l].el.setAttribute('x1', dots[i].lines[l].X1);
-                dots[i].lines[l].el.setAttribute('y1', dots[i].lines[l].Y1);
-                dots[i].lines[l].el.setAttribute('x2', dots[i].lines[l].X2);
-                dots[i].lines[l].el.setAttribute('y2', dots[i].lines[l].Y2);
-            }
-        }
-    }
-
-
-
-
-
-    //////////////////////////////////////// helpers
-
-
-
-
-
-    function getDistance(obj1, obj2) {
-        return Math.floor(Math.sqrt(Math.pow((obj1.X - obj2.X), 2) + Math.pow((obj1.Y - obj2.Y), 2)));
-    }
-
-    function Comparator(a, b) {
-        if (a[1] < b[1]) return -1;
-        if (a[1] > b[1]) return 1;
-        return 0;
-    }
-
-
-
-
-
-    //////////////////////////////////////// movement function
-
-
-
-
-
-    function moveDots() {
-        for (i = 0; i < dotNumber; i++) {
-            dots[i].X += Math.floor((Math.random() * 5) - 2);
-            dots[i].Y += Math.floor((Math.random() * 5) - 2);
-            for (j = 0; j < dotNumber; j++) {
-                dots[i].distances[j] = [j, getDistance(dots[i], dots[j])];
-            }
-            dots[i].distances = dots[i].distances.sort(Comparator);
-            for (k = 0; k < lineNumber; k++) {
-                dots[i].lines[k].X1 = dots[i].X;
-                dots[i].lines[k].Y1 = dots[i].Y;
-                dots[i].lines[k].X2 = dots[dots[i].distances[k][0]].X;
-                dots[i].lines[k].Y2 = dots[dots[i].distances[k][0]].Y;
-            }
-        }
-        dotUpdate();
-    }
-
-
-
-
-
-    //////////////////////////////////////// mouse interaction function
-
-
-
-
-    function mouseInteraction() {
-        if (mouseMoving) {
-
-            mouse.X = mouseX;
-            mouse.Y = mouseY;
-
-            for (i = 0; i < dotNumber; i++) {
-                dots[i].r = 1;
-                mouse.distances[i] = [i, getDistance(mouse, dots[i])];
-            }
-            mouse.distances = mouse.distances.sort(Comparator);
-
-            for (j = 0; j < mouse.power; j++) {
-
-                var maxDist = mouse.distances[mouse.power - 1][1];
-                var thisDist = mouse.distances[j][1];
-                dots[mouse.distances[j][0]].r = 2;
-
-                if (mouseX >= dots[mouse.distances[j][0]].X) {
-                    dots[mouse.distances[j][0]].X -= (maxDist - thisDist) / 15;
-                } else {
-                    dots[mouse.distances[j][0]].X += (maxDist - thisDist) / 15;
-                }
-                if (mouseY >= dots[mouse.distances[j][0]].Y) {
-                    dots[mouse.distances[j][0]].Y -= (maxDist - thisDist) / 15;
-                } else {
-                    dots[mouse.distances[j][0]].Y += (maxDist - thisDist) / 15;
-                }
-
-            }
-
-            mouseMoving = false;
-        }
-    }
-
-
-
-
-
-    //////////////////////////////////////// listeners
-
-
-
-
-
-    var initInterval = setInterval(function () {
-        moveDots();
-        mouseInteraction();
-    }, 20);
-
-
-    svg.addEventListener('mousemove', function (e) {
-        mouseMoving = true;
-        mouseX = e.pageX;
-        mouseY = e.pageY;
-    });
-
-    window.addEventListener('resize', function () {
-        destroy();
-        init();
-    });
-
-</script>
+<div id="cuadrolinkdos"><div id="xdos">X</div></div>
+<div id="cualink">
+    <a id="links" href="https://xat.me/taiga">Taiga</a></br></br>
+    <a id="links" href="https://xat.me/necessarius">Chris</a>
+
+</div>
+<img id="circuloimg" src="https://i.postimg.cc/FFVQYzmC/94581053-p0-master1200.png" />
+<div id="cuadrouno"><div id="itami">Itami.jpg</div><div id="x">X</div></div>
+<div id="palouno"></div>
+<div id="palodos"></div>
+<div id="cuadrodos"></div>
+<div id="post"><div id="cuapost"><div id="postimgback"><img id="imgpost" src="https://i.postimg.cc/B6KLsDKv/115806220-409935676630447-2487739017524112818-n.jpg" /><div id="desc">
+    Take a moment to think of just
+    Flexibility, love, and trust
+</div></div></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br><div id="postimgback"><img id="imgpost" src="https://i.postimg.cc/W4d2rvSF/Adorable-Warmhearted-Indianabat-size-restricted.gif" /><div id="desc">
+    And oh, you're losing sight, you're losing touch
+    All these little things seem to matter so much
+</div></div></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br><div id="postimgback"><img id="imgpost" src="https://i.postimg.cc/g2n9tKh1/original.gif" /><div id="desc">
+    Here comes a thought
+    That might alarm you What someone said
+    And how it harmed you
+</div></div></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></div></div>
