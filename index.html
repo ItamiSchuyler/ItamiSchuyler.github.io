@@ -1,6 +1,8 @@
-
+</script><!---- VARIABLES ----><meta name="color:Background" content="#e0e0e0" /><meta name="color:Posts" content="#eaeaea" /><meta name="color:Borders" content="#d5d5d5" /><meta name="color:Title" content="#444" /><meta name="color:Text" content="#5a5a5a" /><meta name="color:Link" content="#3b82a6" /><meta name="color:Accent" content="#4da1c5" /><meta name="color:Night Background" content="#1e1e1e" /><meta name="color:Night Posts" content="#282828" /><meta name="color:Night Borders" content="#3a3a3a" /><meta name="color:Night Title" content="#eee" /><meta name="color:Night Text" content="#bbb" /><meta name="color:Night Link" content="#b0eaff" /><meta name="color:Night Accent" content="#91d7f0" /><meta name="color:Gradient One" content="#5592ac"/><meta name="color:Gradient Two" content="#80b8d0"/><meta name="color:Gradient Text" content="#fff"/><meta name="color:Gradient Accent" content="#c3f2ff"/><meta name="select:Corners" content="10px" title="round"/><meta name="select:Corners" content="5px" title="slightly round"/><meta name="select:Corners" content="15px" title="really round"/><meta name="select:Corners" content="0px" title="sharp"/><meta name="select:Glow" content="0 0 10px" title="on"/><meta name="select:Glow" content="0 0 0" title="off"/><meta name="if:Click Tags" content="1"/><meta name="if:Music Player" content="1"/><meta name="if:Updates" content="1"/><meta name="text:Post Margin" content="80"/><meta name="text:Body Font" content="Urbanist"/><meta name="text:Title Font" content="Montserrat Alternates"/><meta name="text:Font Size" content="15"/><meta name="text:Custom Description" content="custom description"/><meta name="text:Song Name" content="Song Name"/><meta name="text:Song Artist" content="Song Artist"/><meta name="text:Song URL" content=""/><meta name="text:Song Image URL" content=""/><meta name="text:Sidebar Link 1" content="link one"/><meta name="text:Sidebar Link 1 URL" content="/"/><meta name="text:Sidebar Link 2" content="link two"/><meta name="text:Sidebar Link 2 URL" content="/"/><meta name="text:Sidebar Link 3" content="link three"/><meta name="text:Sidebar Link 3 URL" content="/"/><meta name="text:Sidebar Link 4" content="link four"/><meta name="text:Sidebar Link 4 URL" content="/"/><meta name="text:Sidebar Link 5" content="link five"/><meta name="text:Sidebar Link 5 URL" content="/"/><meta name="text:Sidebar Link 6" content="link six"/><meta name="text:Sidebar Link 6 URL" content="/"/><meta name="text:Update 1" content="watching"/><meta name="text:Update 1 Icon" content="television-fill"/><meta name="text:Update 2" content="listening to"/><meta name="text:Update 2 Icon" content="headphones-fill"/><meta name="text:Update 3" content="reading"/><meta name="text:Update 3 Icon" content="book-bookmark-fill"/><meta name="text:Update 4" content="playing"/><meta name="text:Update 4 Icon" content="game-controller-fill"/><meta name="text:Update 5" content=""/><meta name="text:Update 5 Icon" content=""/><meta name="text:Update 6" content=""/><meta name="text:Update 6 Icon" content=""/><!--- day/night ---><script>
+const storedTheme = localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+if (storedTheme) document.documentElement.setAttribute("data-theme", storedTheme);
 <style>
-    
+
 
     body {
         width: 100%;
@@ -13,207 +15,259 @@
         background-repeat:no-repeat;
     }
 
-    #cuadrouno {
-        width: 45vw;
-        height: 6vh;
-        background-color: #d686d8;
-        margin-top: 6vh;
-        border-radius: 2vw;margin-left:26vw;position:absolute
-    }
+    /*- MUSIC PLAYER -*/
 
-   
-  #cuadrodos {background-color:#ffffff;position:absolute;margin-top:6vh;margin-left:26vw;width:45vw;height:26vh;z-index:-99999;border-radius:2vw}
+.audio-container {
+    position:absolute;
+    left:100%;
+    margin-left:1em;
+    min-width:250px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    backdrop-filter: blur(2px);
+    border-radius:15px;
+    z-index:9;
+    box-shadow:2px 2px 10px 0 rgba(0,0,0,.1);
+}
+.audio-container:after {
+    content:'';
+    position:absolute;
+    left:0;
+    width:100%;
+    height:100%;
+    opacity:.85;
+    background:linear-gradient(to top right, var(--ColorGradientOne), var(--ColorGradientTwo));
+    border-radius:15px;
+    z-index:-1;
+}
 
-    #circuloimg {
-        animation: circuloimg 1s ease 0s normal forwards;
-        border-radius: 100%;
-        width: 8.5vw;
-        height: 17vh;
-        position: absolute;
-        margin-top: 21vh;
-        margin-left: 43.5vw;
-        border-radius: 100%;
-        border: 0.7vw #ffffff solid
-    }
- #palouno {background-color:#ffffff;position:absolute;width:0.5vw;height:20vh;margin-top:30vh;margin-left:35vw}
-    #palodos {
-        background-color: #ffffff;
-        position: absolute;
-        width: 0.5vw;
-        height: 20vh;
-        margin-top: 30vh;
-        margin-left: 60vw
-    }
-    #conteimg {
-       
-      margin-top:45vh
-    
-    }
-#post {background-color:#ffffff;border-radius:2vw;position:absolute;width:45vw;height:50vh;margin-top:46vh;margin-left:26vw}
-    #cuapost {
-        background-color: #ffc4fe;
-        background-color: #e8ace6;
-        background-image: radial-gradient(#ffffff 0.5px, #e8ace6 0.5px);
-        background-size: 10px 10px;
-        position: absolute;
-        border-radius: 2vw;
-        width: 40vw;
-        height: 47vh;
-        overflow: auto;
-        margin-left: 2.5vw;
-        margin-top: 1.5vh
-    }
-    #postimgback {
-        animation: postimgback 2s ease 0s 1 normal forwards;
-        background-color: #ffffff;
-        position: absolute;
-        width: 30vw;
-        height: 40vh;
-        border-radius: 2vw;
-        margin-top: 4vh;
-        left: 5vw;
-    }
-    @keyframes circuloimg {
-        0% {
-            box-shadow: 0 0 0 0 rgba(242, 167, 206, 0.8);
-        }
+.audio-buttons {
+    width:calc(100% - 1.5em);
+    display:flex;
+    justify-content:space-evenly;
+    align-items:center;
+    gap:1em;
+    padding:.5em 1em .5em 1em;
+}
 
-        100% {
-            box-shadow: 0 0 20px 0px rgba(242, 167, 206, 0.8);
-        }
+.audio-buttons i#notbtn {
+    font-size:1.3em;
+    color:var(--ColorGradientText);
+    text-shadow:0 0 10px;
+}
+
+.action-btn-big {
+    font-size:1.3em;
+    color:var(--ColorGradientOne);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:.4em;
+    background:var(--ColorGradientAccent);
+    border:1px solid var(--ColorGradientAccent);
+    border-radius:100%;
+    cursor:pointer;
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -ms-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+}
+.action-btn-big:hover {
+    text-shadow:0 0 10px;
+    color:var(--ColorGradientText);
+    background:var(--ColorOpacity);
+    border:1px solid var(--ColorOpacity);
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -ms-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+}
+
+.action-btn:focus {outline:0;}
+
+.img-container {
+    width:calc(100% - 2em);
+    display:flex;
+    justify-content:flex-start;
+    align-items:center;
+    gap:1em;
+    padding:1em;
+    background:var(--ColorPosts);
+    border-radius:15px;
+    box-shadow:2px 2px 10px 0 rgba(0,0,0,.1);
+}
+.img-container img {
+    width:3em;
+    height:3em;
+    border-radius:100%;
+    object-fit:cover;
+    background:linear-gradient(to top right, var(--ColorGradientOne), var(--ColorGradientTwo));
+    animation:rotate 5s linear infinite;
+    animation-play-state:paused;
+}
+
+.music-container.play .img-container img {
+    animation-play-state:running;
+}
+
+@keyframes rotate {
+    from {
+        transform:rotate(0deg);
     }
-
-    ::-webkit-scrollbar {
-        width: 5px;
-        background: transparent;
+    to {
+        transform:rotate(360deg);
     }
+}
 
-    @keyframes postimgback {
-        0% {
-            opacity: 1;
-        }
+align-items
+.music-info {
+    text-align:left;
+}
+.music-info #title {
+    font-size:.95em;
+    font-weight:700;
+    font-family:'Comfortaa', sans-serif;
+    text-align:left;
+/* Tutorial on https://fossheim.io/writing/posts/css-text-gradient. */
+  /* Fallback: Set a background color. */
+    color:var(--ColorTitle); 
+  
+  /* Create the gradient. */
+    background:linear-gradient(to right, var(--ColorGradientOne), var(--ColorGradientTwo));
+  
+  /* Set the background size and repeat properties. */
+  background-size: 100%;
+  background-repeat: repeat;
 
-        50% {
-            opacity: 0.2;
-        }
+  /* Use the text as a mask for the background. */
+  /* This will show the gradient as a text color rather than element bg. */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; 
+  -moz-background-clip: text;
+  -moz-text-fill-color: transparent;
+}
+.music-info #artist {font-size:.95em; color:var(--ColorText); text-align:left;}
 
-        100% {
-            opacity: 1;
-        }
-    }
-    #cuadrolinkdos {
-        background-color: #d686d8;
-        border-radius: 2vw;
-        width: 15vw;
-        height: 5vh;
-        position: absolute;
-        margin-top: 30vh;
-        margin-left: 80vw;
-        z-index: 9999999;animation: cualinkdos 9000ms ease 0s infinite normal forwards;
-    }
-    #xdos {
-        margin-left: 12vw;
-        font-size: 1.5vw;
-        color: #ffffff;
-        font-family: arial;
-        position: absolute;
-        margin-top: 1vh
-    }
-    #cualink {
-        animation: cualink 9000ms ease 0s infinite normal forwards;
-        background-color: #ffffff;
-        border-radius: 2vw;
-        position: absolute;
-        width: 15vw;
-        height: 30vh;
-        margin-top: 30vh;
-        margin-left: 80vw
-    }
-    #imgpost {
-        height: 30vh;
-        width: 30vw;
-        position: absolute;
-        border-radius: 2vw;
-        outline: 1px solid #ffffff;
-        transition: outline 1s ease 0s;
-    }
+.music-info h4 {margin:0;}
+    .music-container {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+}
+    .music-container {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+}
+    .music-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px;
+    background: linear-gradient(to top right, var(--ColorGradientOne), var(--ColorGradientTwo));
+    border-radius: 100%;
+    cursor: help;
+}
+    .music-container .music-button i {
+    font-size: 1.5em;
+    color: var(--ColorGradientText);
+    text-shadow: 0 0 10px;
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -ms-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+    -webkit-animation-duration: 1.65s;
+    animation-duration: 1.65s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+    animation-name: music;
+    -moz-animation-name: music;
+    animation-play-state: paused;
+}
+    .audio-container {
+    position: absolute;
+    left: 100%;
+    margin-left: 1em;
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    backdrop-filter: blur(2px);
+    border-radius: 15px;
+    z-index: 9;
+    box-shadow: 2px 2px 10px 0 rgba(0,0,0,.1);
+    display:flex;
+}
 
-    a:hover {
-        color:#ffc4fe;
-        
-    }
-        #imgpost:hover {
-            outline: 10px solid #d686d8;
-        }
-    #x {margin-left:42vw;font-size:1.5vw;color:#ffffff;font-family:arial;position:absolute;margin-top:1.5vh}
-#itami{font-style:italic;letter-spacing:5px;margin-left:17vw;margin-top:0.5vh;position:absolute;font-size:1.5vw;color:#ffffff;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif}
-#desc{color:#d686d8;font-size:0.8vw;padding:5vw;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;position:absolute;margin-top:23vh}
-    @keyframes cualink {
-        0% {
-            animation-timing-function: ease-out;
-            transform: scale(1);
-            transform-origin: center center;
-        }
+    .audio-buttons {
+    width: calc(100% - 1.5em);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 1em;
+    padding: 0.5em 1em 0.5em 1em;
+}
 
-        10% {
-            animation-timing-function: ease-in;
-            transform: scale(0.91);
-        }
+    .audio-buttons i#notbtn {
+    font-size: 1.3em;
+    color: var(--ColorGradientText);
+    text-shadow: 0 0 10px;
+}
 
-        17% {
-            animation-timing-function: ease-out;
-            transform: scale(0.98);
-        }
+    .audio-buttons i#notbtn {
+    font-size: 1.3em;
+    color: var(--ColorGradientText);
+    text-shadow: 0 0 10px;
+}
+    .action-btn-big {
+    font-size: 1.3em;
+    color: var(--ColorGradientOne);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.4em;
+    background: var(--ColorGradientAccent);
+    border: 1px solid var(--ColorGradientAccent);
+    border-radius: 100%;
+    cursor: pointer;
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -ms-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+}
 
-        33% {
-            animation-timing-function: ease-in;
-            transform: scale(0.87);
-        }
-
-        45% {
-            animation-timing-function: ease-out;
-            transform: scale(1);
-        }
-    }
-    @keyframes cualinkdos {
-        0% {
-            animation-timing-function: ease-out;
-            transform: scale(1);
-            transform-origin: center center;
-        }
-
-        10% {
-            animation-timing-function: ease-in;
-            transform: scale(0.91);
-        }
-
-        17% {
-            animation-timing-function: ease-out;
-            transform: scale(0.98);
-        }
-
-        33% {
-            animation-timing-function: ease-in;
-            transform: scale(0.87);
-        }
-
-        45% {
-            animation-timing-function: ease-out;
-            transform: scale(1);
-        }
-    }
-
-    #links {
-        color: #d686d8;
-        font-size: 1.7vw;
-        padding: 5vw;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        position: absolute;
-        text-decoration: none;
-        margin-left: 1vw;
-        font-style: oblique;
-        
-    }
+    .audio-buttons i#notbtn {
+    font-size: 1.3em;
+    color: var(--ColorGradientText);
+    text-shadow: 0 0 10px;
+}
+    .audio-buttons i#notbtn {
+    font-size: 1.3em;
+    color: var(--ColorGradientText);
+    text-shadow: 0 0 10px;
+}
+    .img-container {
+    width: calc(100% - 2em);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1em;
+    padding: 1em;
+    background: var(--ColorPosts);
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px 0 rgba(0,0,0,.1);
+}
+    .music-info {
+    text-align: left;
+}
 </style>
-
-        </div>
+      <div class="music-container" id="music-container"><div class="music-button"><a><i class="ph-music-notes-fill"></i></a></div><div class="audio-container" id="audio-container" style="display: flex;"><audio src="https://drive.google.com/uc?export=download&amp;id=1v1yvRjLYsq5eMPHZMXltuRCXOEy1niQ-" id="audio" loop=""></audio><div class="audio-buttons"><i id="notbtn" class="ph-queue-fill"></i><i id="notbtn" class="ph-rewind-fill"></i><button id="play" class="action-btn action-btn-big"><i class="ph-play-fill"></i></button><i id="notbtn" class="ph-fast-forward-fill"></i><i id="notbtn" class="ph-playlist-fill"></i></div><div class="img-container"><img src="https://64.media.tumblr.com/4084b6a09a341f15feba026ba2afa018/aadf4ddf16e3a14b-8d/s2048x3072/bb11f623c4e7eba62b147a07f682b4c7b5f63c35.gif" alt="music-cover" id="cover"><div class="music-info"><div id="title">One Summer's Day</div><div id="artist">Joe Hisaishi</div></div></div></div></div>
