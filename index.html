@@ -12,10 +12,10 @@
         font-family: Arial, sans-serif;
      
 
-    .player {
+      .player {
       position: fixed;
-      bottom: 20px;
-      right: 20px; /* Posicionado en la esquina inferior derecha */
+      bottom: 20px; /* Asegura que esté en la parte inferior */
+      right: 20px;  /* Asegura que esté en la esquina derecha */
       background-color: #282828;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
@@ -33,7 +33,7 @@
       border-radius: 5px;
     }
 
-    /* Definición de la animación de saltitos */
+    /* Animación de saltitos */
     @keyframes jump {
       0%, 100% {
         transform: translateY(0); /* Posición inicial */
@@ -41,6 +41,7 @@
       50% {
         transform: translateY(-10px); /* Sube 10px */
       }
+    }
     }
   </style>
 </head>
