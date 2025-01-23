@@ -16,21 +16,17 @@
       position: fixed;
       bottom: 20px; /* Asegura que esté en la parte inferior */
       right: 20px;  /* Asegura que esté en la esquina derecha */
-      background-color: #8e3428;
+      background-color: #282828;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
       width: 280px;
-      padding: 10px; 
-    /* Animación de saltitos */
-    @keyframes jump {
-      0%, 100% {
-        transform: translateY(0); /* Posición inicial */
-      }
-      50% {
-        transform: translateY(-10px); /* Sube 10px */
-      }
+      padding: 10px;
 
       /* Animación */
+      animation: jump 2s infinite ease-in-out;
+    }
+
+     
 
     .player iframe {
       width: 100%;
