@@ -12,47 +12,77 @@
         font-family: Arial, sans-serif;
      
 
-      .player {
+       .player-button {
       position: fixed;
-      bottom: 20px; /* Asegura que esté en la parte inferior */
-      right: 20px;  /* Asegura que esté en la esquina derecha */
+      bottom: 20px; /* Posicionado en la parte inferior */
+      right: 20px;  /* Posicionado en la esquina derecha */
       background-color: #282828;
-      border-radius: 8px;
+      color: #fff;
+      border: none;
+      border-radius: 50px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-      width: 280px;
-      padding: 10px;
+      padding: 15px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+    }
 
-      /* Animación */
+    /* Animación de "saltito" al pasar el cursor */
+    .player-button:hover {
+      transform: translateY(-5px);
+    }
+
+    /* Animación de saltitos constante */
+    @keyframes jump {
+      0%, 100% {
+        transform: translateY(0); /* Posición inicial */
+      }
+      50% {
+        transform: translateY(-10px); /* Sube 10px */
+      }
+    }
+
+    .player-button {
       animation: jump 2s infinite ease-in-out;
     }
 
-     
-
-    .player iframe {
-      width: 100%;
+    /* Estilo para el iframe del reproductor */
+    .hidden-player {
+      display: none; /* Oculto por defecto */
+      position: fixed;
+      bottom: 100px;
+      right: 20px;
+      width: 280px;
       height: 80px;
       border: none;
-      border-radius: 5px;
-       animation: jump 2s infinite ease-in-out;}
-
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     }
-    }
-  </style>
-</head>
-    
-    
 
 
    </style>
 
 <body>
-  
-   <div class="player">
-    <!-- Sustituye el VIDEO_ID aquí -->
-    <iframe 
-      src="https://www.youtube.com/embed/qMreFMTBX1o?autoplay=1&controls=1" 
-      allow="autoplay; encrypted-media" 
-      allowfullscreen>
-    </iframe>
+  <!-- Botón del reproductor -->
+  <button class="player-button" onclick="playMusic()">
+    ▶ 
+  </button>
+
+  <!-- Reproductor oculto -->
+  <iframe 
+    class="hidden-player"
+    id="musicPlayer"
+    src="https://www.youtube.com/embed/qMreFMTBX1o?autoplay=1&controls=0"
+    allow="autoplay; encrypted-media"
+    allowfullscreen>
+  </iframe>
+
+  <script>
+    function playMusic() {
+      const player = document.getElementById('musicPlayer');
+      player.style.display = 'block'; // Muestra el reproductor oculto
+    }
+  </script>
 </body>
+</html>
 
