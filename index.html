@@ -60,9 +60,100 @@
     }
 
 
+.menu {
+      background-color: #ffffff;
+      border-radius: 20px;
+      padding: 20px;
+      width: 250px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      animation: slideIn 0.8s ease-out;
+    }
+
+    /* Animación de deslizamiento del menú */
+    @keyframes slideIn {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Estilo de la foto de perfil */
+    .profile-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      margin-bottom: 15px;
+      object-fit: cover;
+      animation: bounce 1.5s infinite ease-in-out;
+    }
+
+    /* Animación de rebote en la foto de perfil */
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Estilo de la descripción */
+    .description {
+      font-size: 14px;
+      color: #333333;
+      margin-bottom: 15px;
+      animation: fadeIn 2s ease-out;
+    }
+
+    /* Animación de desvanecimiento de la descripción */
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* Estilo de los enlaces */
+    .menu a {
+      color: #fff;
+      text-decoration: none;
+      display: block;
+      margin: 10px 0;
+      font-size: 16px;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    /* Efecto al pasar el cursor sobre los enlaces */
+    .menu a:hover {
+      color: #1db954;
+    }
+        
    </style>
 
 <body>
+
+    <div class="menu">
+    <!-- Foto de perfil -->
+    <img src="https://i.postimg.cc/0yp4VGvg/befunkyy.png" alt="Foto de perfil" class="profile-img">
+    
+    <!-- Descripción -->
+    <div class="description">
+      <p>Itami - 26 - Spain - Streamer</p>
+    </div>
+
+    <!-- Enlaces de amigos -->
+    <a href="https://xat.me/Taiga">✦</a>
+    <a href="https://xat.me/iwontfallnever"> ‹𝟹 ⠀</a>
+   
+  </div>
   <!-- Botón del reproductor -->
   <button class="player-button" onclick="playMusic()">
     ▶ 
