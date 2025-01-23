@@ -69,7 +69,7 @@
       padding: 20px;
       width: 250px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-      animation: slideIn 0.8s ease-out;
+      animation: slideIn 1s ease-out;
     display: flex;  
     position:absolute;
     margin-left: 900px;
@@ -79,15 +79,17 @@
 
     /* Animación de deslizamiento del menú */
     @keyframes slideIn {
-      0% {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+     
+  from {
+    margin-left: 100%;
+    width: 300%;
+  }
+
+  to {
+    margin-left: 0%;
+    width: 100%;
+  }
+}
 
     /* Estilo de la foto de perfil */
     .profile-img {
