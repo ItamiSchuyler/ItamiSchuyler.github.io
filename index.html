@@ -1,18 +1,23 @@
-
-<style>
-     body {
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Video de fondo</title>
+  <style>
+    html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
     }
 
-    .video-fondo {
+    /* Video como fondo */
+    video#bgVideo {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      min-width: 100%;
+      min-height: 100%;
       object-fit: cover;
       z-index: -1;
     }
@@ -24,225 +29,29 @@
       justify-content: center;
       align-items: center;
       height: 100%;
-      color: white;
-      text-shadow: 1px 1px 4px black;
-      font-family: sans-serif;
       flex-direction: column;
+      color: white;
+      font-size: 2em;
+      text-shadow: 2px 2px 4px black;
+      font-family: sans-serif;
     }
-  
-
+  </style>
+</head>
 <body>
 
   <!-- Video de fondo -->
-  <video class="video-fondo" autoplay muted loop playsinline>
+  <video id="bgVideo" autoplay muted loop playsinline>
     <source src="videitooo.mp4" type="video/mp4">
-    Tu navegador no soporta el video.
+    Tu navegador no puede cargar el video.
   </video>
 
   <!-- Contenido encima del video -->
   <div class="contenido">
-    <h1>Bienvenido</h1>
-    <p>Este es un fondo animado con video</p>
+    <h1>Hola</h1>
+    <p>Video de fondo funcionando</p>
   </div>
 
-</body>
-     
-
-       .player-button {
-      position: fixed;
-      bottom: 20px; /* Posicionado en la parte inferior */
-      right: 20px;  /* Posicionado en la esquina derecha */
-      background-color: #282828;
-      color: #fff;
-      border: none;
-      border-radius: 50px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-      padding: 15px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: transform 0.2s ease-in-out; transition: color 0.3s
-    }
-
-    /* Animación de "saltito" al pasar el cursor */
-    .player-button:hover {
-      transform: translateY(-5px);
-    }
-          .player-button:hover {
-      color: #1a1c23;
-    }
-
-    /* Animación de saltitos constante */
-    @keyframes jump {
-      0%, 100% {
-        transform: translateY(0); /* Posición inicial */
-      }
-      50% {
-        transform: translateY(-10px); /* Sube 10px */
-      }
-    }
-
-    .player-button {
-      animation: jump 2s infinite ease-in-out;
-    }
-
-    /* Estilo para el iframe del reproductor */
-    .hidden-player {
-      display: none; /* Oculto por defecto */
-      position: fixed;
-      bottom: 100px;
-      right: 20px;
-      width: 280px;
-      height: 80px;
-      border: none;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    }
-
-
-.menu {
-      background-color: #8e3428;
-      border-radius: 20px;
-      padding: 20px;
-      width: 250px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-      animation: slideIn 1s ease-out;
-    display: flex;  
-    position:absolute;
-    margin-left: 900px;
-    margin-top: 300px;
-    
-    }
-
-    /* Animación de deslizamiento del menú */
-    @keyframes slideIn {
-     
-  from {
-    margin-left: 100%;
-    width: 300%;
-  }
-
-  to {
-    margin-left: 0%;
-    width: 100%;
-  }
-}
-
-    /* Estilo de la foto de perfil */
-    .profile-img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 3px solid #ffffff;
-      margin-bottom: 15px;
-      object-fit: cover;
-      animation: bounce 1.5s infinite ease-in-out;
-    float:left
-        
-        
-    }
-
-    /* Animación de rebote en la foto de perfil */
-    @keyframes bounce {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
-    }
-
-    /* Estilo de la descripción */
-    .description {
-      font-size: 14px;
-      color: #333333;
-      margin-bottom: 15px;
-      animation: fadeIn 2s ease-out;
-        font-family: 'Poppins', sans-serif; 
-      text-transform: uppercase; 
-          padding-left: 10px;
-           border-bottom: 2px solid #444; 
-        font-weight:900;
-        float:right/* Línea de separación */
-    }
-
-    /* Animación de desvanecimiento de la descripción */
-    @keyframes fadeIn {
-      0% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
-    }
-
-    /* Estilo de los enlaces */
-    #enlaces {
-      color: #ffffff;
-      text-decoration:none;
-      display: relative;
-      font-size: 16px;
-      font-weight: 500;
-      transition: color 0.3s;
-        font-family: 'Poppins', sans-serif; 
-        margin-bottom:30px;
-        margin-top:20px
-        position:relative;
-        
-       
-     
-     
-        
-    }
-
-    /* Efecto al pasar el cursor sobre los enlaces */
-    .enlaces:hover {
-      color: #333333;
-    }
-        
-   </style>
-
-<body>
-
-    <div class="menu">
-    <!-- Foto de perfil -->
-    <img src="https://i.postimg.cc/0yp4VGvg/befunkyy.png" alt="Foto de perfil" class="profile-img">
-    
-    <!-- Descripción -->
-    <div class="description">
-      <p>Itami - 26 - Spain - Streamer</p>
-    </div>
- 
-        </br>
-        </br>
-        </br>
-        </br>
-    
-        <a id="enlaces" href="https://xat.me/Taiga">✦</a>
-        <a id="enlaces" href="https://xat.me/iwontfallnever"> ‹𝟹 </a>
-        <a id="enlaces" href="https://xat.me/inecessarius"> 🃑⠀</a>
-   
-  </div>
-    
-  <!-- Botón del reproductor -->
-  <button class="player-button" onclick="playMusic()">
-    ▶ 
-  </button>
-
-  <!-- Reproductor oculto -->
-  <iframe 
-    class="hidden-player"
-    id="musicPlayer"
-    src="https://www.youtube.com/embed/c6s-Q9ijksg=1&controls=0"
-    allow="autoplay; encrypted-media"
-    allowfullscreen>
-  </iframe>
-
-  <script>
-    function playMusic() {
-      const player = document.getElementById('musicPlayer');
-      player.style.display = 'block'; // Muestra el reproductor oculto
-    }
-  </script>
 </body>
 </html>
+
 
