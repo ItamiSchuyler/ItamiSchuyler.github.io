@@ -9,9 +9,10 @@
       padding: 0;
       height: 100%;
       overflow: hidden;
+      font-family: Arial, sans-serif;
+      color: white;
     }
 
-    /* Video como fondo */
     video#bgVideo {
       position: fixed;
       top: 0;
@@ -22,7 +23,26 @@
       z-index: -1;
     }
 
-   
+    .contenido {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      top: 40%;
+      transform: translateY(-50%);
+    }
+
+    .contenido h1 {
+      font-size: 3em;
+      margin-bottom: 0.5em;
+    }
+
+    .contenido p {
+      font-size: 1.5em;
+    }
+
+    iframe#ytplayer {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -35,10 +55,11 @@
 
   <!-- Contenido encima del video -->
   <div class="contenido">
-    <h1></h1>
-    <p></p>
+    <h1>Bienvenido a mi sitio</h1>
+    <p>Este es un video de fondo con audio oculto</p>
   </div>
-<div style="display:none;">
+
+  <!-- YouTube oculto para audio -->
   <iframe
     id="ytplayer"
     type="text/html"
@@ -48,6 +69,10 @@
     frameborder="0"
     allow="autoplay"
   ></iframe>
+
+</body>
+</html>
+
 
 
 
