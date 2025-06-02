@@ -26,7 +26,7 @@
 
     /* Contenedor principal */
     .contenedor {
-      display: absolute;
+      display: flex;
       justify-content: center;
       align-items: center;
       height: 100%;
@@ -44,8 +44,7 @@
       position: absolute;
       animation: girar 5s linear infinite;
       display: block;
-      float:left;
-      margin-right: right:200px;
+     
      
       
     }
@@ -128,14 +127,7 @@
 
     
   <!-- Contenido principal -->
-  <div class="contenedor">
-    <!-- Disco giratorio -->
-  <div class="disco">
-      <div class="centro-rojo">
-        <div class="centro-blanco"></div>
-      </div>
-  
-  </div>
+ 
 
     <!-- Panel con posts -->
     <div class="panel">
@@ -184,6 +176,14 @@
     cargarImagen("file1", "imagen1");
     cargarImagen("file2", "imagen2");
   </script>
+   <div class="contenedor">
+    <!-- Disco giratorio -->
+  <div class="disco">
+      <div class="centro-rojo">
+        <div class="centro-blanco"></div>
+      </div>
+  
+  </div>
 </body>
 </html>
 
