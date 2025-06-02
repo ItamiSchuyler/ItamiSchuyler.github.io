@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Video de fondo con Disco detrás de Posts</title>
+  <title>Diseño con Disco y Posts</title>
   <style>
     html, body {
       margin: 0;
@@ -19,13 +19,13 @@
       position: fixed;
       top: 0;
       left: 0;
-      min-width: 100%;
-      min-height: 100%;
+      width: 100vw;
+      height: 100vh;
       object-fit: cover;
       z-index: -3;
     }
 
-    /* Disco como fondo */
+    /* Disco giratorio detrás */
     .disco {
       position: absolute;
       top: 50%;
@@ -64,18 +64,18 @@
       100% { transform: translateY(-50%) rotate(360deg); }
     }
 
-    /* Panel con posts */
+    /* Panel centrado verticalmente a la derecha */
     .panel {
-      position: relative;
-      z-index: 2;
+      position: absolute;
+      top: 50%;
+      right: 40px;
+      transform: translateY(-50%);
       width: 320px;
       border: 2px solid #fff;
       border-radius: 16px;
       padding: 20px;
-      background: rgba(0, 0, 0, 0.8);
-      margin-left: auto;
-      margin-right: 40px;
-      margin-top: 40px;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 2;
     }
 
     .imagen-contenedor {
@@ -123,14 +123,14 @@
     Tu navegador no puede cargar el video.
   </video>
 
-  <!-- Disco giratorio detrás del panel -->
+  <!-- Disco giratorio al fondo -->
   <div class="disco">
     <div class="centro-rojo">
       <div class="centro-blanco"></div>
     </div>
   </div>
 
-  <!-- Panel de posts -->
+  <!-- Panel de posts alineado a la derecha -->
   <div class="panel">
     <div class="imagen-contenedor" id="imagen1">
       <label for="file1"></label>
@@ -179,4 +179,5 @@
 
 </body>
 </html>
+
 
