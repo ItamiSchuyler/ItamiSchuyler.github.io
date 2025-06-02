@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Video de fondo</title>
+  <meta charset="UTF-8" />
+  <title>Video de fondo con Disco y Posts</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
-      font-family: Arial, sans-serif;
+      font-family: monospace;
       color: white;
     }
 
+    /* Video como fondo */
     video#bgVideo {
       position: fixed;
       top: 0;
@@ -20,24 +21,93 @@
       min-width: 100%;
       min-height: 100%;
       object-fit: cover;
-      z-index: -1;
+      z-index: -2;
     }
 
-    .contenido {
+    /* Contenedor principal */
+    .contenedor {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
       position: relative;
-      z-index: 10;
-      text-align: center;
-      top: 40%;
-      transform: translateY(-50%);
+      z-index: 1;
+      gap: 50px;
     }
 
-    .contenido h1 {
-      font-size: 3em;
-      margin-bottom: 0.5em;
+    /* Disco giratorio */
+    .disco {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: #1a1a1a;
+      position: relative;
+      animation: girar 5s linear infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .contenido p {
-      font-size: 1.5em;
+    .centro-rojo {
+      width: 100px;
+      height: 100px;
+      background: #b71c1c;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .centro-blanco {
+      width: 50px;
+      height: 50px;
+      background: #f4f4f4;
+      border-radius: 50%;
+    }
+
+    @keyframes girar {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Panel de posts */
+    .panel {
+      width: 300px;
+      border: 2px solid #fff;
+      border-radius: 16px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .imagen-contenedor {
+      background: #1a1a1a;
+      border-radius: 8px;
+      height: 160px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hora {
+      text-align: right;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: #fff;
+      margin-top: -10px;
+      margin-bottom: 10px;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    label {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
 
     iframe#ytplayer {
@@ -53,13 +123,32 @@
     Tu navegador no puede cargar el video.
   </video>
 
-  <!-- Contenido encima del video -->
-  <div class="contenido">
-    <h1></h1>
-    <p></p>
+  <!-- Contenido principal -->
+  <div class="contenedor">
+    <!-- Disco giratorio -->
+    <div class="disco">
+      <div class="centro-rojo">
+        <div class="centro-blanco"></div>
+      </div>
+    </div>
+
+    <!-- Panel con posts -->
+    <div class="panel">
+      <div class="imagen-contenedor" id="imagen1">
+        <label for="file1"></label>
+        <input type="file" accept="image/*" id="file1" />
+      </div>
+      <div class="hora">POSTED 01:05</div>
+
+      <div class="imagen-contenedor" id="imagen2">
+        <label for="file2"></label>
+        <input type="file" accept="image/*" id="file2" />
+      </div>
+      <div class="hora">POSTED 12:43</div>
+    </div>
   </div>
 
-  <!-- YouTube oculto para audio -->
+  <!-- YouTube oculto para el audio -->
   <iframe
     id="ytplayer"
     type="text/html"
@@ -70,10 +159,25 @@
     allow="autoplay"
   ></iframe>
 
+  <script>
+    function cargarImagen(inputId, contenedorId) {
+      const input = document.getElementById(inputId);
+      const contenedor = document.getElementById(contenedorId);
+
+      input.addEventListener("change", () => {
+        const file = input.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            contenedor.style.backgroundImage = `url(${e.target.result})`;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    cargarImagen("file1", "imagen1");
+    cargarImagen("file2", "imagen2");
+  </script>
 </body>
 </html>
-
-
-
-
-
