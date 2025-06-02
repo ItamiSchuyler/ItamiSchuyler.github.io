@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Video de fondo con Disco y Posts</title>
+  <title>Video de fondo con Disco detrás de Posts</title>
   <style>
     html, body {
       margin: 0;
@@ -11,9 +11,10 @@
       overflow: hidden;
       font-family: monospace;
       color: white;
+      background: black;
     }
 
-    /* Video como fondo */
+    /* Video de fondo */
     video#bgVideo {
       position: fixed;
       top: 0;
@@ -21,38 +22,30 @@
       min-width: 100%;
       min-height: 100%;
       object-fit: cover;
-      z-index: -2;
+      z-index: -3;
     }
 
-    /* Contenedor principal */
-    .contenedor {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      position: relative;
-      z-index: 1;
-      gap: 50px;
-    }
-
-    /* Disco giratorio */
+    /* Disco como fondo */
     .disco {
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: -150px;
+      transform: translateY(-50%);
+      width: 600px;
+      height: 600px;
       background: #1a1a1a;
-      position: relative;
-      animation: girar 5s linear infinite;
+      border-radius: 50%;
+      z-index: -2;
+      animation: girar 6s linear infinite;
       display: flex;
       align-items: center;
       justify-content: center;
-     
     }
 
     .centro-rojo {
-      width: 100px;
-      height: 100px;
-      background: #0a2f73;
+      width: 200px;
+      height: 200px;
+      background: #b71c1c;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -60,25 +53,29 @@
     }
 
     .centro-blanco {
-      width: 50px;
-      height: 50px;
-      background: #00;
+      width: 100px;
+      height: 100px;
+      background: #f4f4f4;
       border-radius: 50%;
-      opacity:100%
     }
 
     @keyframes girar {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% { transform: translateY(-50%) rotate(0deg); }
+      100% { transform: translateY(-50%) rotate(360deg); }
     }
 
-    /* Panel de posts */
+    /* Panel con posts */
     .panel {
-      width: 300px;
+      position: relative;
+      z-index: 2;
+      width: 320px;
       border: 2px solid #fff;
       border-radius: 16px;
       padding: 20px;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.8);
+      margin-left: auto;
+      margin-right: 40px;
+      margin-top: 40px;
     }
 
     .imagen-contenedor {
@@ -91,6 +88,7 @@
       cursor: pointer;
       background-size: cover;
       background-position: center;
+      border: 1px solid white;
     }
 
     .hora {
@@ -125,29 +123,26 @@
     Tu navegador no puede cargar el video.
   </video>
 
-  <!-- Contenido principal -->
-  <div class="contenedor">
-    <!-- Disco giratorio -->
-    <div class="disco">
-      <div class="centro-rojo">
-        <div class="centro-blanco"></div>
-      </div>
+  <!-- Disco giratorio detrás del panel -->
+  <div class="disco">
+    <div class="centro-rojo">
+      <div class="centro-blanco"></div>
     </div>
+  </div>
 
-    <!-- Panel con posts -->
-    <div class="panel">
-      <div class="imagen-contenedor" id="imagen1">
-        <label for="file1"></label>
-        <input type="file" accept="image/*" id="file1" />
-      </div>
-      <div class="hora">POSTED 01:05</div>
-
-      <div class="imagen-contenedor" id="imagen2">
-        <label for="file2"></label>
-        <input type="file" accept="image/*" id="file2" />
-      </div>
-      <div class="hora">POSTED 12:43</div>
+  <!-- Panel de posts -->
+  <div class="panel">
+    <div class="imagen-contenedor" id="imagen1">
+      <label for="file1"></label>
+      <input type="file" accept="image/*" id="file1" />
     </div>
+    <div class="hora">POSTED 01:05</div>
+
+    <div class="imagen-contenedor" id="imagen2">
+      <label for="file2"></label>
+      <input type="file" accept="image/*" id="file2" />
+    </div>
+    <div class="hora">POSTED 12:43</div>
   </div>
 
   <!-- YouTube oculto para el audio -->
@@ -181,5 +176,7 @@
     cargarImagen("file1", "imagen1");
     cargarImagen("file2", "imagen2");
   </script>
+
 </body>
 </html>
+
