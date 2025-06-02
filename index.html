@@ -61,6 +61,148 @@
     allow="autoplay"
   ></iframe>
 </div>
+
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Disco Giratorio con Imágenes</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #fff;
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .disco {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: #1a1a1a;
+      position: relative;
+      animation: rotar 5s linear infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .centro-rojo {
+      width: 100px;
+      height: 100px;
+      background: #b71c1c;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .centro-blanco {
+      width: 50px;
+      height: 50px;
+      background: #f4f4f4;
+      border-radius: 50%;
+    }
+
+    @keyframes rotar {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .panel {
+      width: 300px;
+      border: 2px solid #000;
+      border-radius: 16px;
+      padding: 20px;
+      background: #fff;
+    }
+
+    .imagen-contenedor {
+      background: #1a1a1a;
+      border-radius: 8px;
+      height: 160px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hora {
+      text-align: right;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: #000;
+      margin-top: -10px;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    label {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="disco">
+      <div class="centro-rojo">
+        <div class="centro-blanco"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="imagen-contenedor" id="imagen1">
+        <label for="file1"></label>
+        <input type="file" accept="image/*" id="file1" />
+      </div>
+      <div class="hora">POSTED 01:05</div>
+
+      <div class="imagen-contenedor" id="imagen2">
+        <label for="file2"></label>
+        <input type="file" accept="image/*" id="file2" />
+      </div>
+      <div class="hora">POSTED 12:43</div>
+    </div>
+  </div>
+
+  <script>
+    function cargarImagen(inputId, contenedorId) {
+      const input = document.getElementById(inputId);
+      const contenedor = document.getElementById(contenedorId);
+
+      input.addEventListener("change", () => {
+        const file = input.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            contenedor.style.backgroundImage = `url(${e.target.result})`;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    cargarImagen("file1", "imagen1");
+    cargarImagen("file2", "imagen2");
+  </script>
+</body>
+</html>
 </body>
 </html>
 
