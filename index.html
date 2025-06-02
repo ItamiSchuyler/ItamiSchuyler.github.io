@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Diseño con Disco y Posts</title>
+  <title>Video de fondo con Disco y Posts</title>
   <style>
     html, body {
       margin: 0;
@@ -11,40 +11,46 @@
       overflow: hidden;
       font-family: monospace;
       color: white;
-      background: black;
     }
 
-    /* Video de fondo */
+    /* Video como fondo */
     video#bgVideo {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      min-width: 100%;
+      min-height: 100%;
       object-fit: cover;
-      z-index: -3;
+      z-index: -2;
     }
 
-    /* Disco giratorio detrás */
+    /* Contenedor principal */
+    .contenedor {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      position: relative;
+      z-index: 1;
+      gap: 50px;
+    }
+
+    /* Disco giratorio */
     .disco {
-      position: absolute;
-      top: 50%;
-      left: -150px;
-      transform: translateY(-50%);
-      width: 600px;
-      height: 600px;
-      background: #1a1a1a;
+      width: 300px;
+      height: 300px;
       border-radius: 50%;
-      z-index: -2;
-      animation: girar 6s linear infinite;
+      background: #1a1a1a;
+      position: relative;
+      animation: girar 5s linear infinite;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .centro-rojo {
-      width: 200px;
-      height: 200px;
+      width: 100px;
+      height: 100px;
       background: #b71c1c;
       border-radius: 50%;
       display: flex;
@@ -53,29 +59,24 @@
     }
 
     .centro-blanco {
-      width: 100px;
-      height: 100px;
+      width: 50px;
+      height: 50px;
       background: #f4f4f4;
       border-radius: 50%;
     }
 
     @keyframes girar {
-      0% { transform: translateY(-50%) rotate(0deg); }
-      100% { transform: translateY(-50%) rotate(360deg); }
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
-    /* Panel centrado verticalmente a la derecha */
+    /* Panel de posts */
     .panel {
-      position: absolute;
-      top: 50%;
-      right: 40px;
-      transform: translateY(-50%);
-      width: 320px;
+      width: 300px;
       border: 2px solid #fff;
       border-radius: 16px;
       padding: 20px;
-      background: rgba(0, 0, 0, 0.85);
-      z-index: 2;
+      background: rgba(0, 0, 0, 0.7);
     }
 
     .imagen-contenedor {
@@ -88,7 +89,6 @@
       cursor: pointer;
       background-size: cover;
       background-position: center;
-      border: 1px solid white;
     }
 
     .hora {
@@ -123,26 +123,29 @@
     Tu navegador no puede cargar el video.
   </video>
 
-  <!-- Disco giratorio al fondo -->
-  <div class="disco">
-    <div class="centro-rojo">
-      <div class="centro-blanco"></div>
+  <!-- Contenido principal -->
+  <div class="contenedor">
+    <!-- Disco giratorio -->
+    <div class="disco">
+      <div class="centro-rojo">
+        <div class="centro-blanco"></div>
+      </div>
     </div>
-  </div>
 
-  <!-- Panel de posts alineado a la derecha -->
-  <div class="panel">
-    <div class="imagen-contenedor" id="imagen1">
-      <label for="file1"></label>
-      <input type="file" accept="image/*" id="file1" />
-    </div>
-    <div class="hora">POSTED 01:05</div>
+    <!-- Panel con posts -->
+    <div class="panel">
+      <div class="imagen-contenedor" id="imagen1">
+        <label for="file1"></label>
+        <input type="file" accept="image/*" id="file1" />
+      </div>
+      <div class="hora">POSTED 01:05</div>
 
-    <div class="imagen-contenedor" id="imagen2">
-      <label for="file2"></label>
-      <input type="file" accept="image/*" id="file2" />
+      <div class="imagen-contenedor" id="imagen2">
+        <label for="file2"></label>
+        <input type="file" accept="image/*" id="file2" />
+      </div>
+      <div class="hora">POSTED 12:43</div>
     </div>
-    <div class="hora">POSTED 12:43</div>
   </div>
 
   <!-- YouTube oculto para el audio -->
@@ -176,8 +179,8 @@
     cargarImagen("file1", "imagen1");
     cargarImagen("file2", "imagen2");
   </script>
-
 </body>
 </html>
+
 
 
