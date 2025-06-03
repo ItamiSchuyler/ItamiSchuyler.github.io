@@ -23,7 +23,14 @@
       object-fit: cover;
       z-index: -2;
     }
-
+.contenedorplayer {font-family: Arial, sans-serif;
+      background: #121212;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;}
     /* Contenedor principal */
     .contenedor {
       display: flex;
@@ -141,7 +148,7 @@
   </video>
 
 
- 
+ <div class="contenedorplayer"
   <!-- YouTube oculto para el audio -->
 <div class="player">
     <h2>Reproductor de Música</h2>
@@ -151,7 +158,7 @@
       allowfullscreen>
     </iframe>
   </div>
-
+</div>
   <script>
     function cargarImagen(inputId, contenedorId) {
       const input = document.getElementById(inputId);
