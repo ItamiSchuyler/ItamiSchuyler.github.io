@@ -72,20 +72,23 @@
     Tu navegador no puede cargar el video.
   </video>
 
-<script src="https://cdn.tailwindcss.com"></script>
+ <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="fixed bottom-4 left-4bg-gray-300 text-white flex items-center justify-left h-screen">
-  <div class="bg-#b00000-500 rounded-2xl p-6 shadow-lg w-80">
-    <h1 class="text-xl font-semibold mb-4 text-center"></h1>
-    <audio id="audio" src="song.mp3"></audio>
-    
+<body class="bg-gray-900 text-white m-0 p-0">
+
+  <!-- Reproductor en esquina inferior izquierda -->
+  <div class="fixed bottom-4 left-4 bg-gray-800 rounded-2xl p-4 shadow-lg w-80 z-50">
+    <h1 class="text-lg font-semibold mb-3 text-center">🎵 Mi Música</h1>
+
+    <audio id="audio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
     <div class="flex justify-center mb-4">
-      <button id="playBtn" class="bg-black-500 hover:bg-grey-600 text-black px-4 py-2 rounded-full">
-        ▶ 
+      <button id="playBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full transition-all">
+        ▶️ Reproducir
       </button>
     </div>
-    
-    <input id="progressBar" type="range" value="0" class="w-full accent-black-500" />
+
+    <input id="progressBar" type="range" value="0" class="w-full accent-blue-500" />
   </div>
 
   <script>
@@ -96,15 +99,17 @@
     playBtn.addEventListener('click', () => {
       if (audio.paused) {
         audio.play();
-        playBtn.textContent = '⟳';
+        playBtn.textContent = '⏸️ Pausar';
       } else {
         audio.pause();
-        playBtn.textContent = '▶';
+        playBtn.textContent = '▶️ Reproducir';
       }
     });
 
     audio.addEventListener('timeupdate', () => {
-      progressBar.value = (audio.currentTime / audio.duration) * 100;
+      if (!isNaN(audio.duration)) {
+        progressBar.value = (audio.currentTime / audio.duration) * 100;
+      }
     });
 
     progressBar.addEventListener('input', () => {
