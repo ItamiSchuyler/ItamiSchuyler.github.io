@@ -76,47 +76,67 @@
 </head>
 <body class="bg-gray-900 text-white m-0 p-0">
 
-  <!-- Reproductor en esquina inferior izquierda -->
-  <div class="fixed bottom-4 left-4 bg-00-800 rounded-2xl p-4 shadow-lg w-80 z-50">
-    <h1 class="text-gray-900 px-2 text-xs font-semibold mb-3 text-center">Otra noche sin ti</h1>
-
-
-    <audio id="audio" src="song.mp3"></audio>
-
-    <div class="flex justify-center mb-4">
-      <button id="playBtn" class="bg-00-500 hover:bg-gray-600 text-black px-4 py-2 rounded-full transition-all">
-        𝄞
-      </button>
-    </div>
-
-    <input id="progressBar" type="range" value="0" class="w-full accent-black-500" />
+ <div class="fixed bottom-4 left-4 bg-white/90 rounded-xl px-4 py-2 shadow-lg w-72 z-50">
+  <!-- Título con efecto de movimiento -->
+  <div class="overflow-hidden whitespace-nowrap">
+    <h1 class="text-gray-800 text-[10px] font-semibold animate-marquee">
+      Otra noche sin ti • Otra noche sin ti • Otra noche sin ti
+    </h1>
   </div>
 
-  <script>
-    const audio = document.getElementById('audio');
-    const playBtn = document.getElementById('playBtn');
-    const progressBar = document.getElementById('progressBar');
+  <!-- Audio oculto -->
+  <audio id="audio" src="song.mp3"></audio>
 
-    playBtn.addEventListener('click', () => {
-      if (audio.paused) {
-        audio.play();
-        playBtn.textContent = '⏸';
-      } else {
-        audio.pause();
-        playBtn.textContent = '▶';
-      }
-    });
+  <!-- Controles -->
+  <div class="flex items-center gap-2 mt-2">
+    <!-- Botón de play/pausa -->
+    <button id="playBtn" class="text-xl text-gray-700 hover:text-black transition-all">
+      ▶
+    </button>
 
-    audio.addEventListener('timeupdate', () => {
-      if (!isNaN(audio.duration)) {
-        progressBar.value = (audio.currentTime / audio.duration) * 100;
-      }
-    });
+    <!-- Barra de progreso -->
+    <input id="progressBar" type="range" value="0" class="w-full accent-gray-800 h-1" />
+  </div>
+</div>
 
-    progressBar.addEventListener('input', () => {
-      audio.currentTime = (progressBar.value / 100) * audio.duration;
-    });
-  </script>
+<!-- Tailwind Animation Custom CSS -->
+<style>
+  @keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  .animate-marquee {
+    display: inline-block;
+    animation: marquee 10s linear infinite;
+  }
+</style>
+
+<script>
+  const audio = document.getElementById('audio');
+  const playBtn = document.getElementById('playBtn');
+  const progressBar = document.getElementById('progressBar');
+
+  playBtn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play();
+      playBtn.textContent = '⏸';
+    } else {
+      audio.pause();
+      playBtn.textContent = '▶';
+    }
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    if (!isNaN(audio.duration)) {
+      progressBar.value = (audio.currentTime / audio.duration) * 100;
+    }
+  });
+
+  progressBar.addEventListener('input', () => {
+    audio.currentTime = (progressBar.value / 100) * audio.duration;
+  });
+</script>
 </body>
 </html>
 
