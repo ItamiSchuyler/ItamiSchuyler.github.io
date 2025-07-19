@@ -66,6 +66,60 @@
 </head>
 <body>
 
+  <div class="min-h-screen bg-white flex flex-col items-center p-6">
+  <!-- Encabezado con perfil y enlaces -->
+  <div class="flex items-center w-full mb-4">
+    <!-- Círculo grande (imagen de perfil) -->
+    <div class="w-24 h-24 bg-black rounded-full border-4 border-lime-400 overflow-hidden">
+      <img src="tu-imagen.jpg" alt="Perfil" class="w-full h-full object-cover" />
+    </div>
+
+    <!-- Línea horizontal -->
+    <div class="h-2 bg-lime-400 flex-1 mx-4 rounded"></div>
+
+    <!-- Círculos pequeños (enlaces) -->
+    <div class="flex space-x-3">
+      <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
+      <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
+      <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
+      <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
+      <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
+    </div>
+  </div>
+
+  <!-- Cuerpo: texto + posts -->
+  <div class="flex w-full gap-6">
+    <!-- Texto (rectángulo izquierdo) -->
+    <div class="w-1/4 bg-black text-white p-4 font-bold italic text-xs">
+      TWITCH: !TAMICH // INSTAGRAM: !TAMICH_
+    </div>
+
+    <!-- Contenedor de posts (scrollable) -->
+    <div class="w-2/3 h-[500px] overflow-y-scroll border-4 border-lime-400 bg-black space-y-4 p-4 text-white">
+      <!-- Post 1 -->
+      <div class="bg-gray-900 p-2 rounded">
+        <img src="imagen1.jpg" alt="Post 1" class="w-full rounded mb-2" />
+        <p class="text-sm">Descripción del post 1...</p>
+      </div>
+
+      <!-- Post 2 -->
+      <div class="bg-gray-900 p-2 rounded">
+        <img src="imagen2.jpg" alt="Post 2" class="w-full rounded mb-2" />
+        <p class="text-sm">Descripción del post 2...</p>
+      </div>
+
+      <!-- Agrega más posts según sea necesario -->
+    </div>
+
+    <!-- Scrollbar decorativa (simulada) -->
+    <div class="w-1 flex items-center">
+      <div class="h-full w-1 bg-black relative">
+        <div class="w-full h-16 bg-lime-400 absolute top-1/4"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
   <!-- Video de fondo -->
   <video id="bgVideo" autoplay muted loop playsinline>
     <source src="fondoo.mp4" type="video/mp4" >
