@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <title>Perfil Interactivo</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     html, body {
@@ -10,7 +14,6 @@
       height: 100%;
       overflow: hidden;
       font-family: monospace;
-      color: white;
     }
 
     /* Video como fondo */
@@ -24,173 +27,120 @@
       z-index: -2;
     }
 
-    /* Contenedor principal */
-    .contenedor {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      position: absolute;
-      z-index: -2;
-      gap: 50px;
-      width:100%
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
     }
 
-    
-
-    input[type="file"] {
-      display: none;
+    .animate-marquee {
+      display: inline-block;
+      animation: marquee 10s linear infinite;
     }
-
-    label {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-      .player {
-      background: #00;
-      padding: 20px;
-      border-radius: 12px;
-      
-      text-align: center;
-    }
-
-     .iframe {
-      border-radius: 8px;
-      border: none;
-    }
-
-    
   </style>
 </head>
-<body>
-
-  <div class="min-h-screen bg-white flex flex-col items-center p-6">
-  <!-- Encabezado con perfil y enlaces -->
-  <div class="flex items-center w-full mb-4">
-    <!-- Círculo grande (imagen de perfil) -->
-    <div class="w-24 h-24 bg-black rounded-full border-4 border-lime-400 overflow-hidden">
-      <img src="tu-imagen.jpg" alt="Perfil" class="w-full h-full object-cover" />
-    </div>
-
-    <!-- Línea horizontal -->
-    <div class="h-2 bg-lime-400 flex-1 mx-4 rounded"></div>
-
-    <!-- Círculos pequeños (enlaces) -->
-    <div class="flex space-x-3">
-      <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
-      <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
-      <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
-      <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
-      <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
-    </div>
-  </div>
-
-  <!-- Cuerpo: texto + posts -->
-  <div class="flex w-full gap-6">
-    <!-- Texto (rectángulo izquierdo) -->
-    <div class="w-1/4 bg-black text-white p-4 font-bold italic text-xs">
-      TWITCH: !TAMICH // INSTAGRAM: !TAMICH_
-    </div>
-
-    <!-- Contenedor de posts (scrollable) -->
-    <div class="w-2/3 h-[500px] overflow-y-scroll border-4 border-lime-400 bg-black space-y-4 p-4 text-white">
-      <!-- Post 1 -->
-      <div class="bg-gray-900 p-2 rounded">
-        <img src="imagen1.jpg" alt="Post 1" class="w-full rounded mb-2" />
-        <p class="text-sm">Descripción del post 1...</p>
-      </div>
-
-      <!-- Post 2 -->
-      <div class="bg-gray-900 p-2 rounded">
-        <img src="imagen2.jpg" alt="Post 2" class="w-full rounded mb-2" />
-        <p class="text-sm">Descripción del post 2...</p>
-      </div>
-
-      <!-- Agrega más posts según sea necesario -->
-    </div>
-
-    <!-- Scrollbar decorativa (simulada) -->
-    <div class="w-1 flex items-center">
-      <div class="h-full w-1 bg-black relative">
-        <div class="w-full h-16 bg-lime-400 absolute top-1/4"></div>
-      </div>
-    </div>
-  </div>
-</div>
+<body class="bg-gray-900 text-white">
 
   <!-- Video de fondo -->
   <video id="bgVideo" autoplay muted loop playsinline>
-    <source src="fondoo.mp4" type="video/mp4" >
+    <source src="fondoo.mp4" type="video/mp4">
     Tu navegador no puede cargar el video.
   </video>
 
- <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-900 text-white m-0 p-0">
+  <!-- Contenido principal -->
+  <div class="min-h-screen flex flex-col items-center p-6">
+    <!-- Encabezado -->
+    <div class="flex items-center w-full mb-4">
+      <!-- Imagen de perfil -->
+      <div class="w-24 h-24 bg-black rounded-full border-4 border-lime-400 overflow-hidden">
+        <img src="tu-imagen.jpg" alt="Perfil" class="w-full h-full object-cover" />
+      </div>
 
- <div class="fixed bottom-4 left-4 bg-white/90 rounded-xl px-4 py-2 shadow-lg w-72 z-50">
-  <!-- Título con efecto de movimiento -->
-  <div class="overflow-hidden whitespace-nowrap">
-    <h1 class="text-gray-800 text-[10px] font-semibold animate-marquee">
-      TVアニメーション「LOVELESS」マキシシングル オープニングテーマ「月の呪縛(カース)」 c/w エンディングテーマ「みちゆき」
-    </h1>
+      <!-- Línea -->
+      <div class="h-2 bg-lime-400 flex-1 mx-4 rounded"></div>
+
+      <!-- Enlaces -->
+      <div class="flex space-x-3">
+        <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
+        <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
+        <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
+        <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
+        <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
+      </div>
+    </div>
+
+    <!-- Cuerpo -->
+    <div class="flex w-full gap-6">
+      <!-- Info lateral -->
+      <div class="w-1/4 bg-black text-white p-4 font-bold italic text-xs">
+        TWITCH: !TAMICH // INSTAGRAM: !TAMICH_
+      </div>
+
+      <!-- Posts scrollables -->
+      <div class="w-2/3 h-[500px] overflow-y-scroll border-4 border-lime-400 bg-black space-y-4 p-4 text-white">
+        <div class="bg-gray-900 p-2 rounded">
+          <img src="imagen1.jpg" alt="Post 1" class="w-full rounded mb-2" />
+          <p class="text-sm">Descripción del post 1...</p>
+        </div>
+
+        <div class="bg-gray-900 p-2 rounded">
+          <img src="imagen2.jpg" alt="Post 2" class="w-full rounded mb-2" />
+          <p class="text-sm">Descripción del post 2...</p>
+        </div>
+
+        <!-- Más posts aquí -->
+      </div>
+
+      <!-- Scrollbar decorativa -->
+      <div class="w-1 flex items-center">
+        <div class="h-full w-1 bg-black relative">
+          <div class="w-full h-16 bg-lime-400 absolute top-1/4"></div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- Audio oculto -->
-  <audio id="audio" src="song.mp3"></audio>
+  <!-- Reproductor minimalista -->
+  <div class="fixed bottom-4 left-4 bg-white/90 rounded-xl px-4 py-2 shadow-lg w-72 z-50">
+    <div class="overflow-hidden whitespace-nowrap">
+      <h1 class="text-gray-800 text-[10px] font-semibold animate-marquee">
+        TVアニメーション「LOVELESS」マキシシングル オープニングテーマ「月の呪縛(カース)」 c/w エンディングテーマ「みちゆき」
+      </h1>
+    </div>
 
-  <!-- Controles -->
-  <div class="flex items-center gap-2 mt-2">
-    <!-- Botón de play/pausa -->
-    <button id="playBtn" class="text-xl text-gray-700 hover:text-black transition-all">
-      ▶
-    </button>
+    <audio id="audio" src="song.mp3"></audio>
 
-    <!-- Barra de progreso -->
-    <input id="progressBar" type="range" value="0" class="w-full accent-gray-800 h-1" />
+    <div class="flex items-center gap-2 mt-2">
+      <button id="playBtn" class="text-xl text-gray-700 hover:text-black transition-all">▶</button>
+      <input id="progressBar" type="range" value="0" class="w-full accent-gray-800 h-1" />
+    </div>
   </div>
-</div>
 
-<!-- Tailwind Animation Custom CSS -->
-<style>
-  @keyframes marquee {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-  }
+  <!-- Script del reproductor -->
+  <script>
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('playBtn');
+    const progressBar = document.getElementById('progressBar');
 
-  .animate-marquee {
-    display: inline-block;
-    animation: marquee 10s linear infinite;
-  }
-</style>
+    playBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        playBtn.textContent = '⏸';
+      } else {
+        audio.pause();
+        playBtn.textContent = '▶';
+      }
+    });
 
-<script>
-  const audio = document.getElementById('audio');
-  const playBtn = document.getElementById('playBtn');
-  const progressBar = document.getElementById('progressBar');
+    audio.addEventListener('timeupdate', () => {
+      if (!isNaN(audio.duration)) {
+        progressBar.value = (audio.currentTime / audio.duration) * 100;
+      }
+    });
 
-  playBtn.addEventListener('click', () => {
-    if (audio.paused) {
-      audio.play();
-      playBtn.textContent = '⏸';
-    } else {
-      audio.pause();
-      playBtn.textContent = '▶';
-    }
-  });
-
-  audio.addEventListener('timeupdate', () => {
-    if (!isNaN(audio.duration)) {
-      progressBar.value = (audio.currentTime / audio.duration) * 100;
-    }
-  });
-
-  progressBar.addEventListener('input', () => {
-    audio.currentTime = (progressBar.value / 100) * audio.duration;
-  });
-</script>
+    progressBar.addEventListener('input', () => {
+      audio.currentTime = (progressBar.value / 100) * audio.duration;
+    });
+  </script>
 </body>
 </html>
 
