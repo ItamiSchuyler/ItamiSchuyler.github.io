@@ -93,48 +93,85 @@
     
   </div>
 
-  <!-- Reproductor minimalista -->
-  <div class="fixed bottom-4 left-4 bg-white/90 rounded-xl px-4 py-2 shadow-lg w-72 z-50">
-    <div class="overflow-hidden whitespace-nowrap">
-      <h1 class="text-gray-800 text-[10px] font-semibold animate-marquee">
-        TVアニメーション「LOVELESS」マキシシングル オープニングテーマ「月の呪縛(カース)」 c/w エンディングテーマ「みちゆき」
-      </h1>
-    </div>
-
-    <audio id="audio" src="song.mp3"></audio>
-
-    <div class="flex items-center gap-2 mt-2">
-      <button id="playBtn" class="text-xl text-gray-700 hover:text-black transition-all">▶</button>
-      <input id="progressBar" type="range" value="0" class="w-full accent-gray-800 h-1" />
-    </div>
+  <!-- Reproductor minimalista mejorado -->
+<div class="fixed bottom-4 left-4 bg-white/90 rounded-xl px-4 py-2 shadow-lg w-80 z-50">
+  <!-- Título con movimiento -->
+  <div class="overflow-hidden whitespace-nowrap">
+    <h1 class="text-gray-800 text-[10px] font-semibold animate-marquee">
+      TVアニメーション「LOVELESS」マキシシングル オープニングテーマ「月の呪縛(カース)」 c/w エンディングテーマ「みちゆき」
+    </h1>
   </div>
 
-  <!-- Script del reproductor -->
-  <script>
-    const audio = document.getElementById('audio');
-    const playBtn = document.getElementById('playBtn');
-    const progressBar = document.getElementById('progressBar');
+  <audio id="audio" src="song.mp3"></audio>
 
-    playBtn.addEventListener('click', () => {
-      if (audio.paused) {
-        audio.play();
-        playBtn.textContent = '⏸';
-      } else {
-        audio.pause();
-        playBtn.textContent = '▶';
-      }
-    });
+  <div class="flex items-center gap-2 mt-2">
+    <!-- Botón play/pausa -->
+    <button id="playBtn" class="text-xl text-gray-700 hover:text-black transition-all">▶</button>
 
-    audio.addEventListener('timeupdate', () => {
-      if (!isNaN(audio.duration)) {
-        progressBar.value = (audio.currentTime / audio.duration) * 100;
-      }
-    });
+    <!-- Botón mute/unmute -->
+    <button id="muteBtn" class="text-lg text-gray-700 hover:text-black transition-all">🔊</button>
 
-    progressBar.addEventListener('input', () => {
-      audio.currentTime = (progressBar.value / 100) * audio.duration;
-    });
-  </script>
+    <!-- Barra de progreso -->
+    <input id="progressBar" type="range" value="0" class="w-full accent-gray-800 h-1" />
+
+    <!-- Tiempo -->
+    <span id="timeDisplay" class="text-[10px] text-gray-700 w-16 text-right">0:00 / 0:00</span>
+  </div>
+</div>
+
+<!-- Estilos de animación -->
+<style>
+  @keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+  .animate-marquee {
+    display: inline-block;
+    animation: marquee 10s linear infinite;
+  }
+</style>
+
+<!-- Script funcionalidad -->
+<script>
+  const audio = document.getElementById('audio');
+  const playBtn = document.getElementById('playBtn');
+  const muteBtn = document.getElementById('muteBtn');
+  const progressBar = document.getElementById('progressBar');
+  const timeDisplay = document.getElementById('timeDisplay');
+
+  playBtn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play();
+      playBtn.textContent = '⏸';
+    } else {
+      audio.pause();
+      playBtn.textContent = '▶';
+    }
+  });
+
+  muteBtn.addEventListener('click', () => {
+    audio.muted = !audio.muted;
+    muteBtn.textContent = audio.muted ? '🔇' : '🔊';
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    if (!isNaN(audio.duration)) {
+      progressBar.value = (audio.currentTime / audio.duration) * 100;
+
+      const formatTime = t => {
+        const m = Math.floor(t / 60);
+        const s = Math.floor(t % 60).toString().padStart(2, '0');
+        return `${m}:${s}`;
+      };
+
+      timeDisplay.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+    }
+  });
+
+  progressBar.addEventListener('input', () => {
+    audio.currentTime = (progressBar.value / 100) * audio.duration;
+  });
+</script>
 </body>
 </html>
 
