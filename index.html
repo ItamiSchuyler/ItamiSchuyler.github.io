@@ -36,10 +36,15 @@
       display: inline-block;
       animation: marquee 10s linear infinite;
     }
+     
+.perfil-circulo {background-color:#981919;border-radius:5%;width:200px;height:400px;border-color:#2a2a2a;border-style: solid;border-size:2px}
+  
   </style>
 </head>
-<body class="bg-gray-900 text-white">
 
+ <div "id=perfil-circulo">
+   </div>
+  
   <!-- Video de fondo -->
   <video id="bgVideo" autoplay muted loop playsinline>
     <source src="fondoo.mp4" type="video/mp4">
@@ -47,51 +52,7 @@
   </video>
 
   <!-- Contenido principal -->
-  <div class="min-h-screen flex flex-col items-left p-6">
-    <!-- Encabezado -->
-    <div class="flex items-left w-full mb-4">
-      
-      <!-- Imagen de perfil -->
-      <div class="ml-10 w-[150px] h[150px] bg-black rounded-full border-4 border-red-900 overflow-hidden">
-        <img src="https://i.ibb.co/qMzHP1Yc/5ZYSEpS.png" alt="Perfil" class="w-full h-full object-cover" />
-      </div>
-
-      <!-- Línea -->
-      <div class="h-2 bg-black-400 flex-1 mx-4 rounded"></div>
-
-      <!-- Enlaces -->
-      <div class="flex justify-start space-x-3">
-        <a href="http://xat.me/necessarius" class="w-5 h-5 bg-black rounded-full inline-block"></a>
-        <a href="http://xat.me/taiga" class="w-5 h-5 bg-black rounded-full inline-block"></a>
-        <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
-        <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
-        <a href="#" class="w-5 h-5 bg-black rounded-full inline-block"></a>
-      </div>
-    </div>
-
-    <!-- Cuerpo -->
-    <div class="flex w-[1100px] h-[300px] gap-6">
-      <!-- Info lateral -->
-      <div class="w-1/4 bg-black text-white p-2 font-bold italic text-xs rounded-2g shadow-md">
-        Aquí pongo mi descripción ehé
-      </div>
-
-      <!-- Posts scrollables -->
-      <div class="w-2/3 h-[500px] overflow-y-scroll bg-transparent space-y-4 p-4 text-white">
-        <div class="bg-gray-900 p-2 rounded">
-          <img src="https://i.ibb.co/x8c2dcmc/109828235-p0.jpg" alt="Post 1" class="w-full rounded mb-2" />
-          <p class="text-sm">Descripción del post 1...</p>
-        </div>
-
-        <div class="bg-gray-900 p-2 rounded">
-          <img src="https://i.ibb.co/qY27R3Tq/122219067-p0-master1200.jpg" alt="Post 2" class="w-full rounded mb-2" />
-          <p class="text-sm">Descripción del post 2...</p>
-        </div>
-
-        <!-- Más posts aquí -->
-      </div>
-
-    
+ 
   </div>
 
   <!-- Reproductor minimalista mejorado -->
