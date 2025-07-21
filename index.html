@@ -40,7 +40,7 @@
 .perfil-circulo {background-color:#000000;border-radius:3%;width:230px;height:500px;border-style: 2px solid #2a2a2a;
 position:absolute;margin-top:10%;margin-left:5%}
 
-    <title>Estela de Cursor</title>
+   <title>Estela de Corazones</title>
   <style>
     body {
       margin: 0;
@@ -48,24 +48,22 @@ position:absolute;margin-top:10%;margin-left:5%}
       background-color: #111;
     }
 
-    .trail {
+    .heart {
       position: absolute;
-      width: 10px;
-      height: 10px;
-      background-color: #b12121;
-      border-radius: 50%;
+      color: #ff4d6d;
+      font-size: 16px;
       pointer-events: none;
-      animation: fadeOut 0.6s ease-out forwards;
+      animation: floatUp 1s ease-out forwards;
     }
 
-    @keyframes fadeOut {
+    @keyframes floatUp {
       0% {
-        transform: scale(1);
         opacity: 1;
+        transform: translateY(0) scale(1);
       }
       100% {
-        transform: scale(2);
         opacity: 0;
+        transform: translateY(-40px) scale(1.5) rotate(20deg);
       }
     }
     
@@ -168,20 +166,22 @@ position:absolute;margin-top:10%;margin-left:5%}
   });
 </script>
   <script>
-  // Escucha el movimiento del mouse
   document.addEventListener('mousemove', function(e) {
-    const circle = document.createElement('div');
-    circle.classList.add('trail');
-    document.body.appendChild(circle);
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.innerText = '❤️';
 
-    // Posiciona el círculo donde está el mouse
-    circle.style.left = `${e.clientX}px`;
-    circle.style.top = `${e.clientY}px`;
+    // Posicionar el corazón en el cursor
+    heart.style.left = `${e.clientX}px`;
+    heart.style.top = `${e.clientY}px`;
 
-    // Elimina el círculo después de la animación
+    // Agregarlo al body
+    document.body.appendChild(heart);
+
+    // Quitarlo después de la animación
     setTimeout(() => {
-      circle.remove();
-    }, 600);
+      heart.remove();
+    }, 1000);
   });
 </script>
 </body>
