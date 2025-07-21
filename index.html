@@ -38,7 +38,7 @@
     }
      
 .perfil-circulo {background-color:#000000;border-radius:7%;width:230px;height:500px;border-style: 20px solid #2a2a2a;
-position:absolute;margin-top:10%;margin-left:5%}
+position:absolute;margin-top:10%;margin-left:5%;box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5)}
 
    <title>Estela de Corazones</title>
   <style>
@@ -50,7 +50,7 @@ position:absolute;margin-top:10%;margin-left:5%}
 
     .heart {
       position: absolute;
-      color: #ff4d6d;
+      color: #696969;
       font-size: 16px;
       pointer-events: none;
       animation: floatUp 1s ease-out forwards;
@@ -169,7 +169,7 @@ position:absolute;margin-top:10%;margin-left:5%}
   document.addEventListener('mousemove', function(e) {
     const heart = document.createElement('div');
     heart.classList.add('heart');
-    heart.innerText = '❤️';
+    heart.innerText = '❤';
 
     // Posicionar el corazón en el cursor
     heart.style.left = `${e.clientX}px`;
