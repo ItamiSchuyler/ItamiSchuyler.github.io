@@ -96,33 +96,35 @@ position:absolute;margin-top:10%;margin-left:5%; box-shadow: 3px 5px 51px -11px 
  
   </div>
 
-  <!-- Reproductor minimalista mejorado -->
-<div class="fixed bottom-4 left-4 bg-white/90 rounded-xl px-4 py-2 shadow-lg w-80 z-50">
-  <!-- Título con movimiento -->
-  <div class="overflow-hidden whitespace-nowrap">
-    <h1 class="text-gray-800 text-[10px] font-semibold animate-marquee">
-      TVアニメーション「LOVELESS」マキシシングル オープニングテーマ「月の呪縛(カース)」 c/w エンディングテーマ「みちゆき」
-    </h1>
+<!-- Reproductor oculto con pestaña flotante -->
+<div class="fixed bottom-4 left-0 z-50 group">
+  <!-- Contenedor deslizante -->
+  <div class="bg-white/90 rounded-r-xl px-4 py-2 shadow-lg w-80 -translate-x-[90%] group-hover:translate-x-0 transition-transform duration-300">
+    
+    <!-- Título con movimiento -->
+    <div class="overflow-hidden whitespace-nowrap">
+      <h1 class="text-gray-800 text-[10px] font-semibold animate-marquee">
+        TVアニメーション「LOVELESS」マキシシングル オープニングテーマ「月の呪縛(カース)」 c/w エンディングテーマ「みちゆき」
+      </h1>
+    </div>
+
+    <audio id="audio" src="song.mp3"></audio>
+
+    <div class="flex items-center gap-2 mt-2">
+      <button id="playBtn" class="text-xl text-gray-700 hover:text-black transition-all">▶</button>
+      <button id="muteBtn" class="text-lg text-gray-700 hover:text-black transition-all">🔊</button>
+      <input id="progressBar" type="range" value="0" class="w-full accent-gray-800 h-1" />
+      <span id="timeDisplay" class="text-[10px] text-gray-700 w-16 text-right">0:00 / 0:00</span>
+    </div>
   </div>
 
-  <audio id="audio" src="song.mp3"></audio>
-
-  <div class="flex items-center gap-2 mt-2">
-    <!-- Botón play/pausa -->
-    <button id="playBtn" class="text-xl text-gray-700 hover:text-black transition-all">▶</button>
-
-    <!-- Botón mute/unmute -->
-    <button id="muteBtn" class="text-lg text-gray-700 hover:text-black transition-all">🔊</button>
-
-    <!-- Barra de progreso -->
-    <input id="progressBar" type="range" value="0" class="w-full accent-gray-800 h-1" />
-
-    <!-- Tiempo -->
-    <span id="timeDisplay" class="text-[10px] text-gray-700 w-16 text-right">0:00 / 0:00</span>
+  <!-- Pestaña visible siempre -->
+  <div class="absolute top-1/2 -right-4 bg-gray-800 text-white text-xs px-2 py-1 rounded-l cursor-pointer shadow group-hover:opacity-0 transition-opacity duration-300">
+    ▶︎
   </div>
 </div>
 
-<!-- Estilos de animación -->
+<!-- Animación del texto -->
 <style>
   @keyframes marquee {
     0% { transform: translateX(100%); }
@@ -175,6 +177,7 @@ position:absolute;margin-top:10%;margin-left:5%; box-shadow: 3px 5px 51px -11px 
     audio.currentTime = (progressBar.value / 100) * audio.duration;
   });
 </script>
+
   <script>
   document.addEventListener('mousemove', function(e) {
     const heart = document.createElement('div');
