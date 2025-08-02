@@ -180,7 +180,30 @@ position:absolute;margin-left:5%; box-shadow: 3px 5px 51px -11px rgba(0,0,0,1);t
     .redes:hover {
       transform: scale(1.1);
     }
-    
+
+    .firnma {font-size: 12px;
+      font-family: monospace;
+      background: linear-gradient(90deg, red, black);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      gap: 0px;
+      transition: gap 0.3s ease;
+      cursor: default;
+      letter-spacing: 0;}
+
+    .firma span {
+      transition: transform 0.3s ease;
+      display: inline-block;
+    }
+
+    .firma:hover {
+      gap: 4px;
+    }
+
+    .firma:hover span {
+      transform: translateY(-2px);
+    }
     
   </style>
 </head>
@@ -212,7 +235,15 @@ position:absolute;margin-left:5%; box-shadow: 3px 5px 51px -11px rgba(0,0,0,1);t
    <div class="posts">
    </div>
   </div>
-
+    
+  <div class="firma">
+    <!-- Cada letra envuelta en un span para animación -->
+    <span>c</span><span>o</span><span>d</span><span>e</span><span>d</span>
+    <span>&nbsp;</span><span>a</span><span>n</span><span>d</span>
+    <span>&nbsp;</span><span>d</span><span>e</span><span>s</span><span>i</span><span>g</span><span>n</span><span>e</span><span>r</span>
+    <span>&nbsp;</span><span>b</span><span>y</span>
+    <span>&nbsp;</span><span>i</span><span>t</span><span>a</span><span>m</span><span>i</span>
+  </div>
   
   <!-- Video de fondo -->
   <video id="bgVideo" autoplay muted loop playsinline>
@@ -327,6 +358,7 @@ position:absolute;margin-left:5%; box-shadow: 3px 5px 51px -11px rgba(0,0,0,1);t
 </main>
 </body>
 </html>
+
 
 
 
