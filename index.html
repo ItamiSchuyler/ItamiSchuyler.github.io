@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Perfil Interactivo</title>
+  <title>space de itami</title>
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -197,7 +197,137 @@ position:absolute;margin-left:5%; box-shadow: 3px 5px 51px -11px rgba(0,0,0,1);t
       letter-spacing: 4px;
       transform: translateY(-2px);
     }
+
+    <title>Reproductor minimal fijo</title>
     
+<style>
+  :root{
+    --size: 44px; /* tamaño de íconos / altura del control */
+    --accent: #ffffff; /* color íconos/texto */
+    --muted: rgba(255,255,255,0.45);
+  }
+
+  /* Contenedor fijo en esquina inferior izquierda, sin fondo */
+  .mini-player{
+    position: fixed;
+    left: 12px;
+    bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 9999;
+    pointer-events: auto;
+    user-select: none;
+    background: transparent; /* sin fondo */
+    padding: 6px;
+    border-radius: 8px;
+    backdrop-filter: none;
+  }
+
+  /* Botones minimalistas (iconos SVG) */
+  .mp-btn{
+    width: var(--size);
+    height: var(--size);
+    display: inline-grid;
+    place-items: center;
+    cursor: pointer;
+    color: var(--accent);
+    opacity: 0.95;
+  }
+  .mp-btn svg{ width: 20px; height: 20px; fill: currentColor; }
+
+  /* Volumen (slider) */
+  .vol-wrap{
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .vol{
+    width: 110px;
+    -webkit-appearance:none;
+    appearance:none;
+    height: 4px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .vol::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width: 12px; height: 12px; border-radius:50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
+  }
+
+  /* Título con movimiento lateral */
+  .title-clip{
+    max-width: 220px; /* ajusta si quieres más/menos */
+    overflow: hidden;
+  }
+  .track-title{
+    display:inline-block;
+    white-space:nowrap;
+    font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    font-size: 13px;
+    color: var(--accent);
+    opacity: 0.97;
+    animation: slideX 12s linear infinite;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+  @keyframes slideX{
+    0%   { transform: translateX(0%); }
+    25%  { transform: translateX(-18%); }
+    50%  { transform: translateX(-36%); }
+    75%  { transform: translateX(-18%); }
+    100% { transform: translateX(0%); }
+  }
+
+  /* Barra de progreso minimal */
+  .progress{
+    width: 200px;
+    height: 4px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 999px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .progress > .bar{
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:0%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0.6));
+    border-radius:999px;
+  }
+
+  /* Pequeño texto de tiempos */
+  .time{
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: 6px;
+    min-width: 44px;
+    text-align: center;
+    font-family: monospace;
+  }
+
+  /* Estado bookmark (pequeño punto) */
+  .bookmark-ind{
+    width:8px;height:8px;border-radius:50%;
+    background: transparent;
+    border:1px solid var(--muted);
+    margin-left:6px;
+  }
+  .bookmark-ind.active{
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* Ocultar en pantallas muy pequeñas (opcional) */
+  @media (max-width:420px){
+    .progress, .vol{ display:none; }
+    .title-clip{ max-width: 140px; }
+  }
+</style>
   </style>
 </head>
 
@@ -241,86 +371,214 @@ position:absolute;margin-left:5%; box-shadow: 3px 5px 51px -11px rgba(0,0,0,1);t
 
   <!-- Contenido principal -->
  
+<div class="mini-player" aria-label="Reproductor minimal">
+  <!-- Play/Pause -->
+  <button class="mp-btn" id="playBtn" title="Play / Pause" aria-pressed="false">
+    <!-- play icon -->
+    <svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"></path></svg>
+    <!-- pause icon hidden initially (we'll toggle) -->
+    <svg viewBox="0 0 24 24" id="pauseIcon" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+  </button>
+
+  <!-- Volumen + mute -->
+  <div class="vol-wrap" aria-hidden="false">
+    <button class="mp-btn" id="muteBtn" title="Mute / Unmute">
+      <svg viewBox="0 0 24 24" id="volOn"><path d="M3 10v4h4l5 5V5L7 10H3z"/></svg>
+      <svg viewBox="0 0 24 24" id="volOff" style="display:none"><path d="M16.5 12c0-1.77-.77-3.37-1.98-4.47l-1.42 1.42C14.66 10.33 15.5 11.12 15.5 12s-.84 1.67-2.4 2.05l1.42 1.42C15.73 15.37 16.5 13.77 16.5 12zM5 9v6h4l5 5V4L9 9H5zM19 4l-2 2 2 2 2-2-2-2z"/></svg>
+    </button>
+
+    <input id="volSlider" class="vol" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volumen">
   </div>
 
-<!-- Reproductor oculto con pestaña flotante -->
-<div class="fixed bottom-4 left-0 z-50 group">
-  <!-- Contenedor deslizante -->
-  <div class="bg-white/90 rounded-r-xl px-4 py-2 shadow-lg w-80 -translate-x-[90%] group-hover:translate-x-0 transition-transform duration-300">
-    
-    <!-- Título con movimiento -->
-    <div class="overflow-hidden whitespace-nowrap">
-      <h1 class="text-gray-800 text-[10px] font-semibold animate-marquee">
-        TVアニメーション「LOVELESS」マキシシングル オープニングテーマ「月の呪縛(カース)」 c/w エンディングテーマ「みちゆき」
-      </h1>
-    </div>
-
-    <audio id="audio" src="song.mp3"></audio>
-
-    <div class="flex items-center gap-2 mt-2">
-      <button id="playBtn" class="text-xl text-gray-700 hover:text-black transition-all">▶</button>
-      <button id="muteBtn" class="text-lg text-gray-700 hover:text-black transition-all">🔊</button>
-      <input id="progressBar" type="range" value="0" class="w-full accent-gray-800 h-1" />
-      <span id="timeDisplay" class="text-[10px] text-gray-700 w-16 text-right">0:00 / 0:00</span>
-    </div>
+  <!-- Título (desplazable) -->
+  <div class="title-clip" aria-hidden="false">
+    <div class="track-title" id="trackTitle">Título de la canción — reemplaza con tu título</div>
   </div>
 
-  <!-- Pestaña visible siempre -->
+  <!-- Barra de progreso -->
+  <div class="progress" id="progress" title="Ir a posición">
+    <div class="bar" id="progressBar"></div>
+  </div>
 
+  <!-- Tiempo -->
+  <div class="time" id="time">0:00</div>
+
+  <!-- Bookmark (marca la posición) -->
+  <button class="mp-btn" id="bookmarkBtn" title="Guardar marcador (volver después)">
+    <svg viewBox="0 0 24 24"><path d="M6 2h12v20l-6-3-6 3V2z"/></svg>
+  </button>
+  <div class="bookmark-ind" id="bookmarkInd" title="Marcador activo"></div>
+
+  <!-- Botón para volver al marcador -->
+  <button class="mp-btn" id="gotoBookmarkBtn" title="Ir al marcador">
+    <svg viewBox="0 0 24 24"><path d="M12 8V4l8 8-8 8v-4H4V8z"/></svg>
+  </button>
 </div>
 
-<!-- Animación del texto -->
-<style>
-  @keyframes marquee {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-  }
-  .animate-marquee {
-    display: inline-block;
-    animation: marquee 10s linear infinite;
-  }
-</style>
+<!-- Audio (reemplaza src por tu archivo) -->
+<audio id="audio" preload="metadata" src="tu-audio.mp3"></audio>
 
-<!-- Script funcionalidad -->
 <script>
   const audio = document.getElementById('audio');
   const playBtn = document.getElementById('playBtn');
+  const playIcon = document.getElementById('playIcon');
+  const pauseIcon = document.getElementById('pauseIcon');
+  const volSlider = document.getElementById('volSlider');
   const muteBtn = document.getElementById('muteBtn');
+  const volOn = document.getElementById('volOn');
+  const volOff = document.getElementById('volOff');
+  const progress = document.getElementById('progress');
   const progressBar = document.getElementById('progressBar');
-  const timeDisplay = document.getElementById('timeDisplay');
+  const timeLabel = document.getElementById('time');
+  const bookmarkBtn = document.getElementById('bookmarkBtn');
+  const bookmarkInd = document.getElementById('bookmarkInd');
+  const gotoBookmarkBtn = document.getElementById('gotoBookmarkBtn');
+  const trackTitle = document.getElementById('trackTitle');
 
-  playBtn.addEventListener('click', () => {
-    if (audio.paused) {
-      audio.play();
-      playBtn.textContent = '⏸';
+  // Estado de volumen inicial (valor del slider)
+  audio.volume = parseFloat(volSlider.value);
+
+  // Toggle play/pause
+  function updatePlayVisual(isPlaying){
+    if(isPlaying){
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = '';
+      playBtn.setAttribute('aria-pressed','true');
     } else {
-      audio.pause();
-      playBtn.textContent = '▶';
+      playIcon.style.display = '';
+      pauseIcon.style.display = 'none';
+      playBtn.setAttribute('aria-pressed','false');
     }
+  }
+  playBtn.addEventListener('click', () => {
+    if(audio.paused) audio.play();
+    else audio.pause();
+  });
+
+  audio.addEventListener('play', () => updatePlayVisual(true));
+  audio.addEventListener('pause', () => updatePlayVisual(false));
+
+  // Volume + mute
+  volSlider.addEventListener('input', (e) => {
+    audio.volume = e.target.value;
+    if(audio.volume === 0) {
+      audio.muted = true;
+      volOn.style.display='none'; volOff.style.display='';
+    } else {
+      audio.muted = false;
+      volOn.style.display=''; volOff.style.display='none';
+    }
+    localStorage.setItem('miniPlayerVol', audio.volume.toString());
   });
 
   muteBtn.addEventListener('click', () => {
     audio.muted = !audio.muted;
-    muteBtn.textContent = audio.muted ? '🔇' : '🔊';
-  });
-
-  audio.addEventListener('timeupdate', () => {
-    if (!isNaN(audio.duration)) {
-      progressBar.value = (audio.currentTime / audio.duration) * 100;
-
-      const formatTime = t => {
-        const m = Math.floor(t / 60);
-        const s = Math.floor(t % 60).toString().padStart(2, '0');
-        return `${m}:${s}`;
-      };
-
-      timeDisplay.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+    if(audio.muted){
+      volOn.style.display='none'; volOff.style.display='';
+    } else {
+      volOn.style.display=''; volOff.style.display='none';
     }
   });
 
-  progressBar.addEventListener('input', () => {
-    audio.currentTime = (progressBar.value / 100) * audio.duration;
+  // Progress bar update
+  audio.addEventListener('timeupdate', () => {
+    if(isFinite(audio.duration) && audio.duration > 0){
+      const pct = (audio.currentTime / audio.duration) * 100;
+      progressBar.style.width = pct + '%';
+      timeLabel.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
+    } else {
+      timeLabel.textContent = formatTime(audio.currentTime);
+    }
   });
+
+  // click to seek
+  progress.addEventListener('click', (e) => {
+    if(!isFinite(audio.duration)) return;
+    const rect = progress.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const pct = x / rect.width;
+    audio.currentTime = pct * audio.duration;
+  });
+
+  function formatTime(s){
+    if(!isFinite(s) || isNaN(s)) return '0:00';
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60).toString().padStart(2,'0');
+    return `${m}:${sec}`;
+  }
+
+  // Bookmark: guarda posición actual en localStorage
+  const BOOKMARK_KEY = 'miniPlayer_bookmark';
+  bookmarkBtn.addEventListener('click', () => {
+    const data = { time: audio.currentTime, at: Date.now(), src: audio.currentSrc || audio.src };
+    localStorage.setItem(BOOKMARK_KEY, JSON.stringify(data));
+    updateBookmarkIndicator();
+  });
+
+  function updateBookmarkIndicator(){
+    const raw = localStorage.getItem(BOOKMARK_KEY);
+    if(!raw){ bookmarkInd.classList.remove('active'); return; }
+    try{
+      const b = JSON.parse(raw);
+      // si el bookmark corresponde a la misma fuente de audio, lo activamos
+      if(b && b.src && (b.src === (audio.currentSrc || audio.src))){
+        bookmarkInd.classList.add('active');
+      } else {
+        bookmarkInd.classList.remove('active');
+      }
+    }catch(e){ bookmarkInd.classList.remove('active'); }
+  }
+
+  // Ir al bookmark (si existe)
+  gotoBookmarkBtn.addEventListener('click', () => {
+    const raw = localStorage.getItem(BOOKMARK_KEY);
+    if(!raw) return;
+    try{
+      const b = JSON.parse(raw);
+      if(!b) return;
+      // si la fuente es diferente, cambiamos la src y esperamos a cargar
+      if(b.src && b.src !== (audio.currentSrc || audio.src)){
+        audio.src = b.src;
+        audio.addEventListener('loadedmetadata', function once(){ 
+          audio.currentTime = b.time || 0;
+          audio.play();
+          audio.removeEventListener('loadedmetadata', once);
+        });
+      } else {
+        audio.currentTime = b.time || 0;
+        audio.play();
+      }
+    }catch(e){ console.warn(e); }
+  });
+
+  // Guardar volumen preferido
+  const savedVol = localStorage.getItem('miniPlayerVol');
+  if(savedVol !== null){
+    audio.volume = parseFloat(savedVol);
+    volSlider.value = savedVol;
+  }
+
+  // Restaurar bookmark indicator al cargar
+  window.addEventListener('load', updateBookmarkIndicator);
+
+  // Título dinámico: si el audio tiene metadata, se podría intentar obtenerlo.
+  // Aquí dejamos la posibilidad de actualizar el texto dinámicamente:
+  // trackTitle.textContent = 'Nuevo título';
+
+  // Permitir control con teclado (opcional)
+  window.addEventListener('keydown', (e) => {
+    if(e.code === 'Space' && document.activeElement === document.body){
+      e.preventDefault();
+      if(audio.paused) audio.play(); else audio.pause();
+    }
+  });
+
+  // Pequeña mejora: si el usuario interactúa fuera del reproductor, no dejamos el foco en botón -> mejor UX
+  document.addEventListener('click', (e) => {
+    // no hacemos nada especial, solo para que se comporten botones
+  });
+
+  // Si necesitas que el título se mueva más lento o más largo, ajusta la animación CSS @keyframes y duration (ahora 12s)
 </script>
 
   <script>
@@ -346,6 +604,7 @@ position:absolute;margin-left:5%; box-shadow: 3px 5px 51px -11px rgba(0,0,0,1);t
 </main>
 </body>
 </html>
+
 
 
 
