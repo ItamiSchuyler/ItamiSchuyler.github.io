@@ -129,8 +129,10 @@
 
   <!-- Sidebar Galería (derecha) -->
   <div id="gallery" class="sidebar right-0 translate-x-full">
-    <h2 class="text-2xl font-semibold mb-4 p-4">Mis trabajos</h2>
-    <div class="grid grid-cols-1 gap-4 p-4 overflow-y-auto h-[85%]">
+  <button onclick="closeSidebar('gallery','right')" class="absolute top-4 right-4 text-black text-2xl focus:outline-none">×</button>
+  <h2 class="text-2xl font-semibold mb-4 p-4">Mis trabajos</h2>
+  <div class="grid grid-cols-1 gap-4 p-4 overflow-y-auto h-[85%]">
+    <!-- ... contenido de galería ... -->
       <div class="post-container rounded-xl overflow-hidden">
         <img src="https://i.postimg.cc/1XJXdS7x/fondo-molonisimo-hermosisismo-copia.gif" class="w-full h-64 object-cover"/>
         <div class="post-desc">Pcback diseño complejo + animación simple = 400 xats</div>
@@ -140,13 +142,15 @@
         <div class="post-desc">Pcback animación simple + diseño simple = 300 xats</div>
       </div>
     </div>
-    <button onclick="closeSidebar('gallery','right')" class="m-4 bg-transparent-500 text-black px-10 py-2 rounded-lg">→</button>
+    <button onclick="closeSidebar('gallery','right')" class="absolute top-4 right-4 text-black text-2xl focus:outline-none">×</button>
   </div>
 
   <!-- Sidebar Contactos (izquierda) -->
-  <div id="contacts" class="sidebar left-0 -translate-x-full">
-    <h2 class="text-2xl font-semibold mb-4 p-4">Amigos</h2>
-    <div  class="space-y-4 p-4 overflow-y-auto h-[85%]">
+ <div id="contacts" class="sidebar left-0 -translate-x-full">
+  <button onclick="closeSidebar('contacts','left')" class="absolute top-4 right-4 text-black text-2xl focus:outline-none">×</button>
+  <h2 class="text-2xl font-semibold mb-4 p-4">Amigos</h2>
+  <div class="space-y-4 p-4 overflow-y-auto h-[85%]">
+    <!-- ... contactos ... -->
       <a id="tarjeta" href="https://xat.me/taiga" target="_blank" class="flex items-center space-x-3 p-3 bg-white bg-opacity-70 backdrop-blur-xl rounded-xl">
         <img src="https://i.postimg.cc/CKmGjyY2/tumblr-bb86d9f619bf2489197d002711884c82-ac1f61d2-250.jpg" class="w-12 h-12 rounded-full">
         <span>Tai</span>
@@ -156,7 +160,7 @@
         <span>César</span>
       </a>
     </div>
-    <button onclick="closeSidebar('contacts','left')" class="m-4 bg-transparent-500 text-black px-10 py-2 rounded-lg">←</button>
+<button onclick="closeSidebar('contacts','left')" class="absolute top-4 right-4 text-black text-2xl focus:outline-none">×</button>
   </div>
 
   <script>
@@ -218,6 +222,7 @@
 
 </body>
 </html>
+
 
 
 
