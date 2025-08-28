@@ -39,107 +39,7 @@
       display: inline-block;
       animation: marquee 10s linear infinite;
     }
-     
-.perfil-circulo {background: #7a0101;
-background: linear-gradient(0deg, rgba(122, 1, 1, 1) 0%, rgba(26, 24, 24, 1) 100%);border-radius:7%;width:230px;margin-top:1.5%;height:500px;border-style: 20px solid #2a2a2a;
-position:absolute;margin-left:5%; box-shadow: 3px 5px 51px -11px rgba(0,0,0,1);transition: transform 0.4s ease, box-shadow 0.4s ease;
-  transform-style: preserve-3d;
-  perspective: 1000px;}
 
-    .circle-link {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background-color: #000;
-  border-radius: 50%;
-  box-shadow: 3px 5px 51px -11px rgba(0, 0, 0, 1);
-  transition: transform 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
-    margin-left:5%;
-      position:absolute;
-
-}
-
-
-.circle-link:hover {
-  transform: scale(0.95);
-  background-color: #fff;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-      .circle-link2 {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background-color: #000;
-  border-radius: 50%;
-  box-shadow: 3px 5px 51px -11px rgba(0, 0, 0, 1);
-  transition: transform 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
-    margin-left:6.5%;
-      position:absolute;
-
-}
-
-
-.circle-link2:hover {
-  transform: scale(0.95);
-  background-color: #fff;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
-}
-.foto {border-radius:7px;position:relative}
-
-.desc {color:#e1e1e1;font-size:10px;font-family:arial;text-align:center;position:relative}
-
-    
-.posts-dentro {background-color:#00;border: 2px solid #3c4448;width:600px;height:500px;border-radius:7%;margin-left:20%;overflow-y: auto; /* Scroll vertical */
-  display: block;
-  flex-direction: column;
-  gap: 12px;margin-top:1.5%}
-
-    /* Scrollbar personalizado */
-.posts-dentro::-webkit-scrollbar {
-  width: 10px; /* Ancho del scrollbar */
-}
-
-.posts-dentro::-webkit-scrollbar-track {
-  background: #e0e0e0; /* Fondo del track */
-  border-radius: 10px;
-}
-
-.posts-dentro::-webkit-scrollbar-thumb {
-  background-color: linear-gradient(90deg,rgba(140, 32, 32, 1) 0%, rgba(54, 54, 54, 1) 50%, rgba(191, 32, 8, 1) 100%); /* Color del thumb (barra) */
-  border-radius: 10px;
-  border: 2px solid #e0e0e0; /* Espacio alrededor del thumb */
-}
-
-.posts-dentro::-webkit-scrollbar-thumb:hover {
-  background-color: #555; /* Color cuando pasas el mouse */
-}
-
-/* Para Firefox */
-.posts-dentro {
-  scrollbar-width: thin;
-  scrollbar-color: #888 #e0e0e0;
-}
-
-    .posts {background:#171717;width:500px;height:400px;border-radius:7%;margin-top:5%;margin-left:8%;margin-bottom: 12px;box-shadow: 3px 5px 51px -11px rgba(0,0,0,1);transition: transform 0.4s ease, box-shadow 0.4s ease;
-  transform-style: preserve-3d;
-  perspective: 1000px;
-  
-  
-}
-
-    .descposts {color:#e1e1e1;font-size:10px;font-family:arial;text-align:center;position:relative;padding-top:5%}
-
-    .post:hover {
-  transform: scale(0.97) translateZ(-10px);
-  box-shadow: 1px 3px 20px -5px rgba(0, 0, 0, 0.6);
-}
-
-    .perfil-circulo:hover {
-  transform: scale(0.97) translateZ(-10px);
-  box-shadow: 1px 3px 20px -5px rgba(0, 0, 0, 0.6);
-}
-    
    <title>Estela de Corazones</title>
   <style>
     body {
@@ -150,7 +50,7 @@ position:absolute;margin-left:5%; box-shadow: 3px 5px 51px -11px rgba(0,0,0,1);t
 
     .heart {
       position: absolute;
-      color: #630E0E;
+      color: #CF6391;
       font-size: 10px;
       pointer-events: none;
       animation: floatUp 1s ease-out forwards;
@@ -169,44 +69,7 @@ position:absolute;margin-left:5%; box-shadow: 3px 5px 51px -11px rgba(0,0,0,1);t
 
    
 
-    .logo{
-  height:150px;                 /* alto de la franja   */
-  position:relative;
-  /* 1º el gradiente (encima), 2º la imagen (debajo)   */
-  background:
-    linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%),
-    url("header.png") center/cover no-repeat;
-  z-index:2;                    /* sigue sobre el vídeo */
-  overflow:hidden;
-}
-    .redes {width:420px;height:25px;margin-left:25%;margin-top:3%;position:relative;transition: transform 0.3s ease;
-    cursor: pointer;}
-
-    .redes:hover {
-      transform: scale(1.1);
-    }
-
-    .firma {
-      margin: 10px 10px;
-      font-size: 12px;
-      font-family:Verdana;
-      background: linear-gradient(90deg, #630E0E, black);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      display: inline-block;
-      cursor: default;
-      transition: letter-spacing 0.3s ease, transform 0.3s ease;margin-left:6.5%;
-    }
-
-
-    .postimgs{border-radius: 7% 7% 0 0; }
-
-              
- .firma:hover {
-      letter-spacing: 4px;
-      transform: translateY(-2px);
-    }
-
+  
     <title>Reproductor minimal fijo</title>
     
 <style>
@@ -264,7 +127,7 @@ position:absolute;margin-left:5%; box-shadow: 3px 5px 51px -11px rgba(0,0,0,1);t
     -webkit-appearance:none;
     width: 12px; height: 12px; border-radius:50%;
     background: var(--accent);
-    box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
+    box-shadow: 0 0 0 3px rgba(250, 183, 218, 0.8);
   }
 
   /* Título con movimiento lateral */
@@ -305,7 +168,7 @@ position:absolute;margin-left:5%; box-shadow: 3px 5px 51px -11px rgba(0,0,0,1);t
     position:absolute;
     left:0; top:0; bottom:0;
     width:0%;
-    background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0.6));
+    background: linear-gradient(90deg, rgba(250, 183, 218, 0.8), rgba(255,255,255,0.6));
     border-radius:999px;
   }
 
@@ -344,38 +207,10 @@ position:absolute;margin-left:5%; box-shadow: 3px 5px 51px -11px rgba(0,0,0,1);t
   
 <body>
 
-  
-  <header class="logo"></header>
 
   
   <main>
-<a href="https://itamich.carrd.com">
-         <img class="redes" src="https://i.postimg.cc/XJdr7C07/redes-2.png" alt="mis redes sociales">
-</a>
-<a href="http://xat.me/taiga" target="_blank" class="circle-link"></a><a href="http://xat.me/necessarius" target="_blank" class="circle-link2"></a>
 
-  
- <div class="perfil-circulo">
-     <img class="foto" src="https://i.ibb.co/7d0brR74/116243430-p0-master1200.jpg" alt="mi trabajo 1">
-   <div class="descposts"> Pcback con animación simple + diseño complejo = 400 xats </div>
- </br>
-   <div class="desc"> Space en mantenimiento :D  </div>
-   </div>
-<div class="posts-dentro">
-  <div class="posts">
-  
-     <img class="postimgs" src="https://i.ibb.co/bjXCrNWr/fondo-molonisimo-hermosisismo-copia.gif" alt="Descripción de la imagen">
-   </div>
-   <div class="posts">
-   </div>
-   <div class="posts">
-   </div>
-  </div>
-    
-    <div class="firma">
-    Coded & designed by Itami
-  </div>
-  
   <!-- Video de fondo -->
   <video id="bgVideo" autoplay muted loop playsinline>
     <source src="fondoo.mp4" type="video/mp4">
@@ -405,7 +240,7 @@ position:absolute;margin-left:5%; box-shadow: 3px 5px 51px -11px rgba(0,0,0,1);t
 
   <!-- Título (desplazable) -->
   <div class="title-clip" aria-hidden="false">
-    <div class="track-title" id="trackTitle">Golden Hour - JVKE</div>
+    <div class="track-title" id="trackTitle">君の行方 - Kocho</div>
   </div>
 
   <!-- Barra de progreso -->
@@ -617,6 +452,7 @@ position:absolute;margin-left:5%; box-shadow: 3px 5px 51px -11px rgba(0,0,0,1);t
 </main>
 </body>
 </html>
+
 
 
 
