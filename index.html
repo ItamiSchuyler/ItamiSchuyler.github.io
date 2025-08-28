@@ -2,48 +2,40 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Pantalla de bloqueo</title>
-
-  <!-- Tailwind -->
+  <title>Pantalla de Bloqueo</title>
   <script src="https://cdn.tailwindcss.com"></script>
-
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
-      font-family: monospace;
-    }
-
-    /* Video como fondo */
-    video#bgVideo {
-      position: fixed;
-      top: 0;
-      left: 0;
-      min-width: 100%;
-      min-height: 100%;
-      object-fit: cover;
-      z-index: -2;
-    }
-
-    /* Animación notificaciones */
     @keyframes slideIn {
-      from { transform: translateY(-100%); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
     }
-    .notif-enter {
-      animation: slideIn 0.5s ease forwards;
+    @keyframes slideOut {
+      from { transform: translateX(0); }
+      to { transform: translateX(100%); }
     }
-
-    /* Hover descripción tipo Tumblr */
-    .post-container {
-      position: relative;
-      overflow: hidden;
+    .sidebar {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 400px;
+      height: 100%;
+      background: rgba(10,10,10,0.95);
+      color: white;
+      transform: translateX(100%);
+      z-index: 50;
     }
+    .sidebar.show {
+      animation: slideIn 0.4s forwards;
+    }
+    .sidebar.hide {
+      animation: slideOut 0.4s forwards;
+    }
+    /* Hover descripción posts */
+    .post-container { position: relative; }
     .post-desc {
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      inset: 0;
       background: rgba(0,0,0,0.7);
       color: white;
       display: flex;
@@ -52,114 +44,45 @@
       opacity: 0;
       transition: opacity 0.3s ease;
     }
-    .post-container:hover .post-desc {
-      opacity: 1;
-    }
-
-    /* Corazones flotando */
-    .heart {
-      position: absolute;
-      color: #CF6391;
-      font-size: 10px;
-      pointer-events: none;
-      animation: floatUp 1s ease-out forwards;
-    }
-    @keyframes floatUp {
-      0% { opacity: 1; transform: translateY(0) scale(1); }
-      100% { opacity: 0; transform: translateY(-40px) scale(1.5) rotate(20deg); }
-    }
-
-    /* --- Reproductor de música --- */
-    :root {
-      --size: 44px;
-      --accent: #948A90;
-      --muted: rgba(255,255,255,0.45);
-    }
-    .mini-player {
-      position: fixed;
-      left: 12px;
-      bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      z-index: 9999;
-      background: transparent;
-      padding: 6px;
-      border-radius: 8px;
-    }
-    .mp-btn {
-      width: var(--size);
-      height: var(--size);
-      display: inline-grid;
-      place-items: center;
-      cursor: pointer;
-      color: var(--accent);
-    }
-    .mp-btn svg { width: 20px; height: 20px; fill: currentColor; }
-    .vol-wrap { display:flex; align-items:center; gap:6px; }
-    .vol {
-      width: 110px;
-      appearance:none;
-      height: 4px;
-      background: linear-gradient(90deg,rgba(250,183,218,0.8),rgba(215,215,215,0.48));
-      border-radius: 999px;
-      cursor: pointer;
-    }
-    .vol::-webkit-slider-thumb {
-      appearance:none;
-      width: 12px; height: 12px; border-radius:50%;
-      background: var(--accent);
-    }
-    .title-clip { max-width: 220px; overflow: hidden; }
-    .track-title {
-      display:inline-block; white-space:nowrap;
-      font-size: 13px; color: var(--accent);
-      animation: slideX 12s linear infinite;
-      padding: 0 6px;
-    }
-    @keyframes slideX {
-      0% { transform: translateX(0%); }
-      50% { transform: translateX(-36%); }
-      100% { transform: translateX(0%); }
-    }
-    .progress {
-      width: 200px; height: 4px; background: rgba(255,255,255,0.08);
-      border-radius: 999px; position: relative; cursor:pointer;
-    }
-    .progress > .bar {
-      position:absolute; top:0; left:0; bottom:0;
-      width:0%; background: linear-gradient(90deg,rgba(250,183,218,0.8),rgba(255,255,255,0.6));
-      border-radius:999px;
-    }
-    .time { font-size: 11px; color: var(--muted); min-width:44px; text-align:center; }
-    .bookmark-ind {
-      width:8px; height:8px; border-radius:50%;
-      background:transparent; border:1px solid var(--muted);
-    }
-    .bookmark-ind.active { background: var(--accent); border-color: var(--accent); }
+    .post-container:hover .post-desc { opacity: 1; }
   </style>
 </head>
-<body class="text-white">
+<body class="h-screen w-screen overflow-hidden text-white font-sans relative">
 
-  <!-- Fondo video -->
-  <video id="bgVideo" autoplay muted loop playsinline>
+  <!-- Video de fondo -->
+  <video autoplay muted loop id="bgVideo" class="absolute top-0 left-0 w-full h-full object-cover -z-10">
     <source src="fondoo.mp4" type="video/mp4">
   </video>
 
   <!-- Pantalla de bloqueo -->
-  <div id="lockscreen" class="h-screen flex flex-col justify-between items-center p-8">
-    <div class="text-6xl font-bold mt-12" id="clock"></div>
-    <div id="notifications" class="w-full max-w-sm"></div>
-    <div class="flex space-x-12 mb-12">
-      <button id="callsBtn" class="text-4xl">📞</button>
-      <button id="cameraBtn" class="text-4xl">📷</button>
+  <div id="lockscreen" class="h-full w-full flex flex-col items-center justify-between p-6">
+    <div class="mt-16 text-center">
+      <h1 id="clock" class="text-6xl font-bold"></h1>
+      <p class="text-lg text-gray-300">Martes, 28 de Agosto</p>
+    </div>
+
+    <!-- Notificaciones -->
+    <div id="notifications" class="absolute top-28 w-11/12 max-w-md"></div>
+
+    <!-- Reproductor música -->
+    <div class="absolute bottom-28 bg-black bg-opacity-60 px-4 py-2 rounded-xl shadow-lg flex items-center space-x-2">
+      🎵 <audio id="player" controls autoplay loop>
+        <source src="song.mp3" type="audio/mp3">
+        Tu navegador no soporta audio.
+      </audio>
+    </div>
+
+    <!-- Barra inferior -->
+    <div class="flex justify-between w-full px-8 mb-8">
+      <button id="callsBtn" class="p-4 bg-gray-800 rounded-full shadow-lg">📞</button>
+      <button id="cameraBtn" class="p-4 bg-gray-800 rounded-full shadow-lg">📷</button>
     </div>
   </div>
 
-  <!-- Galería -->
-  <div id="gallery" class="hidden h-full w-full bg-gray-950 text-white p-6 overflow-y-scroll">
-    <h2 class="text-2xl mb-4">Galería de Posts</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  <!-- Sidebar Galería -->
+  <div id="gallery" class="sidebar">
+    <h2 class="text-2xl mb-4 p-4">Galería de Posts</h2>
+    <div class="grid grid-cols-1 gap-4 p-4 overflow-y-auto h-[85%]">
       <div class="post-container rounded-xl overflow-hidden">
         <img src="https://placekitten.com/400/300" class="w-full h-64 object-cover"/>
         <div class="post-desc">Gatito descansando</div>
@@ -169,13 +92,13 @@
         <div class="post-desc">Oso en la naturaleza</div>
       </div>
     </div>
-    <button onclick="backToLock()" class="mt-6 bg-red-500 px-4 py-2 rounded-lg">Volver</button>
+    <button onclick="closeSidebar('gallery')" class="m-4 bg-red-500 px-4 py-2 rounded-lg">Cerrar</button>
   </div>
 
-  <!-- Contactos -->
-  <div id="contacts" class="hidden h-full w-full bg-gray-950 text-white p-6 overflow-y-scroll">
-    <h2 class="text-2xl mb-4">Contactos</h2>
-    <div class="space-y-4">
+  <!-- Sidebar Contactos -->
+  <div id="contacts" class="sidebar">
+    <h2 class="text-2xl mb-4 p-4">Contactos</h2>
+    <div class="space-y-4 p-4 overflow-y-auto h-[85%]">
       <a href="https://xat.me/taiga" target="_blank" class="flex items-center space-x-3 p-3 bg-gray-800 rounded-xl">
         <img src="https://i.pravatar.cc/50?img=1" class="w-12 h-12 rounded-full">
         <span>Amigo 1</span>
@@ -185,46 +108,24 @@
         <span>Amigo 2</span>
       </a>
     </div>
-    <button onclick="backToLock()" class="mt-6 bg-red-500 px-4 py-2 rounded-lg">Volver</button>
+    <button onclick="closeSidebar('contacts')" class="m-4 bg-red-500 px-4 py-2 rounded-lg">Cerrar</button>
   </div>
-
-  <!-- Reproductor -->
-  <div class="mini-player">
-    <button class="mp-btn" id="playBtn">
-      <svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"></path></svg>
-      <svg viewBox="0 0 24 24" id="pauseIcon" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-    </button>
-    <div class="vol-wrap">
-      <button class="mp-btn" id="muteBtn">
-        <svg viewBox="0 0 24 24" id="volOn"><path d="M3 10v4h4l5 5V5L7 10H3z"/></svg>
-        <svg viewBox="0 0 24 24" id="volOff" style="display:none"><path d="M16.5 12..."/></svg>
-      </button>
-      <input id="volSlider" class="vol" type="range" min="0" max="1" step="0.01" value="0.8">
-    </div>
-    <div class="title-clip"><div class="track-title" id="trackTitle">君の行方 - Kocho</div></div>
-    <div class="progress" id="progress"><div class="bar" id="progressBar"></div></div>
-    <div class="time" id="time">0:00</div>
-    <button class="mp-btn" id="bookmarkBtn"><svg viewBox="0 0 24 24"><path d="M6 2h12v20l-6-3-6 3V2z"/></svg></button>
-    <div class="bookmark-ind" id="bookmarkInd"></div>
-    <button class="mp-btn" id="gotoBookmarkBtn"><svg viewBox="0 0 24 24"><path d="M12 8V4l8 8-8 8v-4H4V8z"/></svg></button>
-  </div>
-  <audio id="audio" preload="metadata" src="song.mp3"></audio>
 
   <script>
-    // Reloj
+    // Reloj en tiempo real
     function updateClock() {
       const now = new Date();
       document.getElementById("clock").textContent =
         now.getHours().toString().padStart(2,'0') + ":" +
         now.getMinutes().toString().padStart(2,'0');
     }
-    setInterval(updateClock, 1000);
-    updateClock();
+    setInterval(updateClock, 1000); updateClock();
 
     // Notificaciones
     const notifs = [
       { icon: "💬", text: "Nuevo mensaje de Itami" },
-      { icon: "📧", text: "Correo recibido" }
+      { icon: "📧", text: "Correo recibido" },
+      { icon: "🎮", text: "Invitación a jugar Elden Ring" }
     ];
     let i = 0;
     setInterval(() => {
@@ -237,35 +138,26 @@
       }
     }, 4000);
 
-    // Navegación
-    document.getElementById("cameraBtn").onclick = () => {
-      document.getElementById("lockscreen").classList.add("hidden");
-      document.getElementById("gallery").classList.remove("hidden");
-    };
-    document.getElementById("callsBtn").onclick = () => {
-      document.getElementById("lockscreen").classList.add("hidden");
-      document.getElementById("contacts").classList.remove("hidden");
-    };
-    function backToLock(){
-      document.getElementById("gallery").classList.add("hidden");
-      document.getElementById("contacts").classList.add("hidden");
-      document.getElementById("lockscreen").classList.remove("hidden");
+    // Sidebar control
+    function openSidebar(id){
+      const el = document.getElementById(id);
+      el.classList.remove("hide");
+      el.classList.add("show");
+    }
+    function closeSidebar(id){
+      const el = document.getElementById(id);
+      el.classList.remove("show");
+      el.classList.add("hide");
+      setTimeout(()=>{ el.classList.remove("hide"); el.style.transform="translateX(100%)"; },400);
     }
 
-    // Estela corazones
-    document.addEventListener('mousemove', e => {
-      const heart = document.createElement('div');
-      heart.classList.add('heart');
-      heart.innerText = '❤';
-      heart.style.left = `${e.clientX}px`;
-      heart.style.top = `${e.clientY}px`;
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 1000);
-    });
+    document.getElementById("cameraBtn").onclick = ()=> openSidebar("gallery");
+    document.getElementById("callsBtn").onclick = ()=> openSidebar("contacts");
   </script>
-  <!-- Aquí también va el JS de tu reproductor, pero lo dejé fuera para no alargar -->
+
 </body>
 </html>
+
 
 
 
