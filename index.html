@@ -85,7 +85,33 @@
   transform: rotate(-45deg) translateY(100%);
 }
 
-    .notifications {margin-top:10%}
+
+    /* Zoom en imágenes de galería */
+.post-container img {
+  transition: transform 0.4s ease;
+}
+.post-container:hover img {
+  transform: scale(1.1);
+}
+
+/* Animación de botones (cámara y llamada) */
+.btn-anim {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-anim:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Relieve en contactos */
+.tarjeta {
+  transition: all 0.4s ease;
+  position: relative; /* importante para ::before */
+}
+.tarjeta:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
     
   </style>
 </head>
@@ -122,8 +148,8 @@
 
     <!-- Barra inferior -->
     <div class="flex justify-between w-full px-8 mb-8">
-      <button id="callsBtn" class="p-4 bg-white bg-opacity-70 backdrop-blur-xl rounded-full shadow-lg">📞</button>
-      <button id="cameraBtn" class="p-4 bg-white bg-opacity-70 backdrop-blur-xl rounded-full shadow-lg">📷</button>
+    <button id="callsBtn" class="btn-anim p-4 bg-white bg-opacity-70 backdrop-blur-xl rounded-full shadow-lg">📞</button>
+<button id="cameraBtn" class="btn-anim p-4 bg-white bg-opacity-70 backdrop-blur-xl rounded-full shadow-lg">📷</button>
     </div>
   </div>
 
@@ -222,6 +248,7 @@
 
 </body>
 </html>
+
 
 
 
