@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>space de itami</title>
+  <title>bloqueo</title>
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -200,6 +200,39 @@
     .progress, .vol{ display:none; }
     .title-clip{ max-width: 140px; }
   }
+
+    /* Animación para notificaciones */
+@keyframes slideIn {
+from { transform: translateY(-100%); opacity: 0; }
+to { transform: translateY(0); opacity: 1; }
+}
+.notif-enter {
+animation: slideIn 0.5s ease forwards;
+}
+
+
+/* Hover descripción */
+.post-container {
+position: relative;
+overflow: hidden;
+}
+.post-desc {
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: rgba(0,0,0,0.7);
+color: white;
+display: flex;
+align-items: center;
+justify-content: center;
+opacity: 0;
+transition: opacity 0.3s ease;
+}
+.post-container:hover .post-desc {
+opacity: 1;
+}
 </style>
   </style>
 </head>
@@ -210,6 +243,101 @@
 
   
   <main>
+
+    <body class="h-screen w-screen bg-gray-900 text-white flex items-center justify-center font-sans">
+<!-- Galería -->
+<div id="gallery" class="hidden h-full w-full bg-gray-950 text-white p-6 overflow-y-scroll">
+<h2 class="text-2xl mb-4">Galería de Posts</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="post-container rounded-xl overflow-hidden">
+<img src="https://placekitten.com/400/300" class="w-full h-64 object-cover"/>
+<div class="post-desc">Gatito descansando</div>
+</div>
+<div class="post-container rounded-xl overflow-hidden">
+<img src="https://placebear.com/400/300" class="w-full h-64 object-cover"/>
+<div class="post-desc">Oso en la naturaleza</div>
+</div>
+<div class="post-container rounded-xl overflow-hidden">
+<img src="https://picsum.photos/400/300?random=1" class="w-full h-64 object-cover"/>
+<div class="post-desc">Paisaje aleatorio</div>
+</div>
+<div class="post-container rounded-xl overflow-hidden">
+<img src="https://picsum.photos/400/300?random=2" class="w-full h-64 object-cover"/>
+<div class="post-desc">Foto artística</div>
+</div>
+</div>
+<button onclick="backToLock()" class="mt-6 bg-red-500 px-4 py-2 rounded-lg">Volver</button>
+</div>
+
+
+<!-- Contactos -->
+<div id="contacts" class="hidden h-full w-full bg-gray-950 text-white p-6 overflow-y-scroll">
+<h2 class="text-2xl mb-4">Contactos</h2>
+<div class="space-y-4">
+<a href="https://xat.me/taiga" target="_blank" class="flex items-center space-x-3 p-3 bg-gray-800 rounded-xl">
+<img src="https://i.pravatar.cc/50?img=1" class="w-12 h-12 rounded-full">
+<span>Amigo 1</span>
+</a>
+<a href="https://xat.me/itami" target="_blank" class="flex items-center space-x-3 p-3 bg-gray-800 rounded-xl">
+<img src="https://i.pravatar.cc/50?img=2" class="w-12 h-12 rounded-full">
+<span>Amigo 2</span>
+</a>
+<a href="https://xat.me/marin" target="_blank" class="flex items-center space-x-3 p-3 bg-gray-800 rounded-xl">
+<img src="https://i.pravatar.cc/50?img=3" class="w-12 h-12 rounded-full">
+<span>Amigo 3</span>
+</a>
+</div>
+<button onclick="backToLock()" class="mt-6 bg-red-500 px-4 py-2 rounded-lg">Volver</button>
+</div>
+
+
+<script>
+// Reloj en tiempo real
+function updateClock() {
+const now = new Date();
+document.getElementById("clock").textContent =
+now.getHours().toString().padStart(2,'0') + ":" +
+now.getMinutes().toString().padStart(2,'0');
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+
+// Mostrar notificaciones
+const notifs = [
+{ icon: "💬", text: "Nuevo mensaje de Itami" },
+{ icon: "📧", text: "Correo recibido" },
+{ icon: "🎮", text: "Invitación a jugar Elden Ring" }
+];
+let i = 0;
+setInterval(() => {
+if (i < notifs.length) {
+const notif = document.createElement("div");
+notif.className = "notif-enter flex items-center space-x-3 bg-gray-800 p-3 mb-2 rounded-xl shadow-lg";
+notif.innerHTML = `<span>${notifs[i].icon}</span><span>${notifs[i].text}</span>`;
+document.getElementById("notifications").prepend(notif);
+i++;
+}
+}, 4000);
+
+
+// Botones
+document.getElementById("cameraBtn").onclick = () => {
+document.getElementById("lockscreen").classList.add("hidden");
+document.getElementById("gallery").classList.remove("hidden");
+};
+document.getElementById("callsBtn").onclick = () => {
+document.getElementById("lockscreen").classList.add("hidden");
+document.getElementById("contacts").classList.remove("hidden");
+};
+
+
+function backToLock(){
+document.getElementById("gallery").classList.add("hidden");
+document.getElementById("contacts").classList.add("hidden");
+document.getElementById("lockscreen").classList.remove("hidden");
+}
+</script>
 
   <!-- Video de fondo -->
   <video id="bgVideo" autoplay muted loop playsinline>
@@ -452,6 +580,7 @@
 </main>
 </body>
 </html>
+
 
 
 
