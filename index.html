@@ -5,22 +5,16 @@
   <title>Pantalla de Bloqueo</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    /* Animación notificaciones */
     @keyframes notifSlide {
       from { opacity: 0; transform: translateY(-20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .notification {
-      animation: notifSlide 0.5s ease forwards;
-    }
-    /* Sidebar animaciones */
-    @keyframes slideIn {
-      from { transform: translateX(100%); }
-      to { transform: translateX(0); }
-    }
-    @keyframes slideOut {
-      from { transform: translateX(0); }
-      to { transform: translateX(100%); }
-    }
+    .notification { animation: notifSlide 0.5s ease forwards; }
+
+    /* Sidebar */
+    @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+    @keyframes slideOut { from { transform: translateX(0); } to { transform: translateX(100%); } }
     .sidebar {
       position: absolute;
       top: 0;
@@ -28,27 +22,27 @@
       width: 100%;
       max-width: 400px;
       height: 100%;
-      background: rgba(10,10,10,0.95);
-      color: white;
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(20px);
+      color: black;
       transform: translateX(100%);
       z-index: 50;
     }
     .sidebar.show { animation: slideIn 0.4s forwards; }
     .sidebar.hide { animation: slideOut 0.4s forwards; }
-    /* Posts Tumblr */
+
+    /* Posts estilo Tumblr */
     .post-container { position: relative; }
     .post-desc {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,0.75);
+      color: black;
+      display: flex; align-items: center; justify-content: center;
       opacity: 0;
       transition: opacity 0.3s ease;
     }
     .post-container:hover .post-desc { opacity: 1; }
+
     /* Reproductor minimalista */
     .marquee {
       overflow: hidden;
@@ -56,34 +50,133 @@
       animation: scrollText 10s linear infinite;
     }
     @keyframes scrollText {
-      0% { transform: translat
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+  </style>
+</head>
+<body class="h-screen w-screen overflow-hidden font-sans relative text-black">
 
+  <!-- Fondo vídeo -->
+  <video autoplay muted loop id="bgVideo" class="absolute top-0 left-0 w-full h-full object-cover -z-10">
+    <source src="tu-video.mp4" type="video/mp4">
+  </video>
 
+  <!-- Pantalla de bloqueo -->
+  <div id="lockscreen" class="h-full w-full flex flex-col items-center justify-between p-6">
 
+    <!-- Hora -->
+    <div class="mt-16 text-center text-white drop-shadow-lg">
+      <h1 id="clock" class="text-6xl font-bold"></h1>
+      <p class="text-lg">Martes, 28 de Agosto</p>
+    </div>
 
+    <!-- Notificaciones -->
+    <div id="notifications" class="absolute top-40 w-11/12 max-w-md"></div>
 
+    <!-- Reproductor minimalista -->
+    <div class="absolute bottom-28 bg-white bg-opacity-60 backdrop-blur-xl px-4 py-2 rounded-xl shadow-lg flex items-center space-x-4">
+      <button id="muteBtn">🔊</button>
+      <div class="w-40 overflow-hidden">
+        <div class="marquee">🎵 Mi Canción Favorita - Artista</div>
+      </div>
+      <audio id="player" loop autoplay>
+        <source src="tu-musica.mp3" type="audio/mp3">
+      </audio>
+    </div>
 
+    <!-- Barra inferior -->
+    <div class="flex justify-between w-full px-8 mb-8">
+      <button id="callsBtn" class="p-4 bg-white bg-opacity-70 backdrop-blur-xl rounded-full shadow-lg">📞</button>
+      <button id="cameraBtn" class="p-4 bg-white bg-opacity-70 backdrop-blur-xl rounded-full shadow-lg">📷</button>
+    </div>
+  </div>
 
+  <!-- Sidebar Galería -->
+  <div id="gallery" class="sidebar">
+    <h2 class="text-2xl font-semibold mb-4 p-4">Galería de Posts</h2>
+    <div class="grid grid-cols-1 gap-4 p-4 overflow-y-auto h-[85%]">
+      <div class="post-container rounded-xl overflow-hidden">
+        <img src="https://placekitten.com/400/300" class="w-full h-64 object-cover"/>
+        <div class="post-desc">Gatito descansando</div>
+      </div>
+      <div class="post-container rounded-xl overflow-hidden">
+        <img src="https://placebear.com/400/300" class="w-full h-64 object-cover"/>
+        <div class="post-desc">Oso en la naturaleza</div>
+      </div>
+    </div>
+    <button onclick="closeSidebar('gallery')" class="m-4 bg-red-500 text-white px-4 py-2 rounded-lg">Cerrar</button>
+  </div>
 
+  <!-- Sidebar Contactos -->
+  <div id="contacts" class="sidebar">
+    <h2 class="text-2xl font-semibold mb-4 p-4">Contactos</h2>
+    <div class="space-y-4 p-4 overflow-y-auto h-[85%]">
+      <a href="https://xat.me/taiga" target="_blank" class="flex items-center space-x-3 p-3 bg-white bg-opacity-70 backdrop-blur-xl rounded-xl">
+        <img src="https://i.pravatar.cc/50?img=1" class="w-12 h-12 rounded-full">
+        <span>Amigo 1</span>
+      </a>
+      <a href="https://xat.me/itami" target="_blank" class="flex items-center space-x-3 p-3 bg-white bg-opacity-70 backdrop-blur-xl rounded-xl">
+        <img src="https://i.pravatar.cc/50?img=2" class="w-12 h-12 rounded-full">
+        <span>Amigo 2</span>
+      </a>
+    </div>
+    <button onclick="closeSidebar('contacts')" class="m-4 bg-red-500 text-white px-4 py-2 rounded-lg">Cerrar</button>
+  </div>
 
+  <script>
+    // Reloj
+    function updateClock() {
+      const now = new Date();
+      document.getElementById("clock").textContent =
+        now.getHours().toString().padStart(2,'0') + ":" +
+        now.getMinutes().toString().padStart(2,'0');
+    }
+    setInterval(updateClock, 1000); updateClock();
 
+    // Notificaciones fijas
+    const notifs = [
+      { icon: "💬", text: "Nuevo mensaje de Itami" },
+      { icon: "📧", text: "Correo recibido" },
+      { icon: "🎮", text: "Invitación a jugar Elden Ring" }
+    ];
+    let i = 0;
+    setInterval(() => {
+      if (i < notifs.length) {
+        const notif = document.createElement("div");
+        notif.className = "notification flex items-center space-x-3 bg-white bg-opacity-70 backdrop-blur-xl p-3 mb-2 rounded-xl shadow-lg";
+        notif.innerHTML = `<span>${notifs[i].icon}</span><span>${notifs[i].text}</span>`;
+        document.getElementById("notifications").prepend(notif);
+        i++;
+      }
+    }, 4000);
 
+    // Sidebar
+    function openSidebar(id){
+      const el = document.getElementById(id);
+      el.classList.remove("hide");
+      el.classList.add("show");
+    }
+    function closeSidebar(id){
+      const el = document.getElementById(id);
+      el.classList.remove("show");
+      el.classList.add("hide");
+      setTimeout(()=>{ el.classList.remove("hide"); el.style.transform="translateX(100%)"; },400);
+    }
+    document.getElementById("cameraBtn").onclick = ()=> openSidebar("gallery");
+    document.getElementById("callsBtn").onclick = ()=> openSidebar("contacts");
 
+    // Reproductor minimalista
+    const player = document.getElementById("player");
+    const muteBtn = document.getElementById("muteBtn");
+    muteBtn.onclick = () => {
+      player.muted = !player.muted;
+      muteBtn.textContent = player.muted ? "🔇" : "🔊";
+    };
+  </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</body>
+</html>
 
 
 
