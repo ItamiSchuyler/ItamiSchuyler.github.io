@@ -10,7 +10,7 @@
       from { opacity: 0; transform: translateY(-20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .notification { animation: notifSlide 0.5s ease forwards;margin-top:10% }
+    .notification { animation: notifSlide 0.5s ease forwards;}
 
     /* Sidebars generales */
     @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
@@ -40,7 +40,9 @@
       opacity: 0;
       transition: opacity 0.3s ease;
     }
-    .post-container:hover .post-desc { opacity: 1; }
+    .post-container:hover 
+    
+    .post-desc { opacity: 1; }
 
     /* Reproductor minimalista */
     .marquee {
@@ -71,13 +73,13 @@
     </div>
 
     <!-- Notificaciones -->
-    <div id="notifications" class="absolute top-40 w-11/12 max-w-md"></div>
+    <div id="notifications" class="absolute top-40 w-11/12 max-w-md margin-top:10%"></div>
 
     <!-- Reproductor minimalista -->
     <div class="absolute bottom-28 bg-white bg-opacity-60 backdrop-blur-xl px-4 py-2 rounded-xl shadow-lg flex items-center space-x-4">
       <button id="muteBtn">🔊</button>
       <div class="w-40 overflow-hidden">
-        <div class="marquee">🎵 KOCHO </div>
+        <div class="marquee">🎵 KOCHO - 君の行方 </div>
       </div>
       <audio id="player" loop autoplay>
         <source src="song.mp3" type="audio/mp3">
@@ -181,6 +183,7 @@
 
 </body>
 </html>
+
 
 
 
