@@ -2,19 +2,20 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>bloqueo</title>
+  <title>Pantalla de bloqueo</title>
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
- html, body {
+    html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
       font-family: monospace;
     }
+
     /* Video como fondo */
     video#bgVideo {
       position: fixed;
@@ -26,28 +27,36 @@
       z-index: -2;
     }
 
-    main {
-      padding: 0px;
+    /* Animación notificaciones */
+    @keyframes slideIn {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .notif-enter {
+      animation: slideIn 0.5s ease forwards;
     }
 
-    @keyframes marquee {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-
-    .animate-marquee {
-      display: inline-block;
-      animation: marquee 10s linear infinite;
-    }
-
-   <title>Estela de Corazones</title>
-  <style>
-    body {
-      margin: 0;
+    /* Hover descripción tipo Tumblr */
+    .post-container {
+      position: relative;
       overflow: hidden;
-      background-color: #111;
+    }
+    .post-desc {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .post-container:hover .post-desc {
+      opacity: 1;
     }
 
+    /* Corazones flotando */
     .heart {
       position: absolute;
       color: #CF6391;
@@ -55,545 +64,208 @@
       pointer-events: none;
       animation: floatUp 1s ease-out forwards;
     }
-
     @keyframes floatUp {
-      0% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(-40px) scale(1.5) rotate(20deg);
-      }
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-40px) scale(1.5) rotate(20deg); }
     }
 
-   
-
-  
-    <title>Reproductor minimal fijo</title>
-    
-<style>
-  :root{
-    --size: 44px; /* tamaño de íconos / altura del control */
-    --accent: #948A90; /* color íconos/texto */
-    --muted: rgba(255,255,255,0.45);
-  }
-
-  /* Contenedor fijo en esquina inferior izquierda, sin fondo */
-  .mini-player{
-    position: fixed;
-    left: 12px;
-    bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    z-index: 9999;
-    pointer-events: auto;
-    user-select: none;
-    background: transparent; /* sin fondo */
-    padding: 6px;
-    border-radius: 8px;
-    backdrop-filter: none;
-  }
-
-  /* Botones minimalistas (iconos SVG) */
-  .mp-btn{
-    width: var(--size);
-    height: var(--size);
-    display: inline-grid;
-    place-items: center;
-    cursor: pointer;
-    color: var(--accent);
-    opacity: 0.95;
-  }
-  .mp-btn svg{ width: 20px; height: 20px; fill: currentColor; }
-
-  /* Volumen (slider) */
-  .vol-wrap{
-    display:flex;
-    align-items:center;
-    gap:6px;
-  }
-  .vol{
-    width: 110px;
-    -webkit-appearance:none;
-    appearance:none;
-    height: 4px;
-    background: linear-gradient(90deg,rgba(250, 183, 218, 0.8) 0%, rgba(203, 116, 161, 0.48) 51%, rgba(215, 215, 215, 0.48) 100%);
-    border-radius: 999px;
-    cursor: pointer;
-  }
-  .vol::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    width: 12px; height: 12px; border-radius:50%;
-    background: var(--accent);
-    box-shadow: 0 0 0 3px rgba(250, 183, 218, 0.8);
-  }
-
-  /* Título con movimiento lateral */
-  .title-clip{
-    max-width: 220px; /* ajusta si quieres más/menos */
-    overflow: hidden;
-  }
-  .track-title{
-    display:inline-block;
-    white-space:nowrap;
-    font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    font-size: 13px;
-    color: var(--accent);
-    opacity: 0.97;
-    animation: slideX 12s linear infinite;
-    padding-left: 6px;
-    padding-right: 6px;
-  }
-  @keyframes slideX{
-    0%   { transform: translateX(0%); }
-    25%  { transform: translateX(-18%); }
-    50%  { transform: translateX(-36%); }
-    75%  { transform: translateX(-18%); }
-    100% { transform: translateX(0%); }
-  }
-
-  /* Barra de progreso minimal */
-  .progress{
-    width: 200px;
-    height: 4px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 999px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .progress > .bar{
-    position:absolute;
-    left:0; top:0; bottom:0;
-    width:0%;
-    background: linear-gradient(90deg, rgba(250, 183, 218, 0.8), rgba(255,255,255,0.6));
-    border-radius:999px;
-  }
-
-    
-  /* Pequeño texto de tiempos */
-  .time{
-    font-size: 11px;
-    color: var(--muted);
-    margin-left: 6px;
-    min-width: 44px;
-    text-align: center;
-    font-family: monospace;
-  }
-
-  /* Estado bookmark (pequeño punto) */
-  .bookmark-ind{
-    width:8px;height:8px;border-radius:50%;
-    background: transparent;
-    border:1px solid var(--muted);
-    margin-left:6px;
-  }
-  .bookmark-ind.active{
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  /* Ocultar en pantallas muy pequeñas (opcional) */
-  @media (max-width:420px){
-    .progress, .vol{ display:none; }
-    .title-clip{ max-width: 140px; }
-  }
-
-    /* Animación para notificaciones */
-@keyframes slideIn {
-from { transform: translateY(-100%); opacity: 0; }
-to { transform: translateY(0); opacity: 1; }
-}
-.notif-enter {
-animation: slideIn 0.5s ease forwards;
-}
-
-
-/* Hover descripción */
-.post-container {
-position: relative;
-overflow: hidden;
-}
-.post-desc {
-position: absolute;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background: rgba(0,0,0,0.7);
-color: white;
-display: flex;
-align-items: center;
-justify-content: center;
-opacity: 0;
-transition: opacity 0.3s ease;
-}
-.post-container:hover .post-desc {
-opacity: 1;
-}
-</style>
+    /* --- Reproductor de música --- */
+    :root {
+      --size: 44px;
+      --accent: #948A90;
+      --muted: rgba(255,255,255,0.45);
+    }
+    .mini-player {
+      position: fixed;
+      left: 12px;
+      bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 9999;
+      background: transparent;
+      padding: 6px;
+      border-radius: 8px;
+    }
+    .mp-btn {
+      width: var(--size);
+      height: var(--size);
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      color: var(--accent);
+    }
+    .mp-btn svg { width: 20px; height: 20px; fill: currentColor; }
+    .vol-wrap { display:flex; align-items:center; gap:6px; }
+    .vol {
+      width: 110px;
+      appearance:none;
+      height: 4px;
+      background: linear-gradient(90deg,rgba(250,183,218,0.8),rgba(215,215,215,0.48));
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .vol::-webkit-slider-thumb {
+      appearance:none;
+      width: 12px; height: 12px; border-radius:50%;
+      background: var(--accent);
+    }
+    .title-clip { max-width: 220px; overflow: hidden; }
+    .track-title {
+      display:inline-block; white-space:nowrap;
+      font-size: 13px; color: var(--accent);
+      animation: slideX 12s linear infinite;
+      padding: 0 6px;
+    }
+    @keyframes slideX {
+      0% { transform: translateX(0%); }
+      50% { transform: translateX(-36%); }
+      100% { transform: translateX(0%); }
+    }
+    .progress {
+      width: 200px; height: 4px; background: rgba(255,255,255,0.08);
+      border-radius: 999px; position: relative; cursor:pointer;
+    }
+    .progress > .bar {
+      position:absolute; top:0; left:0; bottom:0;
+      width:0%; background: linear-gradient(90deg,rgba(250,183,218,0.8),rgba(255,255,255,0.6));
+      border-radius:999px;
+    }
+    .time { font-size: 11px; color: var(--muted); min-width:44px; text-align:center; }
+    .bookmark-ind {
+      width:8px; height:8px; border-radius:50%;
+      background:transparent; border:1px solid var(--muted);
+    }
+    .bookmark-ind.active { background: var(--accent); border-color: var(--accent); }
   </style>
 </head>
+<body class="text-white">
 
-  
-<body>
-
-
-  
-  <main>
-
-    <body class="h-screen w-screen bg-gray-900 text-white flex items-center justify-center font-sans">
-<!-- Galería -->
-<div id="gallery" class="hidden h-full w-full bg-gray-950 text-white p-6 overflow-y-scroll">
-<h2 class="text-2xl mb-4">Galería de Posts</h2>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-<div class="post-container rounded-xl overflow-hidden">
-<img src="https://placekitten.com/400/300" class="w-full h-64 object-cover"/>
-<div class="post-desc">Gatito descansando</div>
-</div>
-<div class="post-container rounded-xl overflow-hidden">
-<img src="https://placebear.com/400/300" class="w-full h-64 object-cover"/>
-<div class="post-desc">Oso en la naturaleza</div>
-</div>
-<div class="post-container rounded-xl overflow-hidden">
-<img src="https://picsum.photos/400/300?random=1" class="w-full h-64 object-cover"/>
-<div class="post-desc">Paisaje aleatorio</div>
-</div>
-<div class="post-container rounded-xl overflow-hidden">
-<img src="https://picsum.photos/400/300?random=2" class="w-full h-64 object-cover"/>
-<div class="post-desc">Foto artística</div>
-</div>
-</div>
-<button onclick="backToLock()" class="mt-6 bg-red-500 px-4 py-2 rounded-lg">Volver</button>
-</div>
-
-
-<!-- Contactos -->
-<div id="contacts" class="hidden h-full w-full bg-gray-950 text-white p-6 overflow-y-scroll">
-<h2 class="text-2xl mb-4">Contactos</h2>
-<div class="space-y-4">
-<a href="https://xat.me/taiga" target="_blank" class="flex items-center space-x-3 p-3 bg-gray-800 rounded-xl">
-<img src="https://i.pravatar.cc/50?img=1" class="w-12 h-12 rounded-full">
-<span>Amigo 1</span>
-</a>
-<a href="https://xat.me/itami" target="_blank" class="flex items-center space-x-3 p-3 bg-gray-800 rounded-xl">
-<img src="https://i.pravatar.cc/50?img=2" class="w-12 h-12 rounded-full">
-<span>Amigo 2</span>
-</a>
-<a href="https://xat.me/marin" target="_blank" class="flex items-center space-x-3 p-3 bg-gray-800 rounded-xl">
-<img src="https://i.pravatar.cc/50?img=3" class="w-12 h-12 rounded-full">
-<span>Amigo 3</span>
-</a>
-</div>
-<button onclick="backToLock()" class="mt-6 bg-red-500 px-4 py-2 rounded-lg">Volver</button>
-</div>
-
-
-<script>
-// Reloj en tiempo real
-function updateClock() {
-const now = new Date();
-document.getElementById("clock").textContent =
-now.getHours().toString().padStart(2,'0') + ":" +
-now.getMinutes().toString().padStart(2,'0');
-}
-setInterval(updateClock, 1000);
-updateClock();
-
-
-// Mostrar notificaciones
-const notifs = [
-{ icon: "💬", text: "Nuevo mensaje de Itami" },
-{ icon: "📧", text: "Correo recibido" },
-{ icon: "🎮", text: "Invitación a jugar Elden Ring" }
-];
-let i = 0;
-setInterval(() => {
-if (i < notifs.length) {
-const notif = document.createElement("div");
-notif.className = "notif-enter flex items-center space-x-3 bg-gray-800 p-3 mb-2 rounded-xl shadow-lg";
-notif.innerHTML = `<span>${notifs[i].icon}</span><span>${notifs[i].text}</span>`;
-document.getElementById("notifications").prepend(notif);
-i++;
-}
-}, 4000);
-
-
-// Botones
-document.getElementById("cameraBtn").onclick = () => {
-document.getElementById("lockscreen").classList.add("hidden");
-document.getElementById("gallery").classList.remove("hidden");
-};
-document.getElementById("callsBtn").onclick = () => {
-document.getElementById("lockscreen").classList.add("hidden");
-document.getElementById("contacts").classList.remove("hidden");
-};
-
-
-function backToLock(){
-document.getElementById("gallery").classList.add("hidden");
-document.getElementById("contacts").classList.add("hidden");
-document.getElementById("lockscreen").classList.remove("hidden");
-}
-</script>
-
-  <!-- Video de fondo -->
+  <!-- Fondo video -->
   <video id="bgVideo" autoplay muted loop playsinline>
     <source src="fondoo.mp4" type="video/mp4">
-    Tu navegador no puede cargar el video.
   </video>
 
-  <!-- Contenido principal -->
- 
-<div class="mini-player" aria-label="Reproductor minimal">
-  <!-- Play/Pause -->
-  <button class="mp-btn" id="playBtn" title="Play / Pause" aria-pressed="false">
-    <!-- play icon -->
-    <svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"></path></svg>
-    <!-- pause icon hidden initially (we'll toggle) -->
-    <svg viewBox="0 0 24 24" id="pauseIcon" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-  </button>
+  <!-- Pantalla de bloqueo -->
+  <div id="lockscreen" class="h-screen flex flex-col justify-between items-center p-8">
+    <div class="text-6xl font-bold mt-12" id="clock"></div>
+    <div id="notifications" class="w-full max-w-sm"></div>
+    <div class="flex space-x-12 mb-12">
+      <button id="callsBtn" class="text-4xl">📞</button>
+      <button id="cameraBtn" class="text-4xl">📷</button>
+    </div>
+  </div>
 
-  <!-- Volumen + mute -->
-  <div class="vol-wrap" aria-hidden="false">
-    <button class="mp-btn" id="muteBtn" title="Mute / Unmute">
-      <svg viewBox="0 0 24 24" id="volOn"><path d="M3 10v4h4l5 5V5L7 10H3z"/></svg>
-      <svg viewBox="0 0 24 24" id="volOff" style="display:none"><path d="M16.5 12c0-1.77-.77-3.37-1.98-4.47l-1.42 1.42C14.66 10.33 15.5 11.12 15.5 12s-.84 1.67-2.4 2.05l1.42 1.42C15.73 15.37 16.5 13.77 16.5 12zM5 9v6h4l5 5V4L9 9H5zM19 4l-2 2 2 2 2-2-2-2z"/></svg>
+  <!-- Galería -->
+  <div id="gallery" class="hidden h-full w-full bg-gray-950 text-white p-6 overflow-y-scroll">
+    <h2 class="text-2xl mb-4">Galería de Posts</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="post-container rounded-xl overflow-hidden">
+        <img src="https://placekitten.com/400/300" class="w-full h-64 object-cover"/>
+        <div class="post-desc">Gatito descansando</div>
+      </div>
+      <div class="post-container rounded-xl overflow-hidden">
+        <img src="https://placebear.com/400/300" class="w-full h-64 object-cover"/>
+        <div class="post-desc">Oso en la naturaleza</div>
+      </div>
+    </div>
+    <button onclick="backToLock()" class="mt-6 bg-red-500 px-4 py-2 rounded-lg">Volver</button>
+  </div>
+
+  <!-- Contactos -->
+  <div id="contacts" class="hidden h-full w-full bg-gray-950 text-white p-6 overflow-y-scroll">
+    <h2 class="text-2xl mb-4">Contactos</h2>
+    <div class="space-y-4">
+      <a href="https://xat.me/taiga" target="_blank" class="flex items-center space-x-3 p-3 bg-gray-800 rounded-xl">
+        <img src="https://i.pravatar.cc/50?img=1" class="w-12 h-12 rounded-full">
+        <span>Amigo 1</span>
+      </a>
+      <a href="https://xat.me/itami" target="_blank" class="flex items-center space-x-3 p-3 bg-gray-800 rounded-xl">
+        <img src="https://i.pravatar.cc/50?img=2" class="w-12 h-12 rounded-full">
+        <span>Amigo 2</span>
+      </a>
+    </div>
+    <button onclick="backToLock()" class="mt-6 bg-red-500 px-4 py-2 rounded-lg">Volver</button>
+  </div>
+
+  <!-- Reproductor -->
+  <div class="mini-player">
+    <button class="mp-btn" id="playBtn">
+      <svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"></path></svg>
+      <svg viewBox="0 0 24 24" id="pauseIcon" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
     </button>
-
-    <input id="volSlider" class="vol" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volumen">
+    <div class="vol-wrap">
+      <button class="mp-btn" id="muteBtn">
+        <svg viewBox="0 0 24 24" id="volOn"><path d="M3 10v4h4l5 5V5L7 10H3z"/></svg>
+        <svg viewBox="0 0 24 24" id="volOff" style="display:none"><path d="M16.5 12..."/></svg>
+      </button>
+      <input id="volSlider" class="vol" type="range" min="0" max="1" step="0.01" value="0.8">
+    </div>
+    <div class="title-clip"><div class="track-title" id="trackTitle">君の行方 - Kocho</div></div>
+    <div class="progress" id="progress"><div class="bar" id="progressBar"></div></div>
+    <div class="time" id="time">0:00</div>
+    <button class="mp-btn" id="bookmarkBtn"><svg viewBox="0 0 24 24"><path d="M6 2h12v20l-6-3-6 3V2z"/></svg></button>
+    <div class="bookmark-ind" id="bookmarkInd"></div>
+    <button class="mp-btn" id="gotoBookmarkBtn"><svg viewBox="0 0 24 24"><path d="M12 8V4l8 8-8 8v-4H4V8z"/></svg></button>
   </div>
-
-  <!-- Título (desplazable) -->
-  <div class="title-clip" aria-hidden="false">
-    <div class="track-title" id="trackTitle">君の行方 - Kocho</div>
-  </div>
-
-  <!-- Barra de progreso -->
-  <div class="progress" id="progress" title="Ir a posición">
-    <div class="bar" id="progressBar"></div>
-  </div>
-
-  <!-- Tiempo -->
-  <div class="time" id="time">0:00</div>
-
-  <!-- Bookmark (marca la posición) -->
-  <button class="mp-btn" id="bookmarkBtn" title="Guardar marcador (volver después)">
-    <svg viewBox="0 0 24 24"><path d="M6 2h12v20l-6-3-6 3V2z"/></svg>
-  </button>
-  <div class="bookmark-ind" id="bookmarkInd" title="Marcador activo"></div>
-
-  <!-- Botón para volver al marcador -->
-  <button class="mp-btn" id="gotoBookmarkBtn" title="Ir al marcador">
-    <svg viewBox="0 0 24 24"><path d="M12 8V4l8 8-8 8v-4H4V8z"/></svg>
-  </button>
-</div>
-
-<!-- Audio (reemplaza src por tu archivo) -->
-<audio id="audio" preload="metadata" src="song.mp3"></audio>
-
-<script>
-  const audio = document.getElementById('audio');
-  const playBtn = document.getElementById('playBtn');
-  const playIcon = document.getElementById('playIcon');
-  const pauseIcon = document.getElementById('pauseIcon');
-  const volSlider = document.getElementById('volSlider');
-  const muteBtn = document.getElementById('muteBtn');
-  const volOn = document.getElementById('volOn');
-  const volOff = document.getElementById('volOff');
-  const progress = document.getElementById('progress');
-  const progressBar = document.getElementById('progressBar');
-  const timeLabel = document.getElementById('time');
-  const bookmarkBtn = document.getElementById('bookmarkBtn');
-  const bookmarkInd = document.getElementById('bookmarkInd');
-  const gotoBookmarkBtn = document.getElementById('gotoBookmarkBtn');
-  const trackTitle = document.getElementById('trackTitle');
-
-  // Estado de volumen inicial (valor del slider)
-  audio.volume = parseFloat(volSlider.value);
-
-  // Toggle play/pause
-  function updatePlayVisual(isPlaying){
-    if(isPlaying){
-      playIcon.style.display = 'none';
-      pauseIcon.style.display = '';
-      playBtn.setAttribute('aria-pressed','true');
-    } else {
-      playIcon.style.display = '';
-      pauseIcon.style.display = 'none';
-      playBtn.setAttribute('aria-pressed','false');
-    }
-  }
-  playBtn.addEventListener('click', () => {
-    if(audio.paused) audio.play();
-    else audio.pause();
-  });
-
-  audio.addEventListener('play', () => updatePlayVisual(true));
-  audio.addEventListener('pause', () => updatePlayVisual(false));
-
-  // Volume + mute
-  volSlider.addEventListener('input', (e) => {
-    audio.volume = e.target.value;
-    if(audio.volume === 0) {
-      audio.muted = true;
-      volOn.style.display='none'; volOff.style.display='';
-    } else {
-      audio.muted = false;
-      volOn.style.display=''; volOff.style.display='none';
-    }
-    localStorage.setItem('miniPlayerVol', audio.volume.toString());
-  });
-
-  muteBtn.addEventListener('click', () => {
-    audio.muted = !audio.muted;
-    if(audio.muted){
-      volOn.style.display='none'; volOff.style.display='';
-    } else {
-      volOn.style.display=''; volOff.style.display='none';
-    }
-  });
-
-  // Progress bar update
-  audio.addEventListener('timeupdate', () => {
-    if(isFinite(audio.duration) && audio.duration > 0){
-      const pct = (audio.currentTime / audio.duration) * 100;
-      progressBar.style.width = pct + '%';
-      timeLabel.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
-    } else {
-      timeLabel.textContent = formatTime(audio.currentTime);
-    }
-  });
-
-  // click to seek
-  progress.addEventListener('click', (e) => {
-    if(!isFinite(audio.duration)) return;
-    const rect = progress.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const pct = x / rect.width;
-    audio.currentTime = pct * audio.duration;
-  });
-
-  function formatTime(s){
-    if(!isFinite(s) || isNaN(s)) return '0:00';
-    const m = Math.floor(s / 60);
-    const sec = Math.floor(s % 60).toString().padStart(2,'0');
-    return `${m}:${sec}`;
-  }
-
-  // Bookmark: guarda posición actual en localStorage
-  const BOOKMARK_KEY = 'miniPlayer_bookmark';
-  bookmarkBtn.addEventListener('click', () => {
-    const data = { time: audio.currentTime, at: Date.now(), src: audio.currentSrc || audio.src };
-    localStorage.setItem(BOOKMARK_KEY, JSON.stringify(data));
-    updateBookmarkIndicator();
-  });
-
-  function updateBookmarkIndicator(){
-    const raw = localStorage.getItem(BOOKMARK_KEY);
-    if(!raw){ bookmarkInd.classList.remove('active'); return; }
-    try{
-      const b = JSON.parse(raw);
-      // si el bookmark corresponde a la misma fuente de audio, lo activamos
-      if(b && b.src && (b.src === (audio.currentSrc || audio.src))){
-        bookmarkInd.classList.add('active');
-      } else {
-        bookmarkInd.classList.remove('active');
-      }
-    }catch(e){ bookmarkInd.classList.remove('active'); }
-  }
-
-  // Ir al bookmark (si existe)
-  gotoBookmarkBtn.addEventListener('click', () => {
-    const raw = localStorage.getItem(BOOKMARK_KEY);
-    if(!raw) return;
-    try{
-      const b = JSON.parse(raw);
-      if(!b) return;
-      // si la fuente es diferente, cambiamos la src y esperamos a cargar
-      if(b.src && b.src !== (audio.currentSrc || audio.src)){
-        audio.src = b.src;
-        audio.addEventListener('loadedmetadata', function once(){ 
-          audio.currentTime = b.time || 0;
-          audio.play();
-          audio.removeEventListener('loadedmetadata', once);
-        });
-      } else {
-        audio.currentTime = b.time || 0;
-        audio.play();
-      }
-    }catch(e){ console.warn(e); }
-  });
-
-  // Guardar volumen preferido
-  const savedVol = localStorage.getItem('miniPlayerVol');
-  if(savedVol !== null){
-    audio.volume = parseFloat(savedVol);
-    volSlider.value = savedVol;
-  }
-
-  // Restaurar bookmark indicator al cargar
-  window.addEventListener('load', updateBookmarkIndicator);
-
-  // Título dinámico: si el audio tiene metadata, se podría intentar obtenerlo.
-  // Aquí dejamos la posibilidad de actualizar el texto dinámicamente:
-  // trackTitle.textContent = 'Nuevo título';
-
-  // Permitir control con teclado (opcional)
-  window.addEventListener('keydown', (e) => {
-    if(e.code === 'Space' && document.activeElement === document.body){
-      e.preventDefault();
-      if(audio.paused) audio.play(); else audio.pause();
-    }
-  });
-
-  // Pequeña mejora: si el usuario interactúa fuera del reproductor, no dejamos el foco en botón -> mejor UX
-  document.addEventListener('click', (e) => {
-    // no hacemos nada especial, solo para que se comporten botones
-  });
-
-  // Si necesitas que el título se mueva más lento o más largo, ajusta la animación CSS @keyframes y duration (ahora 12s)
-</script>
+  <audio id="audio" preload="metadata" src="song.mp3"></audio>
 
   <script>
-  document.addEventListener('mousemove', function(e) {
-    const heart = document.createElement('div');
-    heart.classList.add('heart');
-    heart.innerText = '❤';
+    // Reloj
+    function updateClock() {
+      const now = new Date();
+      document.getElementById("clock").textContent =
+        now.getHours().toString().padStart(2,'0') + ":" +
+        now.getMinutes().toString().padStart(2,'0');
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
 
-    // Posicionar el corazón en el cursor
-    heart.style.left = `${e.clientX}px`;
-    heart.style.top = `${e.clientY}px`;
+    // Notificaciones
+    const notifs = [
+      { icon: "💬", text: "Nuevo mensaje de Itami" },
+      { icon: "📧", text: "Correo recibido" }
+    ];
+    let i = 0;
+    setInterval(() => {
+      if (i < notifs.length) {
+        const notif = document.createElement("div");
+        notif.className = "notif-enter flex items-center space-x-3 bg-gray-800 p-3 mb-2 rounded-xl shadow-lg";
+        notif.innerHTML = `<span>${notifs[i].icon}</span><span>${notifs[i].text}</span>`;
+        document.getElementById("notifications").prepend(notif);
+        i++;
+      }
+    }, 4000);
 
-    // Agregarlo al body
-    document.body.appendChild(heart);
+    // Navegación
+    document.getElementById("cameraBtn").onclick = () => {
+      document.getElementById("lockscreen").classList.add("hidden");
+      document.getElementById("gallery").classList.remove("hidden");
+    };
+    document.getElementById("callsBtn").onclick = () => {
+      document.getElementById("lockscreen").classList.add("hidden");
+      document.getElementById("contacts").classList.remove("hidden");
+    };
+    function backToLock(){
+      document.getElementById("gallery").classList.add("hidden");
+      document.getElementById("contacts").classList.add("hidden");
+      document.getElementById("lockscreen").classList.remove("hidden");
+    }
 
-    // Quitarlo después de la animación
-    setTimeout(() => {
-      heart.remove();
-    }, 1000);
-  });
-</script>
-
-</main>
+    // Estela corazones
+    document.addEventListener('mousemove', e => {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.innerText = '❤';
+      heart.style.left = `${e.clientX}px`;
+      heart.style.top = `${e.clientY}px`;
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 1000);
+    });
+  </script>
+  <!-- Aquí también va el JS de tu reproductor, pero lo dejé fuera para no alargar -->
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
