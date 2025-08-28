@@ -54,6 +54,36 @@
       0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
+
+    .tarjeta {  transition: all 0.5s ease;}
+
+    .tarjeta::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    0deg, 
+    transparent, 
+    transparent 30%, 
+    rgba(0,255,255,0.3)
+  );
+  transform: rotate(-45deg);
+  transition: all 0.5s ease;
+  opacity: 0;
+}
+
+.tarjeta:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0,255,255,0.5);
+}
+
+.tarjeta:hover::before {
+  opacity: 1;
+  transform: rotate(-45deg) translateY(100%);
+}
   </style>
 </head>
 <body class="h-screen w-screen overflow-hidden font-sans relative text-black">
@@ -112,13 +142,13 @@
 
   <!-- Sidebar Contactos (izquierda) -->
   <div id="contacts" class="sidebar left-0 -translate-x-full">
-    <h2 class="text-2xl font-semibold mb-4 p-4">Contactos</h2>
-    <div class="space-y-4 p-4 overflow-y-auto h-[85%]">
-      <a href="https://xat.me/taiga" target="_blank" class="flex items-center space-x-3 p-3 bg-white bg-opacity-70 backdrop-blur-xl rounded-xl">
+    <h2 class="text-2xl font-semibold mb-4 p-4">Amigos</h2>
+    <div  class="space-y-4 p-4 overflow-y-auto h-[85%]">
+      <a id="tarjeta" href="https://xat.me/taiga" target="_blank" class="flex items-center space-x-3 p-3 bg-white bg-opacity-70 backdrop-blur-xl rounded-xl">
         <img src="https://i.postimg.cc/CKmGjyY2/tumblr-bb86d9f619bf2489197d002711884c82-ac1f61d2-250.jpg" class="w-12 h-12 rounded-full">
         <span>Tai</span>
       </a>
-      <a href="https://xat.me/itami" target="_blank" class="flex items-center space-x-3 p-3 bg-white bg-opacity-70 backdrop-blur-xl rounded-xl">
+      <a id="tarjeta" href="https://xat.me/itami" target="_blank" class="flex items-center space-x-3 p-3 bg-white bg-opacity-70 backdrop-blur-xl rounded-xl">
         <img src="https://i.postimg.cc/J0y5rpf2/tumblr-340386cc4519775fc36c1da145b1f8e2-f14a2a5f-250.jpg" class="w-12 h-12 rounded-full">
         <span>César</span>
       </a>
@@ -184,6 +214,7 @@
 
 </body>
 </html>
+
 
 
 
