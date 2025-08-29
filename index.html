@@ -126,6 +126,18 @@
     background-clip: text;
     animation: gradientMove 3s linear infinite;
   }
+
+    .player-btn {
+    font-size: 1.8rem; 
+    color: black; 
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+
+  .player-btn:hover {
+    transform: scale(1.2); 
+    color: #ec4899; /* rosa fuerte (tailwind pink-500) */
+  }
+
     
   </style>
 </head>
@@ -149,10 +161,11 @@
     
     <div id="notifications" class="absolute top-60 w-11/12 max-w-md"></div>
 
-    <!-- Reproductor minimalista -->
-<div class="absolute bottom-28 bg-white bg-opacity-60 backdrop-blur-xl px-4 py-2 rounded-xl shadow-lg flex items-center space-x-4">
-  <button id="playBtn" class="btn-anim p-2 bg-white bg-opacity-70 backdrop-blur-xl rounded-full shadow-md">▶️</button>
-  <button id="muteBtn" class="btn-anim p-2 bg-white bg-opacity-70 backdrop-blur-xl rounded-full shadow-md">🔊</button>
+   
+<!-- Reproductor minimalista -->
+<div class="absolute bottom-28 bg-white bg-opacity-60 backdrop-blur-xl px-4 py-2 rounded-xl shadow-lg flex items-center space-x-6">
+  <button id="playBtn" class="player-btn">▶️</button>
+  <button id="muteBtn" class="player-btn">🔊</button>
   <div class="w-40 overflow-hidden">
     <div class="marquee">🎵 KOCHO - 君の行方 </div>
   </div>
@@ -285,6 +298,7 @@
 
 </body>
 </html>
+
 
 
 
