@@ -2,349 +2,107 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Pantalla de Bloqueo</title>
+  <title>Pantalla Bloqueo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
-    /* Animación notificaciones */
-    @keyframes notifSlide {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .notification { animation: notifSlide 0.5s ease forwards;}
-
-    /* Sidebars generales */
-    @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
-    @keyframes slideOutRight { from { transform: translateX(0); } to { transform: translateX(100%); } }
-    @keyframes slideInLeft { from { transform: translateX(-100%); } to { transform: translateX(0); } }
-    @keyframes slideOutLeft { from { transform: translateX(0); } to { transform: translateX(-100%); } }
-
-    .sidebar {
-      position: absolute;
-      top: 0;
-      width: 100%;
-      max-width: 400px;
-      height: 100%;
-      background: rgba(255,255,255,0.65);
-      backdrop-filter: blur(20px);
-      color: black;
-      z-index: 50;
+    /* Fondo y estilo general */
+    body {
+      background: url('https://i.postimg.cc/NMcmZth5/gif.gif') no-repeat center center fixed;
+      background-size: cover;
+      font-family: monospace;
     }
 
-    /* Post con sombra y zoom reveal */
-    .post-container {
+    /* ---- Estilo Card ---- */
+    .card {
       position: relative;
-      border-radius: 1rem;
+      width: 260px;
+      height: 160px;
       overflow: hidden;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-      transition: transform 0.3s ease;
-    }
-    .post-container:hover {
-      transform: translateY(-5px);
+      border-radius: 1rem;
+      cursor: pointer;
     }
 
-    /* Imagen reveal */
-    .post-container img {
-      transition: transform 0.5s ease;
-    }
-    .post-container:hover img {
-      transform: scale(1.1);
-    }
-
-    /* Descripción con degradado estético */
-    .post-desc {
+    .card .slide {
       position: absolute;
-      bottom: 0;
-      left: 0; right: 0;
-      opacity: 0;
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      transform: translateY(20px);
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      transition: transform 0.6s ease;
     }
-    .post-container:hover .post-desc {
-      opacity: 1;
+
+    /* --- Slide 1 (avatar) --- */
+    .card .slide1 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(12px);
+      z-index: 2;
       transform: translateY(0);
     }
 
-    /* Reproductor minimalista */
-    .marquee {
-      overflow: hidden;
-      white-space: nowrap;
-      animation: scrollText 10s linear infinite;
-      font-size: 0.85rem;
-    }
-    @keyframes scrollText {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
+    .card:hover .slide1 {
+      transform: translateY(-100%);
     }
 
-    .player-btn {
-      font-size: 1.2rem; /* más pequeño */
-      color: black; 
-      transition: transform 0.3s ease, color 0.3s ease;
-    }
-    .player-btn:hover {
-      transform: scale(1.1); 
-      color: #ec4899; /* rosa fuerte */
-    }
-
-    /* Animación de botones (cámara y llamada) */
-    .btn-anim {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .btn-anim:hover {
-      transform: scale(1.1);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    /* --- Slide 2 (texto) --- */
+    .card .slide2 {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px);
+      z-index: 1;
+      transform: translateY(100%);
     }
 
-    /* Relieve en contactos */
-    .tarjeta {
-      transition: all 0.4s ease;
-      position: relative; /* importante para ::before */
+    .card:hover .slide2 {
+      transform: translateY(0);
     }
-    .tarjeta:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
-    }
-
-    .tarjeta::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(
-        0deg, 
-        transparent, 
-        transparent 30%, 
-        rgba(0,255,255,0.3)
-      );
-      transform: rotate(-45deg);
-      transition: all 0.5s ease;
-      opacity: 0;
-    }
-
-    .tarjeta:hover::before {
-      opacity: 1;
-      transform: rotate(-45deg) translateY(100%);
-    }
-
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 200% 50%; }
-    }
-    .gradient-text {
-      background: linear-gradient(90deg, #fff 0%, #f472b6 50%, #fff 100%);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: gradientMove 3s linear infinite;
-    }
-
-    .card {
-  position: relative;
-  width: 300px;
-  height: 200px;
-}
-
-.card .slide {
-  width: 100%;
-  height: 100%;
-  transition: 0.5s;
-  position: absolute;
-  left: 0;
-}
-
-.card .slide1 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1;
-  transform: translateY(100px);
-  transition: 0.7s;
-}
-
-.card:hover .slide1 {
-  transform: translateY(0);
-}
-
-.card .slide2 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  box-sizing: border-box;
-  transform: translateY(-100px);
-  transition: 0.7s;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-}
-
-.card:hover .slide2 {
-  transform: translateY(0);
-}
   </style>
 </head>
-<body class="h-screen w-screen overflow-hidden font-sans relative text-black">
+<body class="h-screen flex items-center justify-center">
 
-  <!-- Fondo vídeo -->
-  <video autoplay muted loop id="bgVideo" class="absolute top-0 left-0 w-full h-full object-cover -z-10">
-    <source src="fondoo.mp4" type="video/mp4">
-  </video>
-
-  <!-- Pantalla de bloqueo -->
-  <div id="lockscreen" class="h-full w-full flex flex-col items-center justify-between p-6">
-
-    <!-- Hora -->
-    <div class="mt-16 text-center text-white drop-shadow-lg">
-      <h1 id="clock" class="text-7xl font-bold"></h1>
-      <p class="text-lg">Martes, 28 de Agosto</p>
-    </div>
-
-    <!-- Notificaciones -->
-    <div id="notifications" class="absolute top-60 w-11/12 max-w-md"></div>
-
-    <!-- Reproductor minimalista -->
-    <div class="absolute bottom-28 bg-white bg-opacity-60 backdrop-blur-xl px-3 py-1 rounded-xl shadow-lg flex items-center space-x-3">
-      <button id="playBtn" class="player-btn">▶️</button>
-      <div class="w-32 overflow-hidden">
-        <div class="marquee">🎵 KOCHO - 君の行方 </div>
-      </div>
-      <audio id="player" loop autoplay>
-        <source src="song.mp3" type="audio/mp3">
-      </audio>
-    </div>
-
-    <!-- Barra inferior -->
-    <div class="flex justify-between w-full px-8 mb-8">
-      <button id="callsBtn" class="btn-anim p-4 bg-white bg-opacity-70 backdrop-blur-xl rounded-full shadow-lg">📞</button>
-      <button id="cameraBtn" class="btn-anim p-4 bg-white bg-opacity-70 backdrop-blur-xl rounded-full shadow-lg">📷</button>
-    </div>
-  </div>
-
-  <!-- Sidebar Galería (derecha) -->
-  <div id="gallery" class="sidebar right-0 translate-x-full">
-    <button onclick="closeSidebar('gallery','right')" class="absolute top-10 right-4 text-black text-2xl focus:outline-none">×</button>
-    <h2 class="text-3xl font-extrabold text-center mt-20 drop-shadow-lg tracking-wide gradient-text">
-      Mis trabajos
-    </h2>
-    <div class="grid grid-cols-1 gap-6 p-6 overflow-y-auto h-[85%]">
-      <!-- Post 1 -->
-      <div class="post-container rounded-2xl overflow-hidden shadow-xl">
-        <img src="https://i.postimg.cc/1XJXdS7x/fondo-molonisimo-hermosisismo-copia.gif" class="w-full h-auto object-contain transition-transform duration-500 ease-in-out"/>
-        <div class="post-desc flex flex-col justify-center text-center px-4 py-6 bg-gradient-to-t from-white/80 via-white/60 to-transparent">
-          <p class="text-black font-semibold text-lg drop-shadow-sm">Pcback diseño complejo + animación simple</p>
-          <span class="text-pink-600 font-bold text-sm mt-2">400 xats</span>
-        </div>
-      </div>
-      <!-- Post 2 -->
-      <div class="post-container rounded-2xl overflow-hidden shadow-xl">
-        <img src="https://i.postimg.cc/pLnVfKvM/RAIN-PCBACK.gif" class="w-full h-auto object-contain transition-transform duration-500 ease-in-out"/>
-        <div class="post-desc flex flex-col justify-center text-center px-4 py-6 bg-gradient-to-t from-white/80 via-white/60 to-transparent">
-          <p class="text-black font-semibold text-lg drop-shadow-sm">Pcback animación simple + diseño simple</p>
-          <span class="text-pink-600 font-bold text-sm mt-2">300 xats</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
- <!-- Sidebar Contactos (izquierda) -->
-<div id="contacts" class="sidebar left-0 -translate-x-full">
-  <button onclick="closeSidebar('contacts','left')" class="absolute top-10 right-4 text-black text-2xl focus:outline-none">×</button>
-  <h2 class="text-3xl font-extrabold text-center mt-20 drop-shadow-lg tracking-wide gradient-text">
-    Amigos
-  </h2>
-  <div class="space-y-6 p-6 overflow-y-auto h-[85%] flex flex-col items-center">
+  <div class="space-y-6">
     
     <!-- Contacto 1 -->
-    <a href="https://xat.me/taiga" target="_blank" class="card relative w-64 h-40 cursor-pointer">
-      <div class="slide slide1 bg-white bg-opacity-70 backdrop-blur-xl rounded-xl flex justify-center items-center overflow-hidden">
-        <img src="https://i.postimg.cc/CKmGjyY2/tumblr-bb86d9f619bf2489197d002711884c82-ac1f61d2-250.jpg" class="w-20 h-20 rounded-full shadow-lg">
+    <a href="https://xat.me/taiga" target="_blank" class="card">
+      <div class="slide slide1">
+        <img src="https://i.postimg.cc/CKmGjyY2/tumblr-bb86d9f619bf2489197d002711884c82-ac1f61d2-250.jpg" 
+             class="w-20 h-20 rounded-full shadow-lg">
       </div>
-      <div class="slide slide2 bg-white bg-opacity-80 backdrop-blur-xl rounded-xl flex flex-col justify-center items-center px-4 text-center shadow-lg">
+      <div class="slide slide2">
         <h3 class="font-bold text-lg text-black">Tai</h3>
-        <p class="text-sm text-gray-700">Te quiero mucho <3</p>
+        <p class="text-sm text-gray-700">Te quiero mucho &lt;3</p>
       </div>
     </a>
 
     <!-- Contacto 2 -->
-    <a href="https://xat.me/xCesar" target="_blank" class="card relative w-64 h-40 cursor-pointer">
-      <div class="slide slide1 bg-white bg-opacity-70 backdrop-blur-xl rounded-xl flex justify-center items-center overflow-hidden">
-        <img src="https://i.postimg.cc/J0y5rpf2/tumblr-340386cc4519775fc36c1da145b1f8e2-f14a2a5f-250.jpg" class="w-20 h-20 rounded-full shadow-lg">
+    <a href="https://xat.me/itami" target="_blank" class="card">
+      <div class="slide slide1">
+        <img src="https://i.postimg.cc/1RWtGmWF/0c73200e877012f71380a5863e1c6d9d.jpg" 
+             class="w-20 h-20 rounded-full shadow-lg">
       </div>
-      <div class="slide slide2 bg-white bg-opacity-80 backdrop-blur-xl rounded-xl flex flex-col justify-center items-center px-4 text-center shadow-lg">
-        <h3 class="font-bold text-lg text-black">César</h3>
-        <p class="text-sm text-gray-700">Mi amigo serranaso jaksdj</p>
+      <div class="slide slide2">
+        <h3 class="font-bold text-lg text-black">Itami</h3>
+        <p class="text-sm text-gray-700">Siempre aquí &lt;3</p>
       </div>
     </a>
 
   </div>
-</div>
-
-  <script>
-    // Reloj
-    function updateClock() {
-      const now = new Date();
-      document.getElementById("clock").textContent =
-        now.getHours().toString().padStart(2,'0') + ":" +
-        now.getMinutes().toString().padStart(2,'0');
-    }
-    setInterval(updateClock, 1000); updateClock();
-
-    // Notificaciones fijas
-    const notifs = [
-      { icon: "💬", text: "Nuevo mensaje de Twitch" },
-      { icon: "📧", text: "Correo recibido" },
-      { icon: "🎮", text: "Invitación a jugar Elden Ring" },
-      { icon: "⚠️", text: "Puedes ver mis trabajos en el botón de la cámara" }
-    ];
-    let i = 0;
-    setInterval(() => {
-      if (i < notifs.length) {
-        const notif = document.createElement("div");
-        notif.className = "notification flex items-center space-x-3 bg-white bg-opacity-70 backdrop-blur-xl p-3 mb-2 rounded-xl shadow-lg";
-        notif.innerHTML = `<span>${notifs[i].icon}</span><span>${notifs[i].text}</span>`;
-        document.getElementById("notifications").prepend(notif);
-        i++;
-      }
-    }, 4000);
-
-    // Sidebar lógica
-    function openSidebar(id, side){
-      const el = document.getElementById(id);
-      if(side==="right"){
-        el.style.animation="slideInRight 0.4s forwards";
-      } else {
-        el.style.animation="slideInLeft 0.4s forwards";
-      }
-    }
-    function closeSidebar(id, side){
-      const el = document.getElementById(id);
-      if(side==="right"){
-        el.style.animation="slideOutRight 0.4s forwards";
-      } else {
-        el.style.animation="slideOutLeft 0.4s forwards";
-      }
-    }
-    document.getElementById("cameraBtn").onclick = ()=> openSidebar("gallery","right");
-    document.getElementById("callsBtn").onclick = ()=> openSidebar("contacts","left");
-
-    // Reproductor minimalista
-    const player = document.getElementById("player");
-    const playBtn = document.getElementById("playBtn");
-
-    playBtn.onclick = () => {
-      if (player.paused) {
-        player.play();
-        playBtn.textContent = "⏸";
-      } else {
-        player.pause();
-        playBtn.textContent = "▶️";
-      }
-    };
-  </script>
 
 </body>
 </html>
+
+
 
 
 
