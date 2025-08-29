@@ -113,6 +113,19 @@
   transform: translateY(-4px);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
 }
+
+     @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+  .gradient-text {
+    background: linear-gradient(90deg, #fff 0%, #f472b6 50%, #fff 100%);
+    background-size: 200% auto; /* necesario para animación */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientMove 3s linear infinite;
+  }
     
   </style>
 </head>
@@ -158,10 +171,7 @@
   <!-- Sidebar Galería (derecha) -->
 <div id="gallery" class="sidebar right-0 translate-x-full">
   <button onclick="closeSidebar('gallery','right')" class="absolute top-10 right-4 text-black text-2xl focus:outline-none">×</button>
-  <h2 class="text-3xl font-extrabold text-center mt-20 
-             bg-clip-text text-transparent 
-             bg-gradient-to-r from-white-400 to-pink-600 
-             drop-shadow-lg tracking-wide">
+  <h2 class="text-3xl font-extrabold text-center mt-20 drop-shadow-lg tracking-wide gradient-text">
     Mis trabajos
   </h2>
   <div class="grid grid-cols-1 gap-4 p-4 overflow-y-auto h-[85%]">
@@ -181,12 +191,9 @@
 
 
 <!-- Sidebar Contactos (izquierda) -->
-<div id="contacts" class="sidebar left-0 -translate-x-full">
+    <div id="contacts" class="sidebar left-0 -translate-x-full">
   <button onclick="closeSidebar('contacts','left')" class="absolute top-10 right-4 text-black text-2xl focus:outline-none">×</button>
-  <h2 class="text-3xl font-extrabold text-center mt-20 
-             bg-clip-text text-transparent 
-             bg-gradient-to-r from-white-400 to-pink-600 
-             drop-shadow-lg tracking-wide">
+  <h2 class="text-3xl font-extrabold text-center mt-20 drop-shadow-lg tracking-wide gradient-text">
     Amigos
   </h2>
   <div class="space-y-4 p-4 overflow-y-auto h-[85%]">
@@ -278,6 +285,7 @@
 
 </body>
 </html>
+
 
 
 
