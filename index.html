@@ -30,134 +30,116 @@
       z-index: 50;
     }
 
-  /* Post con sombra y zoom reveal */
-.post-container {
-  position: relative;
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease;
-}
-.post-container:hover {
-  transform: translateY(-5px);
-}
+    /* Post con sombra y zoom reveal */
+    .post-container {
+      position: relative;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+    .post-container:hover {
+      transform: translateY(-5px);
+    }
 
-/* Imagen reveal */
-.post-container img {
-  transition: transform 0.5s ease;
-}
-.post-container:hover img {
-  transform: scale(1.1);
-}
+    /* Imagen reveal */
+    .post-container img {
+      transition: transform 0.5s ease;
+    }
+    .post-container:hover img {
+      transform: scale(1.1);
+    }
 
-/* Descripción con degradado estético */
-.post-desc {
-  position: absolute;
-  bottom: 0;
-  left: 0; right: 0;
-  opacity: 0;
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  transform: translateY(20px);
-}
-.post-container:hover .post-desc {
-  opacity: 1;
-  transform: translateY(0);
-}
+    /* Descripción con degradado estético */
+    .post-desc {
+      position: absolute;
+      bottom: 0;
+      left: 0; right: 0;
+      opacity: 0;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      transform: translateY(20px);
+    }
+    .post-container:hover .post-desc {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
     /* Reproductor minimalista */
     .marquee {
       overflow: hidden;
       white-space: nowrap;
       animation: scrollText 10s linear infinite;
+      font-size: 0.85rem;
     }
     @keyframes scrollText {
       0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
 
-    .tarjeta {  transition: all 0.5s ease;}
+    .player-btn {
+      font-size: 1.2rem; /* más pequeño */
+      color: black; 
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    .player-btn:hover {
+      transform: scale(1.1); 
+      color: #ec4899; /* rosa fuerte */
+    }
+
+    /* Animación de botones (cámara y llamada) */
+    .btn-anim {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .btn-anim:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Relieve en contactos */
+    .tarjeta {
+      transition: all 0.4s ease;
+      position: relative; /* importante para ::before */
+    }
+    .tarjeta:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+    }
 
     .tarjeta::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    0deg, 
-    transparent, 
-    transparent 30%, 
-    rgba(0,255,255,0.3)
-  );
-  transform: rotate(-45deg);
-  transition: all 0.5s ease;
-  opacity: 0;
-}
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        0deg, 
+        transparent, 
+        transparent 30%, 
+        rgba(0,255,255,0.3)
+      );
+      transform: rotate(-45deg);
+      transition: all 0.5s ease;
+      opacity: 0;
+    }
 
-.tarjeta:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(0,255,255,0.5);
-}
+    .tarjeta:hover::before {
+      opacity: 1;
+      transform: rotate(-45deg) translateY(100%);
+    }
 
-.tarjeta:hover::before {
-  opacity: 1;
-  transform: rotate(-45deg) translateY(100%);
-}
-
-
-    /* Zoom en imágenes de galería */
-.post-container img {
-  transition: transform 0.4s ease;
-}
-.post-container:hover img {
-  transform: scale(1.1);
-}
-
-/* Animación de botones (cámara y llamada) */
-.btn-anim {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.btn-anim:hover {
-  transform: scale(1.1);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-/* Relieve en contactos */
-.tarjeta {
-  transition: all 0.4s ease;
-  position: relative; /* importante para ::before */
-}
-.tarjeta:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
-}
-
-     @keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 200% 50%; }
-  }
-  .gradient-text {
-    background: linear-gradient(90deg, #fff 0%, #f472b6 50%, #fff 100%);
-    background-size: 200% auto; /* necesario para animación */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: gradientMove 3s linear infinite;
-  }
-
-    .player-btn {
-    font-size: 1.8rem; 
-    color: black; 
-    transition: transform 0.3s ease, color 0.3s ease;
-  }
-
-  .player-btn:hover {
-    transform: scale(1.2); 
-    color: #ec4899; /* rosa fuerte (tailwind pink-500) */
-  }
-
-    
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #fff 0%, #f472b6 50%, #fff 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientMove 3s linear infinite;
+    }
   </style>
 </head>
 <body class="h-screen w-screen overflow-hidden font-sans relative text-black">
@@ -177,69 +159,59 @@
     </div>
 
     <!-- Notificaciones -->
-    
     <div id="notifications" class="absolute top-60 w-11/12 max-w-md"></div>
 
-   
-<!-- Reproductor minimalista -->
-<div class="absolute bottom-28 bg-white bg-opacity-60 backdrop-blur-xl px-4 py-2 rounded-xl shadow-lg flex items-center space-x-6">
-  <button id="playBtn" class="player-btn">▶️</button>
-  <button id="muteBtn" class="player-btn">🔊</button>
-  <div class="w-40 overflow-hidden">
-    <div class="marquee">🎵 KOCHO - 君の行方 </div>
-  </div>
-  <audio id="player" loop autoplay>
-    <source src="song.mp3" type="audio/mp3">
-  </audio>
-</div>
+    <!-- Reproductor minimalista -->
+    <div class="absolute bottom-28 bg-white bg-opacity-60 backdrop-blur-xl px-3 py-1 rounded-xl shadow-lg flex items-center space-x-3">
+      <button id="playBtn" class="player-btn">▶️</button>
+      <div class="w-32 overflow-hidden">
+        <div class="marquee">🎵 KOCHO - 君の行方 </div>
+      </div>
+      <audio id="player" loop autoplay>
+        <source src="song.mp3" type="audio/mp3">
+      </audio>
+    </div>
 
     <!-- Barra inferior -->
     <div class="flex justify-between w-full px-8 mb-8">
-    <button id="callsBtn" class="btn-anim p-4 bg-white bg-opacity-70 backdrop-blur-xl rounded-full shadow-lg">📞</button>
-<button id="cameraBtn" class="btn-anim p-4 bg-white bg-opacity-70 backdrop-blur-xl rounded-full shadow-lg">📷</button>
+      <button id="callsBtn" class="btn-anim p-4 bg-white bg-opacity-70 backdrop-blur-xl rounded-full shadow-lg">📞</button>
+      <button id="cameraBtn" class="btn-anim p-4 bg-white bg-opacity-70 backdrop-blur-xl rounded-full shadow-lg">📷</button>
     </div>
   </div>
 
-<!-- Sidebar Galería (derecha) -->
-<div id="gallery" class="sidebar right-0 translate-x-full">
-  <button onclick="closeSidebar('gallery','right')" class="absolute top-10 right-4 text-black text-2xl focus:outline-none">×</button>
-  
-  <h2 class="text-3xl font-extrabold text-center mt-20 drop-shadow-lg tracking-wide gradient-text">
-    Mis trabajos
-  </h2>
-
-  <div class="grid grid-cols-1 gap-6 p-6 overflow-y-auto h-[85%]">
-    
-    <!-- Post 1 -->
-    <div class="post-container rounded-2xl overflow-hidden shadow-xl">
-      <img src="https://i.postimg.cc/1XJXdS7x/fondo-molonisimo-hermosisismo-copia.gif" class="w-full h-auto object-contain transition-transform duration-500 ease-in-out"/>
-      <div class="post-desc flex flex-col justify-center text-center px-4 py-6 bg-gradient-to-t from-white/80 via-white/60 to-transparent">
-        <p class="text-black font-semibold text-lg drop-shadow-sm">Pcback diseño complejo + animación simple</p>
-        <span class="text-pink-600 font-bold text-sm mt-2">400 xats</span>
+  <!-- Sidebar Galería (derecha) -->
+  <div id="gallery" class="sidebar right-0 translate-x-full">
+    <button onclick="closeSidebar('gallery','right')" class="absolute top-10 right-4 text-black text-2xl focus:outline-none">×</button>
+    <h2 class="text-3xl font-extrabold text-center mt-20 drop-shadow-lg tracking-wide gradient-text">
+      Mis trabajos
+    </h2>
+    <div class="grid grid-cols-1 gap-6 p-6 overflow-y-auto h-[85%]">
+      <!-- Post 1 -->
+      <div class="post-container rounded-2xl overflow-hidden shadow-xl">
+        <img src="https://i.postimg.cc/1XJXdS7x/fondo-molonisimo-hermosisismo-copia.gif" class="w-full h-auto object-contain transition-transform duration-500 ease-in-out"/>
+        <div class="post-desc flex flex-col justify-center text-center px-4 py-6 bg-gradient-to-t from-white/80 via-white/60 to-transparent">
+          <p class="text-black font-semibold text-lg drop-shadow-sm">Pcback diseño complejo + animación simple</p>
+          <span class="text-pink-600 font-bold text-sm mt-2">400 xats</span>
+        </div>
+      </div>
+      <!-- Post 2 -->
+      <div class="post-container rounded-2xl overflow-hidden shadow-xl">
+        <img src="https://i.postimg.cc/pLnVfKvM/RAIN-PCBACK.gif" class="w-full h-auto object-contain transition-transform duration-500 ease-in-out"/>
+        <div class="post-desc flex flex-col justify-center text-center px-4 py-6 bg-gradient-to-t from-white/80 via-white/60 to-transparent">
+          <p class="text-black font-semibold text-lg drop-shadow-sm">Pcback animación simple + diseño simple</p>
+          <span class="text-pink-600 font-bold text-sm mt-2">300 xats</span>
+        </div>
       </div>
     </div>
-
-    <!-- Post 2 -->
-    <div class="post-container rounded-2xl overflow-hidden shadow-xl">
-      <img src="https://i.postimg.cc/pLnVfKvM/RAIN-PCBACK.gif" class="w-full h-auto object-contain transition-transform duration-500 ease-in-out"/>
-      <div class="post-desc flex flex-col justify-center text-center px-4 py-6 bg-gradient-to-t from-white/80 via-white/60 to-transparent">
-        <p class="text-black font-semibold text-lg drop-shadow-sm">Pcback animación simple + diseño simple</p>
-        <span class="text-pink-600 font-bold text-sm mt-2">300 xats</span>
-      </div>
-    </div>
-
   </div>
-</div>
 
-
-<!-- Sidebar Contactos (izquierda) -->
-    <div id="contacts" class="sidebar left-0 -translate-x-full">
-  <button onclick="closeSidebar('contacts','left')" class="absolute top-10 right-4 text-black text-2xl focus:outline-none">×</button>
-  <h2 class="text-3xl font-extrabold text-center mt-20 drop-shadow-lg tracking-wide gradient-text">
-    Amigos
-  </h2>
-  <div class="space-y-4 p-4 overflow-y-auto h-[85%]">
-    <!-- ... contactos ... -->
+  <!-- Sidebar Contactos (izquierda) -->
+  <div id="contacts" class="sidebar left-0 -translate-x-full">
+    <button onclick="closeSidebar('contacts','left')" class="absolute top-10 right-4 text-black text-2xl focus:outline-none">×</button>
+    <h2 class="text-3xl font-extrabold text-center mt-20 drop-shadow-lg tracking-wide gradient-text">
+      Amigos
+    </h2>
+    <div class="space-y-4 p-4 overflow-y-auto h-[85%]">
       <a href="https://xat.me/taiga" target="_blank" class="tarjeta flex items-center space-x-3 p-3 bg-white bg-opacity-70 backdrop-blur-xl rounded-xl">
         <img src="https://i.postimg.cc/CKmGjyY2/tumblr-bb86d9f619bf2489197d002711884c82-ac1f61d2-250.jpg" class="w-12 h-12 rounded-full">
         <span>Tai</span>
@@ -249,7 +221,6 @@
         <span>César</span>
       </a>
     </div>
-<button onclick="closeSidebar('contacts','left')" class="absolute top-10 right-4 text-black text-2xl focus:outline-none">×</button>
   </div>
 
   <script>
@@ -300,41 +271,23 @@
     document.getElementById("cameraBtn").onclick = ()=> openSidebar("gallery","right");
     document.getElementById("callsBtn").onclick = ()=> openSidebar("contacts","left");
 
- 
-  // Reproductor minimalista
-  const player = document.getElementById("player");
-  const muteBtn = document.getElementById("muteBtn");
-  const playBtn = document.getElementById("playBtn");
+    // Reproductor minimalista
+    const player = document.getElementById("player");
+    const playBtn = document.getElementById("playBtn");
 
-  // Botón mute
-  muteBtn.onclick = () => {
-    player.muted = !player.muted;
-    muteBtn.textContent = player.muted ? "🔇" : "🔊";
-  };
-
-  // Botón play/pausa
-  playBtn.onclick = () => {
-    if (player.paused) {
-      player.play();
-      playBtn.textContent = "⏸"; // cambia a pausa
-    } else {
-      player.pause();
-      playBtn.textContent = "▶"; // cambia a play
-    }
-  };
-
+    playBtn.onclick = () => {
+      if (player.paused) {
+        player.play();
+        playBtn.textContent = "⏸";
+      } else {
+        player.pause();
+        playBtn.textContent = "▶️";
+      }
+    };
   </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
 
 
 
