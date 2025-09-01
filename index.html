@@ -28,6 +28,12 @@
       backdrop-filter: blur(20px);
       color: black;
       z-index: 50;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    body.dark .sidebar {
+      background: rgba(20,20,20,0.8);
+      color: white;
     }
 
     /* Post con sombra y zoom reveal */
@@ -77,18 +83,22 @@
     }
 
     .player-btn {
-      font-size: 1.2rem; /* más pequeño */
+      font-size: 1.2rem;
       color: black; 
       transition: transform 0.3s ease, color 0.3s ease;
     }
     .player-btn:hover {
       transform: scale(1.1); 
-      color: #ec4899; /* rosa fuerte */
+      color: #ec4899;
     }
 
-    /* Animación de botones (cámara y llamada) */
+    body.dark .player-btn {
+      color: white;
+    }
+
+    /* Animación de botones */
     .btn-anim {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
     }
     .btn-anim:hover {
       transform: scale(1.1);
@@ -98,36 +108,14 @@
     /* Relieve en contactos */
     .tarjeta {
       transition: all 0.4s ease;
-      position: relative; /* importante para ::before */
+      position: relative;
     }
     .tarjeta:hover {
       transform: translateY(-4px);
       box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
     }
 
-    .tarjeta::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(
-        0deg, 
-        transparent, 
-        transparent 30%, 
-        rgba(0,255,255,0.3)
-      );
-      transform: rotate(-45deg);
-      transition: all 0.5s ease;
-      opacity: 0;
-    }
-
-    .tarjeta:hover::before {
-      opacity: 1;
-      transform: rotate(-45deg) translateY(100%);
-    }
-
+    /* Gradient texto */
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
       100% { background-position: 200% 50%; }
@@ -139,6 +127,11 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
       animation: gradientMove 3s linear infinite;
+    }
+
+    body.dark .gradient-text {
+      background: linear-gradient(90deg, #000 0%, #f472b6 50%, #000 100%);
+      -webkit-text-fill-color: transparent;
     }
   </style>
 </head>
@@ -152,6 +145,9 @@
   <!-- Pantalla de bloqueo -->
   <div id="lockscreen" class="h-full w-full flex flex-col items-center justify-between p-6">
 
+    <!-- Botón Dark Mode -->
+    <button id="darkModeBtn" class="absolute top-6 right-6 px-4 py-2 bg-white/70 rounded-xl shadow-lg backdrop-blur-md">🌙</button>
+
     <!-- Hora -->
     <div class="mt-16 text-center text-white drop-shadow-lg">
       <h1 id="clock" class="text-7xl font-bold"></h1>
@@ -162,7 +158,7 @@
     <div id="notifications" class="absolute top-60 w-11/12 max-w-md"></div>
 
     <!-- Reproductor minimalista -->
-    <div class="absolute bottom-28 bg-white bg-opacity-60 backdrop-blur-xl px-3 py-1 rounded-xl shadow-lg flex items-center space-x-3">
+    <div class="absolute bottom-28 bg-white bg-opacity-60 backdrop-blur-xl px-3 py-1 rounded-xl shadow-lg flex items-center space-x-3 transition-colors duration-300 dark:bg-black/70 dark:text-white">
       <button id="playBtn" class="player-btn">▶️</button>
       <div class="w-32 overflow-hidden">
         <div class="marquee">🎵 KOCHO - 君の行方 </div>
@@ -179,53 +175,29 @@
     </div>
   </div>
 
-  <!-- Sidebar Galería (derecha) -->
+  <!-- Sidebar Galería -->
   <div id="gallery" class="sidebar right-0 translate-x-full">
-    <button onclick="closeSidebar('gallery','right')" class="absolute top-10 right-4 text-black text-2xl focus:outline-none">×</button>
-    <h2 class="text-3xl font-extrabold text-center mt-20 drop-shadow-lg tracking-wide gradient-text">
-      Mis trabajos
-    </h2>
+    <button onclick="closeSidebar('gallery','right')" class="absolute top-10 right-4 text-2xl focus:outline-none">×</button>
+    <h2 class="text-3xl font-extrabold text-center mt-20 drop-shadow-lg tracking-wide gradient-text">Mis trabajos</h2>
     <div class="grid grid-cols-1 gap-6 p-6 overflow-y-auto h-[85%]">
-      <!-- Post 1 -->
-      <div class="post-container rounded-2xl overflow-hidden shadow-xl">
-        <img src="https://i.postimg.cc/1XJXdS7x/fondo-molonisimo-hermosisismo-copia.gif" class="w-full h-auto object-contain transition-transform duration-500 ease-in-out"/>
-        <div class="post-desc flex flex-col justify-center text-center px-4 py-6 bg-gradient-to-t from-white/80 via-white/60 to-transparent">
-          <p class="text-black font-semibold text-lg drop-shadow-sm">Pcback diseño complejo + animación simple</p>
-          <span class="text-pink-600 font-bold text-sm mt-2">500 xats</span>
+      <div class="post-container">
+        <img src="https://i.postimg.cc/1XJXdS7x/fondo-molonisimo-hermosisismo-copia.gif"/>
+        <div class="post-desc bg-gradient-to-t from-white/80 via-white/60 to-transparent dark:from-black/80 dark:via-black/60">
+          <p class="font-semibold text-lg">Pcback diseño complejo + animación simple</p>
+          <span class="text-pink-600 font-bold text-sm">500 xats</span>
         </div>
       </div>
-      <!-- Post 2 -->
-      <div class="post-container rounded-2xl overflow-hidden shadow-xl">
-        <img src="https://i.postimg.cc/pLnVfKvM/RAIN-PCBACK.gif" class="w-full h-auto object-contain transition-transform duration-500 ease-in-out"/>
-        <div class="post-desc flex flex-col justify-center text-center px-4 py-6 bg-gradient-to-t from-white/80 via-white/60 to-transparent">
-          <p class="text-black font-semibold text-lg drop-shadow-sm">Pcback animación simple + diseño simple</p>
-          <span class="text-pink-600 font-bold text-sm mt-2">400 xats</span>
-        </div>
-</div>
-        <div class="post-container rounded-2xl overflow-hidden shadow-xl">
-        <img src="https://i.ibb.co/G4xDYqf0/fondos-zps9lmvgk8o.jpg" class="w-full h-auto object-contain transition-transform duration-500 ease-in-out"/>
-        <div class="post-desc flex flex-col justify-center text-center px-4 py-6 bg-gradient-to-t from-white/80 via-white/60 to-transparent">
-          <p class="text-black font-semibold text-lg drop-shadow-sm">Fondo sin animación + diseño simple</p>
-          <span class="text-pink-600 font-bold text-sm mt-2">200 xats</span>
-        </div>
-        </div>
     </div>
   </div>
 
-  <!-- Sidebar Contactos (izquierda) -->
+  <!-- Sidebar Contactos -->
   <div id="contacts" class="sidebar left-0 -translate-x-full">
-    <button onclick="closeSidebar('contacts','left')" class="absolute top-10 right-4 text-black text-2xl focus:outline-none">×</button>
-    <h2 class="text-3xl font-extrabold text-center mt-20 drop-shadow-lg tracking-wide gradient-text">
-      Amigos
-    </h2>
+    <button onclick="closeSidebar('contacts','left')" class="absolute top-10 right-4 text-2xl focus:outline-none">×</button>
+    <h2 class="text-3xl font-extrabold text-center mt-20 drop-shadow-lg tracking-wide gradient-text">Amigos</h2>
     <div class="space-y-4 p-4 overflow-y-auto h-[85%]">
-      <a href="https://xat.me/taiga" target="_blank" class="tarjeta flex items-center space-x-3 p-3 bg-white bg-opacity-70 backdrop-blur-xl rounded-xl">
+      <a href="https://xat.me/taiga" target="_blank" class="tarjeta flex items-center space-x-3 p-3 bg-white/70 backdrop-blur-xl rounded-xl dark:bg-black/70">
         <img src="https://i.postimg.cc/CKmGjyY2/tumblr-bb86d9f619bf2489197d002711884c82-ac1f61d2-250.jpg" class="w-12 h-12 rounded-full">
         <span>Tai</span>
-      </a>
-      <a href="https://xat.me/xcesar" target="_blank" class="tarjeta flex items-center space-x-3 p-3 bg-white bg-opacity-70 backdrop-blur-xl rounded-xl">
-        <img src="https://i.postimg.cc/J0y5rpf2/tumblr-340386cc4519775fc36c1da145b1f8e2-f14a2a5f-250.jpg" class="w-12 h-12 rounded-full">
-        <span>César</span>
       </a>
     </div>
   </div>
@@ -240,7 +212,7 @@
     }
     setInterval(updateClock, 1000); updateClock();
 
-    // Notificaciones fijas
+    // Notificaciones
     const notifs = [
       { icon: "💬", text: "Nuevo mensaje de Twitch" },
       { icon: "📧", text: "Correo recibido" },
@@ -251,37 +223,30 @@
     setInterval(() => {
       if (i < notifs.length) {
         const notif = document.createElement("div");
-        notif.className = "notification flex items-center space-x-3 bg-white bg-opacity-70 backdrop-blur-xl p-3 mb-2 rounded-xl shadow-lg";
+        notif.className = "notification flex items-center space-x-3 bg-white/70 backdrop-blur-xl p-3 mb-2 rounded-xl shadow-lg dark:bg-black/70 dark:text-white";
         notif.innerHTML = `<span>${notifs[i].icon}</span><span>${notifs[i].text}</span>`;
         document.getElementById("notifications").prepend(notif);
         i++;
       }
     }, 4000);
 
-    // Sidebar lógica
+    // Sidebar
     function openSidebar(id, side){
       const el = document.getElementById(id);
-      if(side==="right"){
-        el.style.animation="slideInRight 0.4s forwards";
-      } else {
-        el.style.animation="slideInLeft 0.4s forwards";
-      }
+      if(side==="right"){ el.style.animation="slideInRight 0.4s forwards"; }
+      else { el.style.animation="slideInLeft 0.4s forwards"; }
     }
     function closeSidebar(id, side){
       const el = document.getElementById(id);
-      if(side==="right"){
-        el.style.animation="slideOutRight 0.4s forwards";
-      } else {
-        el.style.animation="slideOutLeft 0.4s forwards";
-      }
+      if(side==="right"){ el.style.animation="slideOutRight 0.4s forwards"; }
+      else { el.style.animation="slideOutLeft 0.4s forwards"; }
     }
     document.getElementById("cameraBtn").onclick = ()=> openSidebar("gallery","right");
     document.getElementById("callsBtn").onclick = ()=> openSidebar("contacts","left");
 
-    // Reproductor minimalista
+    // Reproductor
     const player = document.getElementById("player");
     const playBtn = document.getElementById("playBtn");
-
     playBtn.onclick = () => {
       if (player.paused) {
         player.play();
@@ -291,8 +256,23 @@
         playBtn.textContent = "▶️";
       }
     };
-  </script>
 
+    // Dark Mode
+    const darkBtn = document.getElementById("darkModeBtn");
+    const body = document.body;
+    const bgVideo = document.getElementById("bgVideo");
+
+    darkBtn.onclick = () => {
+      body.classList.toggle("dark");
+      if(body.classList.contains("dark")){
+        darkBtn.textContent = "☀️";
+        bgVideo.src = "fondo-dark.mp4"; // tu video oscuro
+      } else {
+        darkBtn.textContent = "🌙";
+        bgVideo.src = "fondoo.mp4"; // tu video claro
+      }
+    };
+  </script>
 </body>
 </html>
 
