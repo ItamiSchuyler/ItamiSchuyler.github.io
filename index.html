@@ -10,21 +10,17 @@
        SISTEMA DE TEMAS (LIGHT/DARK)
        =========================== */
     :root{
-      /* Superficies tipo "glass" y texto */
       --surface: rgba(255,255,255,0.65);
       --surface-strong: rgba(255,255,255,0.8);
       --text: #0b0b0b;
       --text-muted: #4b5563;
 
-      /* Notificaciones (en claro quieres texto blanco) */
-      --notif-surface: rgba(0,0,0,0.55); /* oscuro translúcido */
+      --notif-surface: rgba(0,0,0,0.55);
 
-      /* Títulos con gradiente */
       --title-a: #ffffff;
       --title-b: #f472b6;
       --title-c: #ffffff;
 
-      /* Reloj y fecha en modo claro */
       --clock: #ffffff;
       --date: #ffffff;
     }
@@ -36,20 +32,18 @@
 
       --notif-surface: rgba(18,18,18,0.8);
 
-      /* Gradiente visible en oscuro */
-      --title-a: #d1d5db;  /* gris tenue */
-      --title-b: #f472b6;  /* rosa */
+      --title-a: #d1d5db;
+      --title-b: #f472b6;
       --title-c: #d1d5db;
 
-      /* Reloj/fecha en oscuro (pediste gris tenue) */
-      --clock: #d1d5db;   /* gray-300 */
-      --date: #9ca3af;    /* gray-400 */
+      --clock: #d1d5db; /* gris tenue */
+      --date: #9ca3af;  /* gris más apagado */
     }
 
     /* Utilidades "glass" */
-    .glass{ background: var(--surface); backdrop-filter: blur(20px); }
-    .glass-strong{ background: var(--surface-strong); backdrop-filter: blur(20px); }
-    .glass-notif{ background: var(--notif-surface); backdrop-filter: blur(20px); color:#fff; }
+    .glass{ background: var(--surface); backdrop-filter: blur(20px); transition: background .35s, color .35s; }
+    .glass-strong{ background: var(--surface-strong); backdrop-filter: blur(20px); transition: background .35s, color .35s; }
+    .glass-notif{ background: var(--notif-surface); backdrop-filter: blur(20px); color:#fff; transition: background .35s; }
 
     /* ===========================
        ANIMACIONES
@@ -64,6 +58,19 @@
     @keyframes slideOutRight { from { transform: translateX(0); } to { transform: translateX(100%); } }
     @keyframes slideInLeft  { from { transform: translateX(-100%);} to { transform: translateX(0); } }
     @keyframes slideOutLeft { from { transform: translateX(0); } to { transform: translateX(-100%);} }
+
+    /* Animación trabajos */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .work-item {
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards;
+    }
+    .work-item:nth-child(1) { animation-delay: 0.3s; }
+    .work-item:nth-child(2) { animation-delay: 0.6s; }
+    .work-item:nth-child(3) { animation-delay: 0.9s; }
 
     /* ===========================
        LAYOUTS / COMPONENTES
@@ -81,9 +88,12 @@
     .post-container{
       position: relative; border-radius: 1rem; overflow: hidden;
       box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-      transition: transform .3s ease;
+      transition: transform .3s ease, box-shadow .3s ease;
     }
-    .post-container:hover{ transform: translateY(-5px); }
+    .post-container:hover{
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
 
     /* Imagen reveal */
     .post-container img{ transition: transform .5s ease; width:100%; height:auto; object-fit:cover; }
@@ -131,7 +141,7 @@
       box-shadow: 0 6px 15px rgba(0,0,0,.25);
     }
 
-    /* Títulos con gradiente que funciona en ambos modos */
+    /* Títulos con gradiente */
     @keyframes gradientMove { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
     .gradient-text{
       background: linear-gradient(90deg, var(--title-a) 0%, var(--title-b) 50%, var(--title-c) 100%);
@@ -143,9 +153,9 @@
       filter: drop-shadow(0 1px 1px rgba(0,0,0,.35));
     }
 
-    /* Colores del reloj/fecha según tema */
-    #clock{ color: var(--clock); }
-    #lockscreen p.date{ color: var(--date); }
+    /* Colores del reloj/fecha */
+    #clock{ color: var(--clock); transition: color .4s ease; }
+    #lockscreen p.date{ color: var(--date); transition: color .4s ease; }
 
   </style>
 </head>
@@ -198,7 +208,7 @@
 
     <div class="grid grid-cols-1 gap-6 p-6 overflow-y-auto h-[85%]">
       <!-- Post 1 -->
-      <div class="post-container rounded-2xl overflow-hidden shadow-xl">
+      <div class="post-container work-item rounded-2xl overflow-hidden shadow-xl">
         <img src="https://i.postimg.cc/1XJXdS7x/fondo-molonisimo-hermosisismo-copia.gif" />
         <div class="post-desc px-4 py-6"
              style="background: linear-gradient(to top, rgba(255,255,255,.85), rgba(255,255,255,.55), transparent);">
@@ -207,9 +217,8 @@
         </div>
       </div>
 
-      <!-- Ejemplo extra (opcional) -->
-      <!--
-      <div class="post-container rounded-2xl overflow-hidden shadow-xl">
+      <!-- Más trabajos (ejemplo) -->
+      <div class="post-container work-item rounded-2xl overflow-hidden shadow-xl">
         <img src="https://i.postimg.cc/pLnVfKvM/RAIN-PCBACK.gif" />
         <div class="post-desc px-4 py-6"
              style="background: linear-gradient(to top, rgba(255,255,255,.85), rgba(255,255,255,.55), transparent);">
@@ -217,7 +226,6 @@
           <span class="font-bold text-sm" style="color:#ec4899">400 xats</span>
         </div>
       </div>
-      -->
     </div>
   </div>
 
@@ -253,7 +261,7 @@
     }
     setInterval(updateClock, 1000); updateClock();
 
-    // ========= Notificaciones (texto blanco en claro, ya que el fondo es oscuro translúcido) =========
+    // ========= Notificaciones =========
     const notifs = [
       { icon: "💬", text: "Nuevo mensaje de Twitch" },
       { icon: "📧", text: "Correo recibido" },
@@ -301,10 +309,9 @@
     function setDarkMode(on){
       document.body.classList.toggle("dark", on);
       darkBtn.textContent = on ? "☀️" : "🌙";
-      // Cambia el fondo de pantalla (video)
       sourceEl.src = on ? "fondo 1.mp4" : "fondoo.mp4";
-      video.load(); // recargar la fuente
-      video.play().catch(()=>{ /* ignorar autoplay bloqueado */ });
+      video.load();
+      video.play().catch(()=>{});
     }
 
     // Estado inicial: claro
@@ -317,21 +324,6 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
