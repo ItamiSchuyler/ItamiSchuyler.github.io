@@ -13,10 +13,10 @@
       --text-muted: #4b5563;
       --notif-surface: #ffffff; /* blanco en claro */
       --notif-text: #0b0b0b;
-      --title-a: #0b0b0b;
-      --title-b: #f472b6;
-      --title-c: #0b0b0b;
-      --clock: #ffffff; /* mismo color que notifs */
+      --title-a: #ffffff; /* blanco */
+      --title-b: #f472b6; /* rosa */
+      --title-c: #ffffff; /* blanco */
+      --clock: #ffffff; 
       --date: #E8E8E8;
     }
     body.dark{
@@ -24,12 +24,12 @@
       --surface-strong: rgba(18,18,18,0.92);
       --text: #ffffff;
       --text-muted: #d1d5db;
-      --notif-surface: rgba(18,18,18,0.9); /* oscuro en dark */
+      --notif-surface: rgba(18,18,18,0.9); 
       --notif-text: #ffffff;
-      --title-a: #d1d5db;
-      --title-b: #f472b6;
-      --title-c: #d1d5db;
-      --clock: rgba(18,18,18,0.9); /* oscuro como notif-surface */
+      --title-a: #0b0b0b; /* negro */
+      --title-b: #f472b6; /* rosa */
+      --title-c: #0b0b0b; /* negro */
+      --clock: rgba(18,18,18,0.9); 
       --date: rgba(18,18,18,0.9);
     }
 
@@ -111,7 +111,15 @@
 
     /* Títulos con gradiente */
     @keyframes gradientMove { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
-    .gradient-text{ background: linear-gradient(90deg, var(--title-a) 0%, var(--title-b) 50%, var(--title-c) 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradientMove 3s linear infinite; filter: drop-shadow(0 1px 1px rgba(0,0,0,.35)); }
+    .gradient-text{ 
+      background: linear-gradient(90deg, var(--title-a) 0%, var(--title-b) 50%, var(--title-c) 100%); 
+      background-size: 200% auto; 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent; 
+      background-clip: text; 
+      animation: gradientMove 3s linear infinite; 
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,.35)); 
+    }
 
     /* Colores del reloj/fecha */
     #clock{ color: var(--clock); transition: color .4s ease; }
@@ -133,7 +141,7 @@
     <!-- Hora -->
     <div class="mt-16 text-center drop-shadow-lg">
       <h1 id="clock" class="text-7xl font-bold"></h1>
-      <p class="date text-lg">Martes, 28 de Agosto</p>
+      <p class="date text-lg" id="date"></p>
     </div>
 
     <!-- Notificaciones -->
@@ -216,6 +224,16 @@
     setInterval(updateClock, 1000);
     updateClock();
 
+    // ========= Fecha =========
+    function updateDate(){
+      const now = new Date();
+      const opciones = { weekday: 'long', day: 'numeric', month: 'long' };
+      const fecha = now.toLocaleDateString('es-ES', opciones);
+      document.getElementById("date").textContent = fecha.charAt(0).toUpperCase() + fecha.slice(1);
+    }
+    setInterval(updateDate, 60000);
+    updateDate();
+
     // ========= Notificaciones =========
     const notifs = [
       { icon: "💬", text: "Nuevo mensaje de Twitch" },
@@ -280,6 +298,8 @@
   </script>
 </body>
 </html>
+
+
 
 
 
