@@ -124,6 +124,22 @@
     /* Colores del reloj/fecha */
     #clock{ color: var(--clock); transition: color .4s ease; }
     #lockscreen p.date{ color: var(--date); transition: color .4s ease; }
+
+    /* =========================== ANIMACIÓN TARJETAS AMIGOS =========================== */
+    .tarjeta {
+      transition: transform .35s ease, box-shadow .35s ease, background .35s ease;
+    }
+    .tarjeta:hover {
+      transform: scale(1.05) translateX(6px);
+      box-shadow: 0 8px 20px rgba(236,72,153,0.4); /* glow rosa */
+      background: linear-gradient(135deg, rgba(236,72,153,0.15), var(--surface));
+    }
+    .tarjeta img {
+      transition: transform .4s ease;
+    }
+    .tarjeta:hover img {
+      transform: rotate(-8deg) scale(1.1);
+    }
   </style>
 </head>
 <body class="h-screen w-screen overflow-hidden font-sans relative">
@@ -244,60 +260,52 @@
     (function mountNotifs(){
       let i = 0;
       const box = document.getElementById("notifications");
-      const interval = setInterval(()=>{
-        if(i >= notifs.length){ clearInterval(interval); return; }
-        const n = document.createElement("div");
-        n.className = "notification flex items-center gap-3 px-3 py-3 mb-2 rounded-xl shadow-lg glass-notif";
-        n.innerHTML = `<span>${notifs[i].icon}</span><span>${notifs[i].text}</span>`;
-        box.prepend(n);
-        i++;
-      }, 4000);
+      const interval = setInterval(()=>{        if(i < notifs.length){
+          const n = document.createElement("div");
+          n.className = "notification glass-notif p-3 rounded-xl shadow-md mb-3 flex items-center space-x-2";
+          n.innerHTML = `<span>${notifs[i].icon}</span><span>${notifs[i].text}</span>`;
+          box.appendChild(n);
+          i++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 1500);
     })();
 
-    // ========= Sidebars =========
+    // ========= Sidebar =========
     function openSidebar(id, side){
       const el = document.getElementById(id);
-      el.style.animation = (side === "right") ? "slideInRight .4s forwards" : "slideInLeft .4s forwards";
+      el.style.animation = side==="right" ? "slideInRight .4s forwards" : "slideInLeft .4s forwards";
     }
     function closeSidebar(id, side){
       const el = document.getElementById(id);
-      el.style.animation = (side === "right") ? "slideOutRight .4s forwards" : "slideOutLeft .4s forwards";
+      el.style.animation = side==="right" ? "slideOutRight .4s forwards" : "slideOutLeft .4s forwards";
     }
-    document.getElementById("cameraBtn").onclick = ()=> openSidebar("gallery","right");
-    document.getElementById("callsBtn").onclick = ()=> openSidebar("contacts","left");
 
-    // ========= Reproductor =========
-    const player = document.getElementById("player");
+    // ========= Dark Mode =========
+    document.getElementById("darkModeBtn").addEventListener("click",()=>{
+      document.body.classList.toggle("dark");
+    });
+
+    // ========= Player =========
+    const audio = document.getElementById("player");
     const playBtn = document.getElementById("playBtn");
-    playBtn.onclick = ()=>{
-      if(player.paused){
-        player.play();
-        playBtn.textContent = "⏸";
-      } else {
-        player.pause();
-        playBtn.textContent = "▶️";
-      }
-    };
+    playBtn.addEventListener("click", ()=>{
+      if(audio.paused){ audio.play(); playBtn.textContent="⏸"; }
+      else { audio.pause(); playBtn.textContent="▶️"; }
+    });
 
-    // ========= Modo oscuro =========
-    const darkBtn = document.getElementById("darkModeBtn");
-    const video = document.getElementById("bgVideo");
-    const sourceEl = document.getElementById("bgSource");
-    function setDarkMode(on){
-      document.body.classList.toggle("dark", on);
-      darkBtn.textContent = on ? "☀️" : "🌙";
-      sourceEl.src = on ? "fondo 1.mp4" : "fondoo.mp4";
-      video.load();
-      video.play().catch(()=>{});
-    }
-    setDarkMode(false);
-    darkBtn.onclick = ()=>{
-      const nowDark = !document.body.classList.contains("dark");
-      setDarkMode(nowDark);
-    };
+    // ========= Botones inferiores =========
+    document.getElementById("cameraBtn").addEventListener("click",()=>{
+      openSidebar("gallery","right");
+    });
+    document.getElementById("callsBtn").addEventListener("click",()=>{
+      openSidebar("contacts","left");
+    });
   </script>
 </body>
 </html>
+
 
 
 
