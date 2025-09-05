@@ -226,7 +226,7 @@
         <img src="https://i.postimg.cc/J0y5rpf2/tumblr-340386cc4519775fc36c1da145b1f8e2-f14a2a5f-250.jpg" class="w-12 h-12 rounded-full" />
         <span style="color: var(--text)">César</span>
       </a>
-       <a href="https://xat.me/2200022" target="_blank" class="tarjeta flex items-center space-x-3 p-3 rounded-xl glass">
+      <a href="https://xat.me/2200022" target="_blank" class="tarjeta flex items-center space-x-3 p-3 rounded-xl glass">
         <img src="https://i.ibb.co/wNdpRZ2c/1x9ZyiS.png" class="w-12 h-12 rounded-full" />
         <span style="color: var(--text)">Nece</span>
       </a>
@@ -264,7 +264,8 @@
     (function mountNotifs(){
       let i = 0;
       const box = document.getElementById("notifications");
-      const interval = setInterval(()=>{        if(i < notifs.length){
+      const interval = setInterval(()=>{
+        if(i < notifs.length){
           const n = document.createElement("div");
           n.className = "notification glass-notif p-3 rounded-xl shadow-md mb-3 flex items-center space-x-2";
           n.innerHTML = `<span>${notifs[i].icon}</span><span>${notifs[i].text}</span>`;
@@ -286,10 +287,26 @@
       el.style.animation = side==="right" ? "slideOutRight .4s forwards" : "slideOutLeft .4s forwards";
     }
 
-    // ========= Dark Mode =========
-    document.getElementById("darkModeBtn").addEventListener("click",()=>{
+    // ========= Dark Mode (con cambio de vídeo) =========
+    const darkBtn  = document.getElementById("darkModeBtn");
+    const videoEl  = document.getElementById("bgVideo");
+    const sourceEl = document.getElementById("bgSource");
+
+    function applyThemeMedia(){
+      const isDark = document.body.classList.contains("dark");
+      darkBtn.textContent = isDark ? "☀️" : "🌙";
+      sourceEl.src = isDark ? "fondo 1.mp4" : "fondoo.mp4";
+      videoEl.load();
+      videoEl.play().catch(()=>{});
+    }
+
+    darkBtn.addEventListener("click", ()=>{
       document.body.classList.toggle("dark");
+      applyThemeMedia();
     });
+
+    // Estado inicial
+    applyThemeMedia();
 
     // ========= Player =========
     const audio = document.getElementById("player");
@@ -309,10 +326,6 @@
   </script>
 </body>
 </html>
-
-
-
-
 
 
 
