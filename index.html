@@ -106,12 +106,30 @@
     <!-- Notificaciones -->
     <div id="notifications" class="absolute top-60 w-11/12 max-w-md"></div>
 
-    <!-- Reproductor minimalista -->
-    <div class="absolute bottom-28 glass px-3 py-1 rounded-xl shadow-lg flex items-center space-x-3">
-      <button id="playBtn" class="player-btn">▶️</button>
-      <div class="w-40 overflow-hidden">
-        <div id="songTitle" class="marquee">🎵 KOCHO - 君の行方</div>
+    <!-- Reproductor mejorado -->
+    <div class="absolute bottom-28 glass px-4 py-2 rounded-2xl shadow-lg flex items-center space-x-4 w-80">
+      <!-- Botón Play/Pause -->
+      <button id="playBtn" class="player-btn w-10 h-10 flex items-center justify-center rounded-full glass-strong shadow-md">
+        ▶️
+      </button>
+
+      <!-- Info canción + progreso -->
+      <div class="flex-1">
+        <div class="w-full overflow-hidden">
+          <div id="songTitle" class="marquee font-semibold">🎵 KOCHO - 君の行方</div>
+        </div>
+        <!-- Barra de progreso -->
+        <input id="progressBar" type="range" min="0" max="100" value="0" 
+               class="w-full h-1 mt-1 accent-pink-400 cursor-pointer rounded-lg" />
       </div>
+
+      <!-- Volumen -->
+      <div class="flex items-center space-x-2">
+        <button id="muteBtn" class="player-btn">🔊</button>
+        <input id="volumeBar" type="range" min="0" max="1" step="0.05" value="1"
+               class="w-16 accent-pink-400 cursor-pointer" />
+      </div>
+
       <audio id="player" loop autoplay>
         <source id="songSource" src="song.mp3" type="audio/mp3" />
       </audio>
@@ -235,6 +253,9 @@
     const playBtn = document.getElementById("playBtn");
     const songSource = document.getElementById("songSource");
     const songTitle = document.getElementById("songTitle");
+    const progressBar = document.getElementById("progressBar");
+    const volumeBar   = document.getElementById("volumeBar");
+    const muteBtn     = document.getElementById("muteBtn");
 
     const songs = {
       light: { src: "song2.mp3", title: "🎵 PiKi - Kawaii Kaiwai" },
@@ -248,79 +269,64 @@
       return `${m}:${s}`;
     }
 
-    let currentSongTitle = songs.light.title;
-
-    function updateSongTitle(){
-      const current = formatTime(audio.currentTime);
-      const total = formatTime(audio.duration);
-      songTitle.textContent = `${currentSongTitle} [${current} / ${total}]`;
-    }
-    // actualiza cada segundo
-    setInterval(updateSongTitle, 1000);
-
-    function setSong(theme){
-      const song = theme === "dark" ? songs.dark : songs.light;
-      const currentTime = audio.currentTime;
-      const wasPlaying = !audio.paused;
-
-      songSource.src = song.src;
-      currentSongTitle = song.title;
-      audio.load();
-
-      audio.addEventListener("loadedmetadata", ()=>{
-        // Si la duración existe, ajustamos, si no, usamos currentTime
-        audio.currentTime = Math.min(currentTime, audio.duration || currentTime);
-        if(wasPlaying) audio.play().catch(()=>{});
-        updateSongTitle();
-      }, { once: true });
-    }
-
-    // sincroniza icono con estado del audio
-    audio.addEventListener('play', ()=> playBtn.textContent = "⏸");
-    audio.addEventListener('pause', ()=> playBtn.textContent = "▶️");
-
+    let isPlaying = true;
     playBtn.addEventListener("click", ()=>{
-      if(audio.paused){
-        audio.play().catch(()=>{}); // .catch para evitar errores si autoplay bloqueado
-      } else {
-        audio.pause();
-      }
+      if(audio.paused){ audio.play(); playBtn.textContent = "⏸️"; isPlaying = true; }
+      else { audio.pause(); playBtn.textContent = "▶️"; isPlaying = false; }
     });
 
-    // ========= Dark Mode (vídeo + canción) =========
-    const darkBtn  = document.getElementById("darkModeBtn");
-    const videoEl  = document.getElementById("bgVideo");
-    const sourceEl = document.getElementById("bgSource");
+    // Barra de progreso
+    audio.addEventListener("timeupdate", ()=>{
+      if(!isNaN(audio.duration)){
+        progressBar.value = (audio.currentTime / audio.duration) * 100;
+      }
+    });
+    progressBar.addEventListener("input", ()=>{
+      audio.currentTime = (progressBar.value / 100) * audio.duration;
+    });
 
-    function applyThemeMedia(){
-      const isDark = document.body.classList.contains("dark");
-      darkBtn.textContent = isDark ? "☀️" : "🌙";
-      // cambia fuente del vídeo según tema
-      sourceEl.src = isDark ? "fondo 1.mp4" : "fondoo.mp4";
-      videoEl.load();
-      videoEl.play().catch(()=>{});
-      // cambia canción manteniendo tiempo
-      setSong(isDark ? "dark" : "light");
-      // actualiza icono play/pause al final por si autoplay arrancó
-      setTimeout(()=> {
-        playBtn.textContent = audio.paused ? "▶️" : "⏸";
-      }, 200);
-    }
+    // Control de volumen
+    volumeBar.addEventListener("input", ()=>{
+      audio.volume = volumeBar.value;
+      muteBtn.textContent = audio.volume == 0 ? "🔇" : "🔊";
+    });
+
+    muteBtn.addEventListener("click", ()=>{
+      audio.muted = !audio.muted;
+      muteBtn.textContent = audio.muted ? "🔇" : "🔊";
+    });
+
+    // ========= Dark Mode =========
+    const darkBtn = document.getElementById("darkModeBtn");
+    const bgVideo = document.getElementById("bgVideo");
+    const bgSource = document.getElementById("bgSource");
 
     darkBtn.addEventListener("click", ()=>{
       document.body.classList.toggle("dark");
-      applyThemeMedia();
+      if(document.body.classList.contains("dark")){
+        bgSource.src = "fondoo-dark.mp4";
+        songSource.src = songs.dark.src;
+        songTitle.textContent = songs.dark.title;
+        darkBtn.textContent = "☀️";
+      } else {
+        bgSource.src = "fondoo.mp4";
+        songSource.src = songs.light.src;
+        songTitle.textContent = songs.light.title;
+        darkBtn.textContent = "🌙";
+      }
+      bgVideo.load();
+      audio.load();
+      if(isPlaying) audio.play();
     });
 
-    // estado inicial
-    applyThemeMedia();
-
-    // ========= Botones inferiores =========
-    document.getElementById("cameraBtn").addEventListener("click",()=> openSidebar("gallery","right"));
-    document.getElementById("callsBtn").addEventListener("click",()=> openSidebar("contacts","left"));
+    // ========= Abrir sidebars =========
+    document.getElementById("callsBtn").addEventListener("click", ()=>openSidebar("contacts","left"));
+    document.getElementById("cameraBtn").addEventListener("click", ()=>openSidebar("gallery","right"));
   </script>
 </body>
 </html>
+
+
 
 
 
