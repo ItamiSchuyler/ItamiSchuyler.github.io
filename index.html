@@ -1,1 +1,323 @@
-<!DOCTYPE html> <html lang="es"> <head> <meta charset="UTF-8" /> <title>Pantalla de Bloqueo</title> <script src="https://cdn.tailwindcss.com"></script> <style> /* =========================== SISTEMA DE TEMAS (LIGHT/DARK) =========================== */ :root{ --surface: rgba(255,255,255,0.65); --surface-strong: rgba(255,255,255,0.8); --text: #0b0b0b; --text-muted: #4b5563; --notif-surface: #ffffff; --notif-text: #0b0b0b; --title-a: #ffffff; --title-b: #f472b6; --title-c: #ffffff; --clock: #ffffff; --date: #E8E8E8; } body.dark{ --surface: rgba(18,18,18,0.82); --surface-strong: rgba(18,18,18,0.92); --text: #ffffff; --text-muted: #d1d5db; --notif-surface: rgba(18,18,18,0.9); --notif-text: #ffffff; --title-a: #0b0b0b; --title-b: #f472b6; --title-c: #0b0b0b; --clock: rgba(18,18,18,0.9); --date: rgba(18,18,18,0.9); } .glass{ background: var(--surface); backdrop-filter: blur(20px); transition: background .35s, color .35s; } .glass-strong{ background: var(--surface-strong); backdrop-filter: blur(20px); transition: background .35s, color .35s; } .glass-notif{ background: var(--notif-surface); backdrop-filter: blur(20px); color: var(--notif-text); transition: background .35s, color .35s; } @keyframes notifSlide { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } } .notification { animation: notifSlide 0.5s ease forwards; } @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } } @keyframes slideOutRight { from { transform: translateX(0); } to { transform: translateX(100%); } } @keyframes slideInLeft { from { transform: translateX(-100%);} to { transform: translateX(0); } } @keyframes slideOutLeft { from { transform: translateX(0); } to { transform: translateX(-100%);} } @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } .work-item { opacity: 0; animation: fadeUp 0.7s ease forwards; } .work-item:nth-child(1) { animation-delay: 0.3s; } .work-item:nth-child(2) { animation-delay: 0.6s; } .work-item:nth-child(3) { animation-delay: 0.9s; } .sidebar{ position: absolute; top:0; width:100%; max-width:400px; height:100%; background: var(--surface); backdrop-filter: blur(20px); color: var(--text); z-index: 50; transition: background .35s ease, color .35s ease; } .post-container{ position: relative; border-radius: 1rem; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.2); transition: transform .3s ease, box-shadow .3s ease; } .post-container:hover{ transform: translateY(-5px) scale(1.02); box-shadow: 0 10px 25px rgba(0,0,0,0.3); } .post-container img{ transition: transform .5s ease; width:100%; height:auto; object-fit:cover; } .post-container:hover img{ transform: scale(1.1); } .post-desc{ position: absolute; inset-inline:0; bottom:0; opacity: 0; transform: translateY(20px); transition: opacity .4s ease, transform .4s ease; } .post-container:hover .post-desc{ opacity:1; transform: translateY(0); } .post-desc { padding: 1.5rem; text-align: center; } body:not(.dark) .post-desc { background: linear-gradient(to top, rgba(255,255,255,.85), rgba(255,255,255,.55), transparent); } body.dark .post-desc { background: linear-gradient(to top, rgba(18,18,18,.85), rgba(18,18,18,.55), transparent); } body.dark .post-desc p { color: #fff !important; } .marquee{ overflow:hidden; white-space:nowrap; animation: scrollText 10s linear infinite; font-size:.85rem; color: var(--text); } @keyframes scrollText{ 0%{ transform: translateX(100%); } 100%{ transform: translateX(-100%); } } .player-btn{ font-size:1.2rem; color: var(--text); transition: transform .3s ease, opacity .3s ease; } .player-btn:hover{ transform: scale(1.1); opacity:.85; } body.dark .marquee, body.dark .player-btn { color:#fff; } .btn-anim{ transition: transform .3s ease, box-shadow .3s ease, background .3s ease; } .btn-anim:hover{ transform: scale(1.1); box-shadow: 0 8px 20px rgba(0,0,0,.2); } @keyframes gradientMove { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } } .gradient-text{ background: linear-gradient(90deg, var(--title-a) 0%, var(--title-b) 50%, var(--title-c) 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradientMove 3s linear infinite; filter: drop-shadow(0 1px 1px rgba(0,0,0,.35)); } #clock{ color: var(--clock); transition: color .4s ease; } #lockscreen p.date{ color: var(--date); transition: color .4s ease; } .tarjeta { transition: transform .35s ease, box-shadow .35s ease, background .35s ease; } .tarjeta:hover { transform: scale(1.05) translateX(6px); box-shadow: 0 8px 20px rgba(236,72,153,0.4); background: linear-gradient(135deg, rgba(236,72,153,0.15), var(--surface)); } .tarjeta img { transition: transform .4s ease; } .tarjeta:hover img { transform: rotate(-8deg) scale(1.1); } </style> </head> <body class="h-screen w-screen overflow-hidden font-sans relative"> <!-- Fondo vídeo --> <video autoplay muted loop id="bgVideo" class="absolute top-0 left-0 w-full h-full object-cover -z-10"> <source id="bgSource" src="fondoo.mp4" type="video/mp4" /> </video> <!-- Pantalla de bloqueo --> <div id="lockscreen" class="h-full w-full flex flex-col items-center justify-between p-6"> <!-- Botón Dark Mode --> <button id="darkModeBtn" class="absolute top-6 right-6 px-4 py-2 rounded-xl shadow-lg glass-strong"> 🌙 </button> <!-- Hora --> <div class="mt-16 text-center drop-shadow-lg"> <h1 id="clock" class="text-7xl font-bold"></h1> <p class="date text-lg" id="date"></p> </div> <!-- Notificaciones --> <div id="notifications" class="absolute top-60 w-11/12 max-w-md"></div> <!-- Reproductor minimalista --> <div class="absolute bottom-28 glass px-3 py-1 rounded-xl shadow-lg flex items-center space-x-3"> <button id="playBtn" class="player-btn">▶️</button> <div class="w-40 overflow-hidden"> <div id="songTitle" class="marquee">🎵 KOCHO - 君の行方</div> </div> <audio id="player" loop autoplay> <source id="songSource" src="song.mp3" type="audio/mp3" /> </audio> </div> <!-- Barra inferior --> <div class="flex justify-between w-full px-8 mb-8"> <button id="callsBtn" class="btn-anim p-4 rounded-full shadow-lg glass">📞</button> <button id="cameraBtn" class="btn-anim p-4 rounded-full shadow-lg glass">📷</button> </div> </div> <!-- Sidebar Galería (derecha) --> <div id="gallery" class="sidebar right-0 translate-x-full"> <button onclick="closeSidebar('gallery','right')" class="absolute top-10 right-4 text-2xl focus:outline-none">×</button> <h2 class="text-3xl font-extrabold text-center mt-20 tracking-wide gradient-text">Mis trabajos</h2> <div class="grid grid-cols-1 gap-6 p-6 overflow-y-auto h-[85%]"> <!-- Post 1 --> <div class="post-container work-item rounded-2xl overflow-hidden shadow-xl"> <img src="https://i.postimg.cc/1XJXdS7x/fondo-molonisimo-hermosisismo-copia.gif" /> <div class="post-desc"> <p class="font-semibold text-lg" style="color: var(--text)">Pcback diseño complejo + animación simple</p> <span class="font-bold text-sm" style="color:#ec4899">500 xats</span> </div> </div> <!-- Post 2 --> <div class="post-container work-item rounded-2xl overflow-hidden shadow-xl"> <img src="https://i.postimg.cc/pLnVfKvM/RAIN-PCBACK.gif" /> <div class="post-desc"> <p class="font-semibold text-lg" style="color: var(--text)">Pcback animación simple + diseño simple</p> <span class="font-bold text-sm" style="color:#ec4899">400 xats</span> </div> </div> <!-- Post 3 --> <div class="post-container work-item rounded-2xl overflow-hidden shadow-xl"> <img src="https://i.ibb.co/G4xDYqf0/fondos-zps9lmvgk8o.jpg" /> <div class="post-desc"> <p class="font-semibold text-lg" style="color: var(--text)">Fondo sin animación + diseño simple</p> <span class="font-bold text-sm" style="color:#ec4899">200 xats</span> </div> </div> </div> </div> <!-- Sidebar Contactos (izquierda) --> <div id="contacts" class="sidebar left-0 -translate-x-full"> <button onclick="closeSidebar('contacts','left')" class="absolute top-10 right-4 text-2xl focus:outline-none">×</button> <h2 class="text-3xl font-extrabold text-center mt-20 tracking-wide gradient-text">Amigos</h2> <div class="space-y-4 p-4 overflow-y-auto h-[85%]"> <a href="https://xat.me/taiga" target="_blank" class="tarjeta flex items-center space-x-3 p-3 rounded-xl glass"> <img src="https://i.postimg.cc/CKmGjyY2/tumblr-bb86d9f619bf2489197d002711884c82-ac1f61d2-250.jpg" class="w-12 h-12 rounded-full" /> <span style="color: var(--text)">Tai</span> </a> <a href="https://xat.me/xcesar" target="_blank" class="tarjeta flex items-center space-x-3 p-3 rounded-xl glass"> <img src="https://i.postimg.cc/J0y5rpf2/tumblr-340386cc4519775fc36c1da145b1f8e2-f14a2a5f-250.jpg" class="w-12 h-12 rounded-full" /> <span style="color: var(--text)">César</span> </a> <a href="https://xat.me/2200022" target="_blank" class="tarjeta flex items-center space-x-3 p-3 rounded-xl glass"> <img src="https://i.ibb.co/wNdpRZ2c/1x9ZyiS.png" class="w-12 h-12 rounded-full" /> <span style="color: var(--text)">Nece</span> </a> </div> </div> <script> // ========= Reloj ========= function updateClock(){ const now = new Date(); const hh = now.getHours().toString().padStart(2,'0'); const mm = now.getMinutes().toString().padStart(2,'0'); document.getElementById("clock").textContent = hh + ":" + mm; } setInterval(updateClock, 1000); updateClock(); // ========= Fecha ========= function updateDate(){ const now = new Date(); const opciones = { weekday: 'long', day: 'numeric', month: 'long' }; const fecha = now.toLocaleDateString('es-ES', opciones); document.getElementById("date").textContent = fecha.charAt(0).toUpperCase() + fecha.slice(1); } setInterval(updateDate, 60000); updateDate(); // ========= Notificaciones ========= const notifs = [ { icon: "💬", text: "Nuevo mensaje de Twitch" }, { icon: "📧", text: "Correo recibido" }, { icon: "🎮", text: "Invitación a jugar Elden Ring" }, { icon: "⚠️", text: "Puedes ver mis trabajos en el botón de la cámara" } ]; (function mountNotifs(){ let i = 0; const box = document.getElementById("notifications"); const interval = setInterval(()=>{ if(i < notifs.length){ const n = document.createElement("div"); n.className = "notification glass-notif p-3 rounded-xl shadow-md mb-3 flex items-center space-x-2"; n.innerHTML = <span>${notifs[i].icon}</span><span>${notifs[i].text}</span>; box.appendChild(n); i++; } else { clearInterval(interval); } }, 1500); })(); // ========= Sidebar ========= function openSidebar(id, side){ const el = document.getElementById(id); el.style.animation = side==="right" ? "slideInRight .4s forwards" : "slideInLeft .4s forwards"; } function closeSidebar(id, side){ const el = document.getElementById(id); el.style.animation = side==="right" ? "slideOutRight .4s forwards" : "slideOutLeft .4s forwards"; } // ========= Player ========= const audio = document.getElementById("player"); const playBtn = document.getElementById("playBtn"); const songSource = document.getElementById("songSource"); const songTitle = document.getElementById("songTitle"); const songs = { light: { src: "song2.mp3", title: "🎵 PiKi - Kawaii Kaiwai" }, dark: { src: "song.mp3", title: "🎵 KOCHO - 君の行方" } }; function formatTime(seconds){ if (isNaN(seconds)) return "00:00"; const m = Math.floor(seconds / 60).toString().padStart(2,"0"); const s = Math.floor(seconds % 60).toString().padStart(2,"0"); return ${m}:${s}; } let currentSongTitle = songs.light.title; function updateSongTitle(){ const current = formatTime(audio.currentTime); const total = formatTime(audio.duration); songTitle.textContent = ${currentSongTitle} [${current} / ${total}]; } // actualiza cada segundo setInterval(updateSongTitle, 1000); function setSong(theme){ const song = theme === "dark" ? songs.dark : songs.light; const currentTime = audio.currentTime; const wasPlaying = !audio.paused; songSource.src = song.src; currentSongTitle = song.title; audio.load(); audio.addEventListener("loadedmetadata", ()=>{ // Si la duración existe, ajustamos, si no, usamos currentTime audio.currentTime = Math.min(currentTime, audio.duration || currentTime); if(wasPlaying) audio.play().catch(()=>{}); updateSongTitle(); }, { once: true }); } // sincroniza icono con estado del audio audio.addEventListener('play', ()=> playBtn.textContent = "⏸"); audio.addEventListener('pause', ()=> playBtn.textContent = "▶️"); playBtn.addEventListener("click", ()=>{ if(audio.paused){ audio.play().catch(()=>{}); // .catch para evitar errores si autoplay bloqueado } else { audio.pause(); } }); // ========= Dark Mode (vídeo + canción) ========= const darkBtn = document.getElementById("darkModeBtn"); const videoEl = document.getElementById("bgVideo"); const sourceEl = document.getElementById("bgSource"); function applyThemeMedia(){ const isDark = document.body.classList.contains("dark"); darkBtn.textContent = isDark ? "☀️" : "🌙"; // cambia fuente del vídeo según tema sourceEl.src = isDark ? "fondo 1.mp4" : "fondoo.mp4"; videoEl.load(); videoEl.play().catch(()=>{}); // cambia canción manteniendo tiempo setSong(isDark ? "dark" : "light"); // actualiza icono play/pause al final por si autoplay arrancó setTimeout(()=> { playBtn.textContent = audio.paused ? "▶️" : "⏸"; }, 200); } darkBtn.addEventListener("click", ()=>{ document.body.classList.toggle("dark"); applyThemeMedia(); }); // estado inicial applyThemeMedia(); // ========= Botones inferiores ========= document.getElementById("cameraBtn").addEventListener("click",()=> openSidebar("gallery","right")); document.getElementById("callsBtn").addEventListener("click",()=> openSidebar("contacts","left")); </script> </body> </html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pantalla de Bloqueo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* =========================== SISTEMA DE TEMAS (LIGHT/DARK) =========================== */
+    :root{
+      --surface: rgba(255,255,255,0.65);
+      --surface-strong: rgba(255,255,255,0.8);
+      --text: #0b0b0b;
+      --text-muted: #4b5563;
+      --notif-surface: #ffffff;
+      --notif-text: #0b0b0b;
+      --title-a: #ffffff;
+      --title-b: #f472b6;
+      --title-c: #ffffff;
+      --clock: #ffffff;
+      --date: #E8E8E8;
+    }
+    body.dark{
+      --surface: rgba(18,18,18,0.82);
+      --surface-strong: rgba(18,18,18,0.92);
+      --text: #ffffff;
+      --text-muted: #d1d5db;
+      --notif-surface: rgba(18,18,18,0.9);
+      --notif-text: #ffffff;
+      --title-a: #0b0b0b;
+      --title-b: #f472b6;
+      --title-c: #0b0b0b;
+      --clock: rgba(18,18,18,0.9);
+      --date: rgba(18,18,18,0.9);
+    }
+
+    .glass{ background: var(--surface); backdrop-filter: blur(20px); transition: background .35s, color .35s; }
+    .glass-strong{ background: var(--surface-strong); backdrop-filter: blur(20px); transition: background .35s, color .35s; }
+    .glass-notif{ background: var(--notif-surface); backdrop-filter: blur(20px); color: var(--notif-text); transition: background .35s, color .35s; }
+
+    @keyframes notifSlide { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    .notification { animation: notifSlide 0.5s ease forwards; }
+
+    @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
+    @keyframes slideOutRight { from { transform: translateX(0); } to { transform: translateX(100%); } }
+    @keyframes slideInLeft { from { transform: translateX(-100%);} to { transform: translateX(0); } }
+    @keyframes slideOutLeft { from { transform: translateX(0); } to { transform: translateX(-100%);} }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .work-item { opacity: 0; animation: fadeUp 0.7s ease forwards; }
+    .work-item:nth-child(1) { animation-delay: 0.3s; }
+    .work-item:nth-child(2) { animation-delay: 0.6s; }
+    .work-item:nth-child(3) { animation-delay: 0.9s; }
+
+    .sidebar{ position: absolute; top:0; width:100%; max-width:400px; height:100%; background: var(--surface); backdrop-filter: blur(20px); color: var(--text); z-index: 50; transition: background .35s ease, color .35s ease; }
+
+    .post-container{ position: relative; border-radius: 1rem; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.2); transition: transform .3s ease, box-shadow .3s ease; }
+    .post-container:hover{ transform: translateY(-5px) scale(1.02); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+    .post-container img{ transition: transform .5s ease; width:100%; height:auto; object-fit:cover; }
+    .post-container:hover img{ transform: scale(1.1); }
+    .post-desc{ position: absolute; inset-inline:0; bottom:0; opacity: 0; transform: translateY(20px); transition: opacity .4s ease, transform .4s ease; }
+    .post-container:hover .post-desc{ opacity:1; transform: translateY(0); }
+    .post-desc { padding: 1.5rem; text-align: center; }
+    body:not(.dark) .post-desc { background: linear-gradient(to top, rgba(255,255,255,.85), rgba(255,255,255,.55), transparent); }
+    body.dark .post-desc { background: linear-gradient(to top, rgba(18,18,18,.85), rgba(18,18,18,.55), transparent); }
+    body.dark .post-desc p { color: #fff !important; }
+
+    .marquee{ overflow:hidden; white-space:nowrap; animation: scrollText 10s linear infinite; font-size:.85rem; color: var(--text); }
+    @keyframes scrollText{ 0%{ transform: translateX(100%); } 100%{ transform: translateX(-100%); } }
+    .player-btn{ font-size:1.2rem; color: var(--text); transition: transform .3s ease, opacity .3s ease; }
+    .player-btn:hover{ transform: scale(1.1); opacity:.85; }
+    body.dark .marquee, body.dark .player-btn { color:#fff; }
+
+    .btn-anim{ transition: transform .3s ease, box-shadow .3s ease, background .3s ease; }
+    .btn-anim:hover{ transform: scale(1.1); box-shadow: 0 8px 20px rgba(0,0,0,.2); }
+
+    @keyframes gradientMove { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+    .gradient-text{ background: linear-gradient(90deg, var(--title-a) 0%, var(--title-b) 50%, var(--title-c) 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradientMove 3s linear infinite; filter: drop-shadow(0 1px 1px rgba(0,0,0,.35)); }
+
+    #clock{ color: var(--clock); transition: color .4s ease; }
+    #lockscreen p.date{ color: var(--date); transition: color .4s ease; }
+
+    .tarjeta { transition: transform .35s ease, box-shadow .35s ease, background .35s ease; }
+    .tarjeta:hover { transform: scale(1.05) translateX(6px); box-shadow: 0 8px 20px rgba(236,72,153,0.4); background: linear-gradient(135deg, rgba(236,72,153,0.15), var(--surface)); }
+    .tarjeta img { transition: transform .4s ease; }
+    .tarjeta:hover img { transform: rotate(-8deg) scale(1.1); }
+  </style>
+</head>
+<body class="h-screen w-screen overflow-hidden font-sans relative">
+
+  <!-- Fondo vídeo -->
+  <video autoplay muted loop id="bgVideo" class="absolute top-0 left-0 w-full h-full object-cover -z-10">
+    <source id="bgSource" src="fondoo.mp4" type="video/mp4" />
+  </video>
+
+  <!-- Pantalla de bloqueo -->
+  <div id="lockscreen" class="h-full w-full flex flex-col items-center justify-between p-6">
+    <!-- Botón Dark Mode -->
+    <button id="darkModeBtn" class="absolute top-6 right-6 px-4 py-2 rounded-xl shadow-lg glass-strong"> 🌙 </button>
+
+    <!-- Hora -->
+    <div class="mt-16 text-center drop-shadow-lg">
+      <h1 id="clock" class="text-7xl font-bold"></h1>
+      <p class="date text-lg" id="date"></p>
+    </div>
+
+    <!-- Notificaciones -->
+    <div id="notifications" class="absolute top-60 w-11/12 max-w-md"></div>
+
+    <!-- Reproductor minimalista -->
+    <div class="absolute bottom-28 glass px-3 py-1 rounded-xl shadow-lg flex items-center space-x-3">
+      <button id="playBtn" class="player-btn">▶️</button>
+      <div class="w-40 overflow-hidden">
+        <div id="songTitle" class="marquee">🎵 KOCHO - 君の行方</div>
+      </div>
+      <audio id="player" loop autoplay>
+        <source id="songSource" src="song.mp3" type="audio/mp3" />
+      </audio>
+    </div>
+
+    <!-- Barra inferior -->
+    <div class="flex justify-between w-full px-8 mb-8">
+      <button id="callsBtn" class="btn-anim p-4 rounded-full shadow-lg glass">📞</button>
+      <button id="cameraBtn" class="btn-anim p-4 rounded-full shadow-lg glass">📷</button>
+    </div>
+  </div>
+
+  <!-- Sidebar Galería (derecha) -->
+  <div id="gallery" class="sidebar right-0 translate-x-full">
+    <button onclick="closeSidebar('gallery','right')" class="absolute top-10 right-4 text-2xl focus:outline-none">×</button>
+    <h2 class="text-3xl font-extrabold text-center mt-20 tracking-wide gradient-text">Mis trabajos</h2>
+    <div class="grid grid-cols-1 gap-6 p-6 overflow-y-auto h-[85%]">
+      <!-- Post 1 -->
+      <div class="post-container work-item rounded-2xl overflow-hidden shadow-xl">
+        <img src="https://i.postimg.cc/1XJXdS7x/fondo-molonisimo-hermosisismo-copia.gif" />
+        <div class="post-desc">
+          <p class="font-semibold text-lg" style="color: var(--text)">Pcback diseño complejo + animación simple</p>
+          <span class="font-bold text-sm" style="color:#ec4899">500 xats</span>
+        </div>
+      </div>
+      <!-- Post 2 -->
+      <div class="post-container work-item rounded-2xl overflow-hidden shadow-xl">
+        <img src="https://i.postimg.cc/pLnVfKvM/RAIN-PCBACK.gif" />
+        <div class="post-desc">
+          <p class="font-semibold text-lg" style="color: var(--text)">Pcback animación simple + diseño simple</p>
+          <span class="font-bold text-sm" style="color:#ec4899">400 xats</span>
+        </div>
+      </div>
+      <!-- Post 3 -->
+      <div class="post-container work-item rounded-2xl overflow-hidden shadow-xl">
+        <img src="https://i.ibb.co/G4xDYqf0/fondos-zps9lmvgk8o.jpg" />
+        <div class="post-desc">
+          <p class="font-semibold text-lg" style="color: var(--text)">Fondo sin animación + diseño simple</p>
+          <span class="font-bold text-sm" style="color:#ec4899">200 xats</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar Contactos (izquierda) -->
+  <div id="contacts" class="sidebar left-0 -translate-x-full">
+    <button onclick="closeSidebar('contacts','left')" class="absolute top-10 right-4 text-2xl focus:outline-none">×</button>
+    <h2 class="text-3xl font-extrabold text-center mt-20 tracking-wide gradient-text">Amigos</h2>
+    <div class="space-y-4 p-4 overflow-y-auto h-[85%]">
+      <a href="https://xat.me/taiga" target="_blank" class="tarjeta flex items-center space-x-3 p-3 rounded-xl glass">
+        <img src="https://i.postimg.cc/CKmGjyY2/tumblr-bb86d9f619bf2489197d002711884c82-ac1f61d2-250.jpg" class="w-12 h-12 rounded-full" />
+        <span style="color: var(--text)">Tai</span>
+      </a>
+      <a href="https://xat.me/xcesar" target="_blank" class="tarjeta flex items-center space-x-3 p-3 rounded-xl glass">
+        <img src="https://i.postimg.cc/J0y5rpf2/tumblr-340386cc4519775fc36c1da145b1f8e2-f14a2a5f-250.jpg" class="w-12 h-12 rounded-full" />
+        <span style="color: var(--text)">César</span>
+      </a>
+      <a href="https://xat.me/2200022" target="_blank" class="tarjeta flex items-center space-x-3 p-3 rounded-xl glass">
+        <img src="https://i.ibb.co/wNdpRZ2c/1x9ZyiS.png" class="w-12 h-12 rounded-full" />
+        <span style="color: var(--text)">Nece</span>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // ========= Reloj =========
+    function updateClock(){
+      const now = new Date();
+      const hh = now.getHours().toString().padStart(2,'0');
+      const mm = now.getMinutes().toString().padStart(2,'0');
+      document.getElementById("clock").textContent = hh + ":" + mm;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // ========= Fecha =========
+    function updateDate(){
+      const now = new Date();
+      const opciones = { weekday: 'long', day: 'numeric', month: 'long' };
+      const fecha = now.toLocaleDateString('es-ES', opciones);
+      document.getElementById("date").textContent = fecha.charAt(0).toUpperCase() + fecha.slice(1);
+    }
+    setInterval(updateDate, 60000);
+    updateDate();
+
+    // ========= Notificaciones =========
+    const notifs = [
+      { icon: "💬", text: "Nuevo mensaje de Twitch" },
+      { icon: "📧", text: "Correo recibido" },
+      { icon: "🎮", text: "Invitación a jugar Elden Ring" },
+      { icon: "⚠️", text: "Puedes ver mis trabajos en el botón de la cámara" }
+    ];
+    (function mountNotifs(){
+      let i = 0;
+      const box = document.getElementById("notifications");
+      const interval = setInterval(()=>{
+        if(i < notifs.length){
+          const n = document.createElement("div");
+          n.className = "notification glass-notif p-3 rounded-xl shadow-md mb-3 flex items-center space-x-2";
+          n.innerHTML = `<span>${notifs[i].icon}</span><span>${notifs[i].text}</span>`;
+          box.appendChild(n);
+          i++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 1500);
+    })();
+
+    // ========= Sidebar =========
+    function openSidebar(id, side){
+      const el = document.getElementById(id);
+      el.style.animation = side==="right" ? "slideInRight .4s forwards" : "slideInLeft .4s forwards";
+    }
+    function closeSidebar(id, side){
+      const el = document.getElementById(id);
+      el.style.animation = side==="right" ? "slideOutRight .4s forwards" : "slideOutLeft .4s forwards";
+    }
+
+    // ========= Player =========
+    const audio = document.getElementById("player");
+    const playBtn = document.getElementById("playBtn");
+    const songSource = document.getElementById("songSource");
+    const songTitle = document.getElementById("songTitle");
+
+    const songs = {
+      light: { src: "song2.mp3", title: "🎵 PiKi - Kawaii Kaiwai" },
+      dark:  { src: "song.mp3", title: "🎵 KOCHO - 君の行方" }
+    };
+
+    function formatTime(seconds){
+      if (isNaN(seconds)) return "00:00";
+      const m = Math.floor(seconds / 60).toString().padStart(2,"0");
+      const s = Math.floor(seconds % 60).toString().padStart(2,"0");
+      return `${m}:${s}`;
+    }
+
+    let currentSongTitle = songs.light.title;
+
+    function updateSongTitle(){
+      const current = formatTime(audio.currentTime);
+      const total = formatTime(audio.duration);
+      songTitle.textContent = `${currentSongTitle} [${current} / ${total}]`;
+    }
+    // actualiza cada segundo
+    setInterval(updateSongTitle, 1000);
+
+    function setSong(theme){
+      const song = theme === "dark" ? songs.dark : songs.light;
+      const currentTime = audio.currentTime;
+      const wasPlaying = !audio.paused;
+
+      songSource.src = song.src;
+      currentSongTitle = song.title;
+      audio.load();
+
+      audio.addEventListener("loadedmetadata", ()=>{
+        // Si la duración existe, ajustamos, si no, usamos currentTime
+        audio.currentTime = Math.min(currentTime, audio.duration || currentTime);
+        if(wasPlaying) audio.play().catch(()=>{});
+        updateSongTitle();
+      }, { once: true });
+    }
+
+    // sincroniza icono con estado del audio
+    audio.addEventListener('play', ()=> playBtn.textContent = "⏸");
+    audio.addEventListener('pause', ()=> playBtn.textContent = "▶️");
+
+    playBtn.addEventListener("click", ()=>{
+      if(audio.paused){
+        audio.play().catch(()=>{}); // .catch para evitar errores si autoplay bloqueado
+      } else {
+        audio.pause();
+      }
+    });
+
+    // ========= Dark Mode (vídeo + canción) =========
+    const darkBtn  = document.getElementById("darkModeBtn");
+    const videoEl  = document.getElementById("bgVideo");
+    const sourceEl = document.getElementById("bgSource");
+
+    function applyThemeMedia(){
+      const isDark = document.body.classList.contains("dark");
+      darkBtn.textContent = isDark ? "☀️" : "🌙";
+      // cambia fuente del vídeo según tema
+      sourceEl.src = isDark ? "fondo 1.mp4" : "fondoo.mp4";
+      videoEl.load();
+      videoEl.play().catch(()=>{});
+      // cambia canción manteniendo tiempo
+      setSong(isDark ? "dark" : "light");
+      // actualiza icono play/pause al final por si autoplay arrancó
+      setTimeout(()=> {
+        playBtn.textContent = audio.paused ? "▶️" : "⏸";
+      }, 200);
+    }
+
+    darkBtn.addEventListener("click", ()=>{
+      document.body.classList.toggle("dark");
+      applyThemeMedia();
+    });
+
+    // estado inicial
+    applyThemeMedia();
+
+    // ========= Botones inferiores =========
+    document.getElementById("cameraBtn").addEventListener("click",()=> openSidebar("gallery","right"));
+    document.getElementById("callsBtn").addEventListener("click",()=> openSidebar("contacts","left"));
+  </script>
+</body>
+</html> quiero el codigo tal cual, pero los reproductores con un diseño más bonito
