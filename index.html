@@ -58,17 +58,18 @@ user-select:none;
 padding:10px;
 border-radius:10px;
 
-/* ESTILO SÓLIDO LIMPIO */
+/* CARPETA SÓLIDA NORMAL (SIN CRISTAL) */
 background:#1e1e2a;
 border:1px solid #2a2a3a;
 
 transition:.2s ease;
 }
-/* NUEVO COLOR */
-background:rgba(30,30,40,0.35);
-border:1px solid rgba(255,255,255,0.08);
 
-transition:.25s;
+
+.folder:hover{
+background:#2b2b40;
+border-color:#4c6fff;
+transform:scale(1.04);
 }
 
 .folder img{
@@ -82,12 +83,6 @@ margin-top:4px;
 display:block;
 }
 
-/* Hover mantiene tu efecto pero más elegante */
-.folder:hover{
-background:#2b2b40;
-border-color:#4c6fff;
-transform:scale(1.04);
-}
 /* WINDOWS */
 .window{
 position:absolute;
@@ -630,6 +625,7 @@ window.addEventListener("resize",ordenarCarpetas);
 </script>
 </body>
 </html>
+
 
 
 
