@@ -1,323 +1,285 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Pantalla de Bloqueo</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* =========================== SISTEMA DE TEMAS (LIGHT/DARK) =========================== */
-    :root{
-      --surface: rgba(255,255,255,0.65);
-      --surface-strong: rgba(255,255,255,0.8);
-      --text: #0b0b0b;
-      --text-muted: #4b5563;
-      --notif-surface: #ffffff;
-      --notif-text: #0b0b0b;
-      --title-a: #ffffff;
-      --title-b: #f472b6;
-      --title-c: #ffffff;
-      --clock: #ffffff;
-      --date: #E8E8E8;
-    }
-    body.dark{
-      --surface: rgba(18,18,18,0.82);
-      --surface-strong: rgba(18,18,18,0.92);
-      --text: #ffffff;
-      --text-muted: #d1d5db;
-      --notif-surface: rgba(18,18,18,0.9);
-      --notif-text: #ffffff;
-      --title-a: #0b0b0b;
-      --title-b: #f472b6;
-      --title-c: #0b0b0b;
-      --clock: rgba(18,18,18,0.9);
-      --date: rgba(18,18,18,0.9);
-    }
+<meta charset="UTF-8">
+<title>Escritorio Itami</title>
 
-    .glass{ background: var(--surface); backdrop-filter: blur(20px); transition: background .35s, color .35s; }
-    .glass-strong{ background: var(--surface-strong); backdrop-filter: blur(20px); transition: background .35s, color .35s; }
-    .glass-notif{ background: var(--notif-surface); backdrop-filter: blur(20px); color: var(--notif-text); transition: background .35s, color .35s; }
+<style>
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 
-    @keyframes notifSlide { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-    .notification { animation: notifSlide 0.5s ease forwards; }
+/* Fondo */
+#video-bg{
+  position:fixed; inset:0;
+  width:100%; height:100%;
+  object-fit:cover; z-index:-1;
+}
 
-    @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
-    @keyframes slideOutRight { from { transform: translateX(0); } to { transform: translateX(100%); } }
-    @keyframes slideInLeft { from { transform: translateX(-100%);} to { transform: translateX(0); } }
-    @keyframes slideOutLeft { from { transform: translateX(0); } to { transform: translateX(-100%);} }
+/* Escritorio */
+#desktop{position:relative;width:100%;height:100%;padding:20px}
+.folder{
+  width:90px; color:#fff; text-align:center;
+  position:absolute; cursor:grab;
+}
+.folder img{width:64px}
 
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .work-item { opacity: 0; animation: fadeUp 0.7s ease forwards; }
-    .work-item:nth-child(1) { animation-delay: 0.3s; }
-    .work-item:nth-child(2) { animation-delay: 0.6s; }
-    .work-item:nth-child(3) { animation-delay: 0.9s; }
+/* Ventanas */
+.window{
+  position:fixed; width:420px;
+  background:#1b1b1b; color:#eee;
+  border-radius:10px;
+  box-shadow:0 20px 40px rgba(0,0,0,.6);
+  display:none;
+}
+.titlebar{
+  background:#000; padding:8px 10px;
+  display:flex; justify-content:space-between;
+  cursor:move; user-select:none;
+}
+.controls span{margin-left:10px;cursor:pointer}
+.content{padding:15px}
 
-    .sidebar{ position: absolute; top:0; width:100%; max-width:400px; height:100%; background: var(--surface); backdrop-filter: blur(20px); color: var(--text); z-index: 50; transition: background .35s ease, color .35s ease; }
+/* Galería */
+.gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.item{position:relative}
+.item img,.item video{width:100%;border-radius:6px}
+.overlay{
+  position:absolute; inset:0;
+  background:rgba(0,0,0,.75);
+  display:flex; align-items:center;
+  justify-content:center;
+  opacity:0; transition:.3s;
+}
+.item:hover .overlay{opacity:1}
 
-    .post-container{ position: relative; border-radius: 1rem; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.2); transition: transform .3s ease, box-shadow .3s ease; }
-    .post-container:hover{ transform: translateY(-5px) scale(1.02); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-    .post-container img{ transition: transform .5s ease; width:100%; height:auto; object-fit:cover; }
-    .post-container:hover img{ transform: scale(1.1); }
-    .post-desc{ position: absolute; inset-inline:0; bottom:0; opacity: 0; transform: translateY(20px); transition: opacity .4s ease, transform .4s ease; }
-    .post-container:hover .post-desc{ opacity:1; transform: translateY(0); }
-    .post-desc { padding: 1.5rem; text-align: center; }
-    body:not(.dark) .post-desc { background: linear-gradient(to top, rgba(255,255,255,.85), rgba(255,255,255,.55), transparent); }
-    body.dark .post-desc { background: linear-gradient(to top, rgba(18,18,18,.85), rgba(18,18,18,.55), transparent); }
-    body.dark .post-desc p { color: #fff !important; }
-
-    .marquee{ overflow:hidden; white-space:nowrap; animation: scrollText 10s linear infinite; font-size:.85rem; color: var(--text); }
-    @keyframes scrollText{ 0%{ transform: translateX(100%); } 100%{ transform: translateX(-100%); } }
-    .player-btn{ font-size:1.2rem; color: var(--text); transition: transform .3s ease, opacity .3s ease; }
-    .player-btn:hover{ transform: scale(1.1); opacity:.85; }
-    body.dark .marquee, body.dark .player-btn { color:#fff; }
-
-    .btn-anim{ transition: transform .3s ease, box-shadow .3s ease, background .3s ease; }
-    .btn-anim:hover{ transform: scale(1.1); box-shadow: 0 8px 20px rgba(0,0,0,.2); }
-
-    @keyframes gradientMove { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
-    .gradient-text{ background: linear-gradient(90deg, var(--title-a) 0%, var(--title-b) 50%, var(--title-c) 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradientMove 3s linear infinite; filter: drop-shadow(0 1px 1px rgba(0,0,0,.35)); }
-
-    #clock{ color: var(--clock); transition: color .4s ease; }
-    #lockscreen p.date{ color: var(--date); transition: color .4s ease; }
-
-    .tarjeta { transition: transform .35s ease, box-shadow .35s ease, background .35s ease; }
-    .tarjeta:hover { transform: scale(1.05) translateX(6px); box-shadow: 0 8px 20px rgba(236,72,153,0.4); background: linear-gradient(135deg, rgba(236,72,153,0.15), var(--surface)); }
-    .tarjeta img { transition: transform .4s ease; }
-    .tarjeta:hover img { transform: rotate(-8deg) scale(1.1); }
-  </style>
+/* PLAYER */
+#player{
+  position:fixed; right:20px; bottom:70px;
+  width:300px;
+  background:rgba(15,15,15,.95);
+  backdrop-filter:blur(10px);
+  border-radius:14px;
+  padding:15px; color:#fff;
+  box-shadow:0 15px 40px rgba(0,0,0,.8);
+  z-index:2000;
+}
+#player.min{height:45px;overflow:hidden}
+#player h4{margin:0;font-size:14px;opacity:.8}
+#song{font-size:13px;margin-top:4px;opacity:.6}
+#controls{display:flex;align-items:center;gap:10px;margin-top:10px}
+#play{font-size:22px;cursor:pointer}
+#progress{flex:1;height:5px;background:#333;border-radius:4px;cursor:pointer}
+#bar{height:100%;width:0;background:#fff;border-radius:4px}
+#volume{width:60px}
+#playlist{margin-top:10px;font-size:12px}
+.track{padding:4px;cursor:pointer;opacity:.6}
+.track.active{opacity:1}
+canvas{width:100%;height:40px;margin-top:10px}
+</style>
 </head>
-<body class="h-screen w-screen overflow-hidden font-sans relative">
 
-  <!-- Fondo vídeo -->
-  <video autoplay muted loop id="bgVideo" class="absolute top-0 left-0 w-full h-full object-cover -z-10">
-    <source id="bgSource" src="fondoo.mp4" type="video/mp4" />
-  </video>
+<body>
 
-  <!-- Pantalla de bloqueo -->
-  <div id="lockscreen" class="h-full w-full flex flex-col items-center justify-between p-6">
-    <!-- Botón Dark Mode -->
-    <button id="darkModeBtn" class="absolute top-6 right-6 px-4 py-2 rounded-xl shadow-lg glass-strong"> 🌙 </button>
+<video autoplay muted loop id="video-bg">
+  <source src="fondo 1.mp4">
+</video>
 
-    <!-- Hora -->
-    <div class="mt-16 text-center drop-shadow-lg">
-      <h1 id="clock" class="text-7xl font-bold"></h1>
-      <p class="date text-lg" id="date"></p>
-    </div>
-
-    <!-- Notificaciones -->
-    <div id="notifications" class="absolute top-60 w-11/12 max-w-md"></div>
-
-    <!-- Reproductor minimalista -->
-    <div class="absolute bottom-28 glass px-3 py-1 rounded-xl shadow-lg flex items-center space-x-3">
-      <button id="playBtn" class="player-btn">▶️</button>
-      <div class="w-40 overflow-hidden">
-        <div id="songTitle" class="marquee">🎵 KOCHO - 君の行方</div>
-      </div>
-      <audio id="player" loop autoplay>
-        <source id="songSource" src="song.mp3" type="audio/mp3" />
-      </audio>
-    </div>
-
-    <!-- Barra inferior -->
-    <div class="flex justify-between w-full px-8 mb-8">
-      <button id="callsBtn" class="btn-anim p-4 rounded-full shadow-lg glass">📞</button>
-      <button id="cameraBtn" class="btn-anim p-4 rounded-full shadow-lg glass">📷</button>
-    </div>
+<div id="desktop">
+  <div class="folder" data-id="itami" style="top:20px;left:20px">
+    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
+    <div>itami</div>
   </div>
 
-  <!-- Sidebar Galería (derecha) -->
-  <div id="gallery" class="sidebar right-0 translate-x-full">
-    <button onclick="closeSidebar('gallery','right')" class="absolute top-10 right-4 text-2xl focus:outline-none">×</button>
-    <h2 class="text-3xl font-extrabold text-center mt-20 tracking-wide gradient-text">Mis trabajos</h2>
-    <div class="grid grid-cols-1 gap-6 p-6 overflow-y-auto h-[85%]">
-      <!-- Post 1 -->
-      <div class="post-container work-item rounded-2xl overflow-hidden shadow-xl">
-        <img src="https://i.postimg.cc/1XJXdS7x/fondo-molonisimo-hermosisismo-copia.gif" />
-        <div class="post-desc">
-          <p class="font-semibold text-lg" style="color: var(--text)">Pcback diseño complejo + animación simple</p>
-          <span class="font-bold text-sm" style="color:#ec4899">500 xats</span>
-        </div>
-      </div>
-      <!-- Post 2 -->
-      <div class="post-container work-item rounded-2xl overflow-hidden shadow-xl">
-        <img src="https://i.postimg.cc/pLnVfKvM/RAIN-PCBACK.gif" />
-        <div class="post-desc">
-          <p class="font-semibold text-lg" style="color: var(--text)">Pcback animación simple + diseño simple</p>
-          <span class="font-bold text-sm" style="color:#ec4899">400 xats</span>
-        </div>
-      </div>
-      <!-- Post 3 -->
-      <div class="post-container work-item rounded-2xl overflow-hidden shadow-xl">
-        <img src="https://i.ibb.co/G4xDYqf0/fondos-zps9lmvgk8o.jpg" />
-        <div class="post-desc">
-          <p class="font-semibold text-lg" style="color: var(--text)">Fondo sin animación + diseño simple</p>
-          <span class="font-bold text-sm" style="color:#ec4899">200 xats</span>
-        </div>
-      </div>
-    </div>
+  <div class="folder" data-id="trabajos" style="top:120px;left:20px">
+    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
+    <div>mis trabajos</div>
   </div>
 
-  <!-- Sidebar Contactos (izquierda) -->
-  <div id="contacts" class="sidebar left-0 -translate-x-full">
-    <button onclick="closeSidebar('contacts','left')" class="absolute top-10 right-4 text-2xl focus:outline-none">×</button>
-    <h2 class="text-3xl font-extrabold text-center mt-20 tracking-wide gradient-text">Amigos</h2>
-    <div class="space-y-4 p-4 overflow-y-auto h-[85%]">
-      <a href="https://xat.me/taiga" target="_blank" class="tarjeta flex items-center space-x-3 p-3 rounded-xl glass">
-        <img src="https://i.postimg.cc/CKmGjyY2/tumblr-bb86d9f619bf2489197d002711884c82-ac1f61d2-250.jpg" class="w-12 h-12 rounded-full" />
-        <span style="color: var(--text)">Tai</span>
-      </a>
-      <a href="https://xat.me/xcesar" target="_blank" class="tarjeta flex items-center space-x-3 p-3 rounded-xl glass">
-        <img src="https://i.postimg.cc/J0y5rpf2/tumblr-340386cc4519775fc36c1da145b1f8e2-f14a2a5f-250.jpg" class="w-12 h-12 rounded-full" />
-        <span style="color: var(--text)">César</span>
-      </a>
-      <a href="https://xat.me/2200022" target="_blank" class="tarjeta flex items-center space-x-3 p-3 rounded-xl glass">
-        <img src="https://i.ibb.co/wNdpRZ2c/1x9ZyiS.png" class="w-12 h-12 rounded-full" />
-        <span style="color: var(--text)">Nece</span>
-      </a>
+  <div class="folder" data-id="codigos" style="top:220px;left:20px">
+    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
+    <div>códigos</div>
+  </div>
+</div>
+
+<!-- VENTANAS -->
+<div class="window" id="itami">
+  <div class="titlebar">Itami
+    <div class="controls"><span onclick="closeWin('itami')">✕</span></div>
+  </div>
+  <div class="content">
+    <img src="https://placekitten.com/300/200" style="width:100%;border-radius:6px">
+    <p><strong>Itami</strong><br>
+    Diseñador & Programador<br>
+    contacto@email.com</p>
+  </div>
+</div>
+
+<div class="window" id="trabajos">
+  <div class="titlebar">Mis trabajos
+    <div class="controls"><span onclick="closeWin('trabajos')">✕</span></div>
+  </div>
+  <div class="content gallery">
+    <div class="item">
+      <img src="https://placekitten.com/200/200">
+      <div class="overlay">Proyecto 1</div>
+    </div>
+    <div class="item">
+      <img src="https://placekitten.com/201/200">
+      <div class="overlay">Proyecto 2</div>
     </div>
   </div>
+</div>
 
-  <script>
-    // ========= Reloj =========
-    function updateClock(){
-      const now = new Date();
-      const hh = now.getHours().toString().padStart(2,'0');
-      const mm = now.getMinutes().toString().padStart(2,'0');
-      document.getElementById("clock").textContent = hh + ":" + mm;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
+<div class="window" id="codigos">
+  <div class="titlebar">Códigos
+    <div class="controls"><span onclick="closeWin('codigos')">✕</span></div>
+  </div>
+  <div class="content gallery">
+    <div class="item">
+      <video src="demo.mp4" muted loop></video>
+      <div class="overlay">Demo web</div>
+    </div>
+  </div>
+</div>
 
-    // ========= Fecha =========
-    function updateDate(){
-      const now = new Date();
-      const opciones = { weekday: 'long', day: 'numeric', month: 'long' };
-      const fecha = now.toLocaleDateString('es-ES', opciones);
-      document.getElementById("date").textContent = fecha.charAt(0).toUpperCase() + fecha.slice(1);
-    }
-    setInterval(updateDate, 60000);
-    updateDate();
+<!-- PLAYER -->
+<div id="player">
+  <h4>Music Player <span style="float:right;cursor:pointer" onclick="toggleMin()">▾</span></h4>
+  <div id="song"></div>
+  <canvas id="viz"></canvas>
+  <div id="controls">
+    <div id="play">▶</div>
+    <div id="progress"><div id="bar"></div></div>
+    <input id="volume" type="range" min="0" max="1" step="0.01">
+  </div>
+  <div id="playlist"></div>
+</div>
 
-    // ========= Notificaciones =========
-    const notifs = [
-      { icon: "💬", text: "Nuevo mensaje de Twitch" },
-      { icon: "📧", text: "Correo recibido" },
-      { icon: "🎮", text: "Invitación a jugar Elden Ring" },
-      { icon: "⚠️", text: "Puedes ver mis trabajos en el botón de la cámara" }
-    ];
-    (function mountNotifs(){
-      let i = 0;
-      const box = document.getElementById("notifications");
-      const interval = setInterval(()=>{
-        if(i < notifs.length){
-          const n = document.createElement("div");
-          n.className = "notification glass-notif p-3 rounded-xl shadow-md mb-3 flex items-center space-x-2";
-          n.innerHTML = `<span>${notifs[i].icon}</span><span>${notifs[i].text}</span>`;
-          box.appendChild(n);
-          i++;
-        } else {
-          clearInterval(interval);
-        }
-      }, 1500);
-    })();
+<audio id="audio"></audio>
 
-    // ========= Sidebar =========
-    function openSidebar(id, side){
-      const el = document.getElementById(id);
-      el.style.animation = side==="right" ? "slideInRight .4s forwards" : "slideInLeft .4s forwards";
-    }
-    function closeSidebar(id, side){
-      const el = document.getElementById(id);
-      el.style.animation = side==="right" ? "slideOutRight .4s forwards" : "slideOutLeft .4s forwards";
-    }
+<script>
+let z=10;
+const tracks=[
+ {name:'Song One',src:'song.mp3'},
+ {name:'Song Two',src:'song2.mp3'}
+];
+let current=0;
 
-    // ========= Player =========
-    const audio = document.getElementById("player");
-    const playBtn = document.getElementById("playBtn");
-    const songSource = document.getElementById("songSource");
-    const songTitle = document.getElementById("songTitle");
+const audio=document.getElementById('audio');
+const play=document.getElementById('play');
+const bar=document.getElementById('bar');
+const song=document.getElementById('song');
+const vol=document.getElementById('volume');
+const list=document.getElementById('playlist');
 
-    const songs = {
-      light: { src: "song2.mp3", title: "🎵 PiKi - Kawaii Kaiwai" },
-      dark:  { src: "song.mp3", title: "🎵 KOCHO - 君の行方" }
-    };
+tracks.forEach((t,i)=>{
+ let d=document.createElement('div');
+ d.className='track';
+ d.textContent=t.name;
+ d.onclick=()=>load(i,true);
+ list.appendChild(d);
+});
 
-    function formatTime(seconds){
-      if (isNaN(seconds)) return "00:00";
-      const m = Math.floor(seconds / 60).toString().padStart(2,"0");
-      const s = Math.floor(seconds % 60).toString().padStart(2,"0");
-      return `${m}:${s}`;
-    }
+function load(i,auto){
+ current=i;
+ audio.src=tracks[i].src;
+ song.textContent=tracks[i].name;
+ document.querySelectorAll('.track')
+   .forEach((t,j)=>t.classList.toggle('active',j===i));
+ if(auto){audio.play();play.textContent='⏸'}
+ save();
+}
 
-    let currentSongTitle = songs.light.title;
+play.onclick=()=>{
+ audio.paused?(audio.play(),play.textContent='⏸')
+ :(audio.pause(),play.textContent='▶');
+ save();
+};
 
-    function updateSongTitle(){
-      const current = formatTime(audio.currentTime);
-      const total = formatTime(audio.duration);
-      songTitle.textContent = `${currentSongTitle} [${current} / ${total}]`;
-    }
-    // actualiza cada segundo
-    setInterval(updateSongTitle, 1000);
+audio.ontimeupdate=()=>{
+ bar.style.width=(audio.currentTime/audio.duration*100)+'%';
+};
+audio.onended=()=>load((current+1)%tracks.length,true);
+vol.oninput=()=>{audio.volume=vol.value;save()};
 
-    function setSong(theme){
-      const song = theme === "dark" ? songs.dark : songs.light;
-      const currentTime = audio.currentTime;
-      const wasPlaying = !audio.paused;
+function toggleMin(){
+ document.getElementById('player').classList.toggle('min');
+}
 
-      songSource.src = song.src;
-      currentSongTitle = song.title;
-      audio.load();
+function save(){
+ localStorage.setItem('player',JSON.stringify({
+   current,paused:audio.paused,
+   time:audio.currentTime,vol:audio.volume
+ }));
+}
 
-      audio.addEventListener("loadedmetadata", ()=>{
-        // Si la duración existe, ajustamos, si no, usamos currentTime
-        audio.currentTime = Math.min(currentTime, audio.duration || currentTime);
-        if(wasPlaying) audio.play().catch(()=>{});
-        updateSongTitle();
-      }, { once: true });
-    }
+const saved=JSON.parse(localStorage.getItem('player')||'{}');
+if(saved.current!=null){
+ load(saved.current,false);
+ audio.currentTime=saved.time||0;
+ audio.volume=saved.vol||.7;
+ vol.value=audio.volume;
+ if(!saved.paused){audio.play();play.textContent='⏸'}
+}
 
-    // sincroniza icono con estado del audio
-    audio.addEventListener('play', ()=> playBtn.textContent = "⏸");
-    audio.addEventListener('pause', ()=> playBtn.textContent = "▶️");
+/* Visualizador */
+const ctx=document.getElementById('viz').getContext('2d');
+const actx=new AudioContext();
+const src=actx.createMediaElementSource(audio);
+const analyser=actx.createAnalyser();
+src.connect(analyser); analyser.connect(actx.destination);
+analyser.fftSize=64;
+const data=new Uint8Array(analyser.frequencyBinCount);
 
-    playBtn.addEventListener("click", ()=>{
-      if(audio.paused){
-        audio.play().catch(()=>{}); // .catch para evitar errores si autoplay bloqueado
-      } else {
-        audio.pause();
-      }
-    });
+(function draw(){
+ requestAnimationFrame(draw);
+ analyser.getByteFrequencyData(data);
+ ctx.clearRect(0,0,300,40);
+ data.forEach((v,i)=>{
+   ctx.fillStyle='#fff';
+   ctx.fillRect(i*6,40-v/4,4,v/4);
+ });
+})();
 
-    // ========= Dark Mode (vídeo + canción) =========
-    const darkBtn  = document.getElementById("darkModeBtn");
-    const videoEl  = document.getElementById("bgVideo");
-    const sourceEl = document.getElementById("bgSource");
+/* Sistema */
+function openWin(id){
+ let w=document.getElementById(id);
+ w.style.display='block';
+ w.style.zIndex=++z;
+}
+function closeWin(id){
+ document.getElementById(id).style.display='none';
+}
 
-    function applyThemeMedia(){
-      const isDark = document.body.classList.contains("dark");
-      darkBtn.textContent = isDark ? "☀️" : "🌙";
-      // cambia fuente del vídeo según tema
-      sourceEl.src = isDark ? "fondo 1.mp4" : "fondoo.mp4";
-      videoEl.load();
-      videoEl.play().catch(()=>{});
-      // cambia canción manteniendo tiempo
-      setSong(isDark ? "dark" : "light");
-      // actualiza icono play/pause al final por si autoplay arrancó
-      setTimeout(()=> {
-        playBtn.textContent = audio.paused ? "▶️" : "⏸";
-      }, 200);
-    }
+document.querySelectorAll('.folder').forEach(f=>{
+ let c=0;
+ f.onclick=()=>{
+   c++; setTimeout(()=>c=0,300);
+   if(c===2)openWin(f.dataset.id);
+ };
+ f.onmousedown=e=>{
+   let x=e.offsetX,y=e.offsetY;
+   document.onmousemove=ev=>{
+     f.style.left=(ev.pageX-x)+'px';
+     f.style.top=(ev.pageY-y)+'px';
+   };
+   document.onmouseup=()=>document.onmousemove=null;
+ };
+});
 
-    darkBtn.addEventListener("click", ()=>{
-      document.body.classList.toggle("dark");
-      applyThemeMedia();
-    });
+document.querySelectorAll('.window').forEach(w=>{
+ const bar=w.querySelector('.titlebar');
+ bar.onmousedown=e=>{
+   let r=w.getBoundingClientRect();
+   let ox=e.clientX-r.left,oy=e.clientY-r.top;
+   document.onmousemove=ev=>{
+     w.style.left=(ev.clientX-ox)+'px';
+     w.style.top=(ev.clientY-oy)+'px';
+   };
+   document.onmouseup=()=>document.onmousemove=null;
+ };
+});
+</script>
 
-    // estado inicial
-    applyThemeMedia();
-
-    // ========= Botones inferiores =========
-    document.getElementById("cameraBtn").addEventListener("click",()=> openSidebar("gallery","right"));
-    document.getElementById("callsBtn").addEventListener("click",()=> openSidebar("contacts","left"));
-  </script>
 </body>
-</html> quiero el codigo tal cual, pero los reproductores con un diseño más bonito
+</html>
