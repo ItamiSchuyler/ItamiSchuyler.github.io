@@ -8,7 +8,7 @@
 *{box-sizing:border-box;font-family:Arial,sans-serif}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 
-/* Fondo */
+/* VIDEO FONDO */
 #video-bg{
   position:fixed;
   inset:0;
@@ -18,10 +18,10 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   z-index:-1;
 }
 
-/* Escritorio */
+/* ESCRITORIO */
 #desktop{position:relative;width:100%;height:100%;padding:20px}
 
-/* Carpetas */
+/* CARPETAS */
 .folder{
   width:90px;
   color:#fff;
@@ -34,7 +34,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 .folder.selected{background:rgba(255,255,255,.15)}
 .folder img{width:64px}
 
-/* Ventanas */
+/* VENTANAS */
 .window{
   position:absolute;
   width:480px;
@@ -43,6 +43,11 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   border-radius:12px;
   box-shadow:0 20px 50px rgba(0,0,0,.7);
   display:none;
+  animation:open .25s ease;
+}
+@keyframes open{
+  from{opacity:0;transform:scale(.95)}
+  to{opacity:1;transform:scale(1)}
 }
 .titlebar{
   background:#000;
@@ -53,7 +58,30 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 }
 .content{padding:15px}
 
-/* Barra tareas */
+/* GALERÍA */
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+.item{position:relative}
+.item img{
+  width:100%;
+  border-radius:8px;
+}
+.overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  transition:.3s;
+}
+.item:hover .overlay{opacity:1}
+
+/* TASKBAR */
 #taskbar{
   position:fixed;
   bottom:0;left:0;
@@ -63,7 +91,21 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   display:flex;
   align-items:center;
   padding:0 15px;
+  gap:15px;
 }
+
+/* CAMPANA */
+#notify{
+  font-size:22px;
+  cursor:pointer;
+  animation:pulse 1.5s infinite;
+}
+@keyframes pulse{
+  0%,100%{opacity:1}
+  50%{opacity:.4}
+}
+
+/* RELOJ */
 #clock{
   margin-left:auto;
   color:#fff;
@@ -71,7 +113,39 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   text-align:right;
 }
 
-/* Player */
+/* CHAT */
+#chatApp{width:700px}
+.chat-wrap{display:flex;height:100%}
+.friends{width:200px;background:#111}
+.friend{
+  padding:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  cursor:pointer;
+}
+.friend img{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+}
+.friend:hover{background:#222}
+.chat-box{flex:1;padding:10px}
+.msg{
+  max-width:70%;
+  padding:8px 12px;
+  border-radius:12px;
+  margin-bottom:6px;
+  animation:msg .2s ease;
+}
+@keyframes msg{
+  from{opacity:0;transform:translateY(5px)}
+  to{opacity:1}
+}
+.them{background:#333}
+.me{background:#0078ff;margin-left:auto}
+
+/* PLAYER */
 #player{
   position:fixed;
   right:20px;
@@ -82,29 +156,18 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   padding:15px;
   color:#fff;
 }
-#controls{display:flex;align-items:center;gap:10px;margin-top:10px}
+#controls{display:flex;gap:10px;margin-top:10px}
 #play{font-size:22px;cursor:pointer}
 #progress{flex:1;height:5px;background:#333;border-radius:4px}
 #bar{height:100%;width:0;background:#fff}
 .track{font-size:12px;cursor:pointer;opacity:.6}
 .track.active{opacity:1}
-
-/* Chat */
-#chatApp{width:700px}
-.chat-wrap{display:flex}
-.friends{width:200px;background:#111}
-.friend{padding:10px;cursor:pointer}
-.friend:hover{background:#222}
-.chat-box{flex:1;padding:10px}
-.msg{margin-bottom:6px;padding:6px;border-radius:8px}
-.them{background:#333}
-.me{background:#0078ff;margin-left:auto}
 </style>
 </head>
 
 <body>
 
-<!-- VIDEO FONDO -->
+<!-- VIDEO -->
 <video id="video-bg" autoplay muted loop playsinline>
   <source src="fondoo.mp4" type="video/mp4">
 </video>
@@ -119,27 +182,31 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
     <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
     <div>mis trabajos</div>
   </div>
-
-  <div class="folder" data-open="codigos" style="top:220px;left:20px">
-    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-    <div>códigos</div>
-  </div>
 </div>
 
-<!-- Ventanas -->
+<!-- VENTANAS -->
 <div class="window" id="itami">
   <div class="titlebar">Itami <span onclick="closeWin('itami')">✕</span></div>
-  <div class="content">Diseñador & Programador</div>
+  <div class="content gallery">
+    <div class="item">
+      <img src="https://placekitten.com/400/250">
+      <div class="overlay">Perfil</div>
+    </div>
+  </div>
 </div>
 
 <div class="window" id="trabajos">
   <div class="titlebar">Trabajos <span onclick="closeWin('trabajos')">✕</span></div>
-  <div class="content">Portfolio</div>
-</div>
-
-<div class="window" id="codigos">
-  <div class="titlebar">Códigos <span onclick="closeWin('codigos')">✕</span></div>
-  <div class="content">Repositorios</div>
+  <div class="content gallery">
+    <div class="item">
+      <img src="https://placekitten.com/401/250">
+      <div class="overlay">Proyecto Web</div>
+    </div>
+    <div class="item">
+      <img src="https://placekitten.com/402/250">
+      <div class="overlay">UI Design</div>
+    </div>
+  </div>
 </div>
 
 <div class="window" id="chatApp">
@@ -151,7 +218,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 </div>
 
 <div id="taskbar">
-  <div onclick="openWin('chatApp')" style="cursor:pointer">🔔</div>
+  <div id="notify" onclick="openWin('chatApp')">🔔</div>
   <div id="clock"></div>
 </div>
 
@@ -167,14 +234,13 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 <audio id="audio"></audio>
 
 <script>
-/* FORZAR VIDEO */
+/* VIDEO FIX */
 const bg=document.getElementById('video-bg');
 bg.muted=true;
 bg.play().catch(()=>{});
 
+/* VENTANAS */
 let z=10;
-
-/* Ventanas */
 function openWin(id){
   const w=document.getElementById(id);
   w.style.display='block';
@@ -184,85 +250,92 @@ function openWin(id){
 }
 function closeWin(id){document.getElementById(id).style.display='none';}
 
-/* Carpetas */
-document.querySelectorAll('.folder').forEach(f=>{
-  f.ondblclick=()=>openWin(f.dataset.open);
+/* CARPETAS DRAG */
+document.querySelectorAll('.folder').forEach(folder=>{
+  let drag=false,ox=0,oy=0;
+  folder.addEventListener('mousedown',e=>{
+    drag=true;
+    ox=e.clientX-folder.offsetLeft;
+    oy=e.clientY-folder.offsetTop;
+    folder.classList.add('selected');
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!drag)return;
+    folder.style.left=e.clientX-ox+'px';
+    folder.style.top=e.clientY-oy+'px';
+  });
+  document.addEventListener('mouseup',()=>{
+    drag=false;
+    folder.classList.remove('selected');
+  });
+  folder.ondblclick=()=>openWin(folder.dataset.open);
 });
 
-/* Chat */
+/* CHAT */
 const chats={
-  Chris:['Hola 👋','Firma'],
-  Taiga:['Eres muy cotilla'],
+  Chris:['Hola 👋','¿Qué haces?'],
+  Taiga:['Eres muy cotilla 😅'],
   Cesar:['Spaces en mantenimiento']
 };
 const friends=document.getElementById('friends');
 const chatBox=document.getElementById('chatBox');
 
 Object.keys(chats).forEach(n=>{
-  const d=document.createElement('div');
-  d.className='friend';
-  d.textContent=n;
-  d.onclick=()=>loadChat(n);
-  friends.appendChild(d);
+  const f=document.createElement('div');
+  f.className='friend';
+  f.innerHTML=`<img src="https://i.pravatar.cc/100?u=${n}">${n}`;
+  f.onclick=()=>loadChat(n);
+  friends.appendChild(f);
 });
+
 function loadChat(n){
   chatBox.innerHTML='';
   chats[n].forEach((m,i)=>{
-    const d=document.createElement('div');
-    d.className='msg '+(i%2?'me':'them');
-    d.textContent=m;
-    chatBox.appendChild(d);
+    setTimeout(()=>{
+      const d=document.createElement('div');
+      d.className='msg '+(i%2?'me':'them');
+      d.textContent=m;
+      chatBox.appendChild(d);
+    },i*300);
   });
 }
 
-/* Player */
+/* PLAYER */
 const tracks=[
-  {name:'Justin Bieber - Shes Confidence',src:'song.mp3'},
-  {name:'Song Two',src:'cancion2.mp3'}
+  {name:'Track 1',src:'song.mp3'},
+  {name:'Track 2',src:'cancion2.mp3'}
 ];
 const audio=document.getElementById('audio');
 const play=document.getElementById('play');
 const bar=document.getElementById('bar');
 const list=document.getElementById('playlist');
-let current=0;
 
 tracks.forEach((t,i)=>{
   const d=document.createElement('div');
   d.className='track';
   d.textContent=t.name;
-  d.onclick=()=>load(i,true);
+  d.onclick=()=>{audio.src=t.src;audio.play();play.textContent='⏸'};
   list.appendChild(d);
 });
 
-function load(i,auto){
-  current=i;
-  audio.src=tracks[i].src;
-  document.querySelectorAll('.track').forEach((t,j)=>t.classList.toggle('active',j===i));
-  if(auto) audio.play().then(()=>play.textContent='⏸');
-}
-
 play.onclick=()=>{
-  if(!audio.src) load(0,true);
-  else audio.paused?audio.play().then(()=>play.textContent='⏸'):(audio.pause(),play.textContent='▶');
+  audio.paused?(audio.play(),play.textContent='⏸'):(audio.pause(),play.textContent='▶');
 };
 
 audio.ontimeupdate=()=>{
-  if(audio.duration) bar.style.width=(audio.currentTime/audio.duration*100)+'%';
+  if(audio.duration) bar.style.width=audio.currentTime/audio.duration*100+'%';
 };
 
-/* Permitir audio tras interacción */
-document.addEventListener('click',()=>audio.play().catch(()=>{}),{once:true});
-
-/* Reloj */
-function updateClock(){
-  const n=new Date();
+/* CLOCK */
+function clock(){
+  const d=new Date();
   document.getElementById('clock').innerHTML=
-    n.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})+
-    '<br>'+n.toLocaleDateString('es-ES');
+    d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})+
+    '<br>'+d.toLocaleDateString('es-ES');
 }
-updateClock();
-setInterval(updateClock,1000);
+clock();setInterval(clock,1000);
 </script>
 
 </body>
 </html>
+
