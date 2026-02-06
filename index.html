@@ -106,6 +106,16 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   50%{opacity:.4}
 }
 
+/* Reloj */
+#clock{
+  margin-left:auto;
+  color:#fff;
+  font-size:13px;
+  text-align:right;
+  line-height:1.2;
+  user-select:none;
+}
+
 /* Chat */
 #chatApp{width:700px}
 .chat-wrap{display:flex;height:100%}
@@ -169,8 +179,8 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 
 <body>
 
-<video autoplay muted loop id="video-bg">
-  <source src="fondoo.mp4">
+<video autoplay muted loop playsinline id="video-bg">
+  <source src="fondoo.mp4" type="video/mp4">
 </video>
 
 <div id="desktop">
@@ -224,6 +234,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 
 <div id="taskbar">
   <div id="notify" onclick="openWin('chatApp')">🔔</div>
+  <div id="clock"></div>
 </div>
 
 <div id="player">
@@ -253,47 +264,41 @@ function closeWin(id){
   document.getElementById(id).style.display='none';
 }
 
+/* Carpetas */
 document.querySelectorAll('.folder').forEach(folder => {
-  let isDragging = false;
-  let offsetX = 0, offsetY = 0;
+  let isDragging=false, ox=0, oy=0;
 
-  folder.addEventListener('mousedown', e => {
-    isDragging = true;
-    offsetX = e.clientX - folder.offsetLeft;
-    offsetY = e.clientY - folder.offsetTop;
-
+  folder.addEventListener('mousedown', e=>{
+    isDragging=true;
+    ox=e.clientX-folder.offsetLeft;
+    oy=e.clientY-folder.offsetTop;
     folder.classList.add('selected');
-    folder.style.zIndex = ++z;
-
+    folder.style.zIndex=++z;
     document.addEventListener('mousemove', drag);
-    document.addEventListener('mouseup', stopDrag);
+    document.addEventListener('mouseup', stop);
   });
 
-  folder.addEventListener('dblclick', () => {
-    openWin(folder.dataset.open);
-  });
+  folder.addEventListener('dblclick', ()=>openWin(folder.dataset.open));
 
-  function drag(e) {
-    if (!isDragging) return;
-    folder.style.left = (e.clientX - offsetX) + 'px';
-    folder.style.top  = (e.clientY - offsetY) + 'px';
+  function drag(e){
+    if(!isDragging)return;
+    folder.style.left=(e.clientX-ox)+'px';
+    folder.style.top=(e.clientY-oy)+'px';
   }
-
-  function stopDrag() {
-    isDragging = false;
+  function stop(){
+    isDragging=false;
     folder.classList.remove('selected');
     document.removeEventListener('mousemove', drag);
-    document.removeEventListener('mouseup', stopDrag);
+    document.removeEventListener('mouseup', stop);
   }
 });
-
 
 /* Drag ventanas */
 document.querySelectorAll('.window').forEach(w=>{
   const bar=w.querySelector('.titlebar');
   bar.onmousedown=e=>{
     const r=w.getBoundingClientRect();
-    const ox=e.clientX-r.left,oy=e.clientY-r.top;
+    const ox=e.clientX-r.left, oy=e.clientY-r.top;
     document.onmousemove=ev=>{
       w.style.left=(ev.clientX-ox)+'px';
       w.style.top=(ev.clientY-oy)+'px';
@@ -336,12 +341,14 @@ const tracks=[
  {name:'Justin Bieber - Shes confidence',src:'song.mp3'},
  {name:'Song Two',src:'cancion2.mp3'}
 ];
-let current=0;
 const audio=document.getElementById('audio');
 const play=document.getElementById('play');
 const bar=document.getElementById('bar');
 const vol=document.getElementById('volume');
 const list=document.getElementById('playlist');
+
+audio.volume=0.5;
+vol.value=0.5;
 
 tracks.forEach((t,i)=>{
  const d=document.createElement('div');
@@ -352,7 +359,6 @@ tracks.forEach((t,i)=>{
 });
 
 function load(i,a){
- current=i;
  audio.src=tracks[i].src;
  document.querySelectorAll('.track').forEach((t,j)=>t.classList.toggle('active',j===i));
  if(a){audio.play();play.textContent='⏸'}
@@ -363,10 +369,21 @@ play.onclick=()=>{
 };
 audio.ontimeupdate=()=>bar.style.width=(audio.currentTime/audio.duration*100)+'%';
 vol.oninput=()=>audio.volume=vol.value;
+
+/* Reloj */
+function updateClock(){
+  const n=new Date();
+  const h=n.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+  const d=n.toLocaleDateString('es-ES');
+  document.getElementById('clock').innerHTML=`${h}<br>${d}`;
+}
+updateClock();
+setInterval(updateClock,1000);
 </script>
 
 </body>
 </html>
+
 
 
 
