@@ -114,6 +114,54 @@ gap:10px;
 }
 .item video,.item img{width:100%;border-radius:8px}
 
+  /* PERFIL ITAMI */
+.profile{
+text-align:center;
+color:#eee;
+}
+
+.profile-icon{
+width:120px;
+height:120px;
+border-radius:20px;
+object-fit:cover;
+margin-bottom:10px;
+box-shadow:0 10px 25px rgba(0,0,0,.6);
+}
+
+.profile h2{
+margin:8px 0 2px;
+font-size:22px;
+}
+
+.age{
+font-size:14px;
+opacity:.7;
+margin-bottom:10px;
+}
+
+.bio{
+font-size:14px;
+line-height:1.5;
+opacity:.85;
+margin-bottom:15px;
+}
+
+.socials{
+display:flex;
+justify-content:center;
+gap:15px;
+margin-top:10px;
+}
+
+.socials img{
+width:32px;
+transition:.2s;
+}
+
+.socials img:hover{
+transform:scale(1.2);
+}
 /* TASKBAR */
 #taskbar{
 position:fixed;
@@ -292,12 +340,32 @@ margin-top:6px;
 
 <!-- VENTANAS -->
 <div class="window" id="itami">
-<div class="titlebar">Itami <span onclick="closeWin('itami')">✕</span></div>
-<div class="content gallery">
-<img src="https://placekitten.com/400/250">
-</div>
+<div class="titlebar">xxx <span onclick="closeWin('itami')">✕</span></div>
+
+<div class="content profile">
+
+<img class="profile-icon" src="https://i.ibb.co/LbvmSPQ/tumblr-e713e2c82e644a8bc52da44ac92babd5-e2b86cef-400.jpg">
+
+<h2>Itami</h2>
+<p class="age">27 años</p>
+
+<p class="bio">
+Diseñadora y programadora autodidacta. Me gusta crear interfaces, conceptos visuales y experiencias interactivas.
+</p>
+
+<div class="socials">
+<a href="https://twitter.com/@needsushi" target="_blank">
+<img src="https://cdn-icons-png.flaticon.com/512/733/733579.png">
+</a>
+
+<a href="https://instagram.com/itamich_" target="_blank">
+<img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png">
+</a>
+
 </div>
 
+</div>
+</div>
 <div class="window" id="trabajos">
 <div class="titlebar">Trabajos <span onclick="closeWin('trabajos')">✕</span></div>
 <div class="content gallery">
@@ -623,6 +691,7 @@ window.addEventListener("resize",ordenarCarpetas);
 </script>
 </body>
 </html>
+
 
 
 
