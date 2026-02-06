@@ -56,8 +56,14 @@ position:absolute;
 cursor:pointer;
 user-select:none;
 padding:10px;
-border-radius:12px;
+border-radius:10px;
 
+/* ESTILO SÓLIDO LIMPIO */
+background:#1e1e2a;
+border:1px solid #2a2a3a;
+
+transition:.2s ease;
+}
 /* NUEVO COLOR */
 background:rgba(30,30,40,0.35);
 border:1px solid rgba(255,255,255,0.08);
@@ -78,8 +84,9 @@ display:block;
 
 /* Hover mantiene tu efecto pero más elegante */
 .folder:hover{
-background:rgba(60,60,90,0.45);
-border-color:rgba(140,170,255,0.4);
+background:#2b2b40;
+border-color:#4c6fff;
+transform:scale(1.04);
 }
 /* WINDOWS */
 .window{
@@ -147,6 +154,7 @@ text-align:right;
 #chatApp{width:700px}
 .chat-wrap{display:flex;height:350px}
 .friends{width:200px;background:#111}
+  
 .friend{
 padding:10px;
 display:flex;
@@ -315,7 +323,7 @@ margin-top:6px;
 
 <!-- CHAT -->
 <div class="window" id="chatApp">
-<div class="titlebar">Chats <span onclick="closeWin('chatApp')">✕</span></div>
+<div class="titlebar">Amigos <span onclick="closeWin('chatApp')">✕</span></div>
 <div class="content chat-wrap">
 <div class="friends" id="friends"></div>
 <div class="chat-box" id="chatBox"></div>
@@ -614,5 +622,6 @@ window.addEventListener("resize",ordenarCarpetas);
 </script>
 </body>
 </html>
+
 
 
