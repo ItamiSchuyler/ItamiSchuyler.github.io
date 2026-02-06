@@ -253,29 +253,40 @@ function closeWin(id){
   document.getElementById(id).style.display='none';
 }
 
-/* Carpetas doble click + drag */
-document.querySelectorAll('.folder').forEach(f=>{
-  let clicks=0,drag=false;
-  f.onmousedown=e=>{
-    drag=false;
-    const ox=e.offsetX,oy=e.offsetY;
-    document.onmousemove=ev=>{
-      drag=true;
-      f.style.left=(ev.pageX-ox)+'px';
-      f.style.top=(ev.pageY-oy)+'px';
-    };
-    document.onmouseup=()=>{
-      document.onmousemove=null;
-      if(!drag){
-        clicks++;
-        f.classList.add('selected');
-        setTimeout(()=>f.classList.remove('selected'),200);
-        setTimeout(()=>clicks=0,300);
-        if(clicks===2)openWin(f.dataset.open);
-      }
-    };
-  };
+document.querySelectorAll('.folder').forEach(folder => {
+  let isDragging = false;
+  let offsetX = 0, offsetY = 0;
+
+  folder.addEventListener('mousedown', e => {
+    isDragging = true;
+    offsetX = e.clientX - folder.offsetLeft;
+    offsetY = e.clientY - folder.offsetTop;
+
+    folder.classList.add('selected');
+    folder.style.zIndex = ++z;
+
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('mouseup', stopDrag);
+  });
+
+  folder.addEventListener('dblclick', () => {
+    openWin(folder.dataset.open);
+  });
+
+  function drag(e) {
+    if (!isDragging) return;
+    folder.style.left = (e.clientX - offsetX) + 'px';
+    folder.style.top  = (e.clientY - offsetY) + 'px';
+  }
+
+  function stopDrag() {
+    isDragging = false;
+    folder.classList.remove('selected');
+    document.removeEventListener('mousemove', drag);
+    document.removeEventListener('mouseup', stopDrag);
+  }
 });
+
 
 /* Drag ventanas */
 document.querySelectorAll('.window').forEach(w=>{
@@ -355,3 +366,4 @@ vol.oninput=()=>audio.volume=vol.value;
 
 </body>
 </html>
+
