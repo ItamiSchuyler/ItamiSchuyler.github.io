@@ -8,7 +8,6 @@
 *{box-sizing:border-box;font-family:Arial,sans-serif}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 
-/* VIDEO FONDO */
 #video-bg{
   position:fixed;
   inset:0;
@@ -18,10 +17,8 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   z-index:-1;
 }
 
-/* ESCRITORIO */
 #desktop{position:relative;width:100%;height:100%;padding:20px}
 
-/* CARPETAS */
 .folder{
   width:90px;
   color:#fff;
@@ -34,7 +31,6 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 .folder.selected{background:rgba(255,255,255,.15)}
 .folder img{width:64px}
 
-/* VENTANAS */
 .window{
   position:absolute;
   width:480px;
@@ -49,6 +45,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   from{opacity:0;transform:scale(.95)}
   to{opacity:1;transform:scale(1)}
 }
+
 .titlebar{
   background:#000;
   padding:10px;
@@ -58,19 +55,13 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 }
 .content{padding:15px}
 
-/* GALERÍA */
 .gallery{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:10px;
 }
-.item{position:relative}
-.item video,.item img{
-  width:100%;
-  border-radius:8px;
-}
+.item video,.item img{width:100%;border-radius:8px}
 
-/* TASKBAR */
 #taskbar{
   position:fixed;
   bottom:0;left:0;
@@ -83,24 +74,50 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   gap:15px;
 }
 
-/* CAMPANA */
 #notify{
   font-size:22px;
   cursor:pointer;
   animation:pulse 1.5s infinite;
 }
+
 @keyframes pulse{
   0%,100%{opacity:1}
   50%{opacity:.4}
 }
 
-/* RELOJ */
 #clock{
   margin-left:auto;
   color:#fff;
   font-size:13px;
   text-align:right;
 }
+
+/* CHAT */
+#chatApp{width:700px}
+.chat-wrap{display:flex;height:350px}
+.friends{width:200px;background:#111}
+.friend{
+  padding:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  cursor:pointer;
+}
+.friend img{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+}
+.friend:hover{background:#222}
+.chat-box{flex:1;padding:10px;overflow:auto}
+.msg{
+  max-width:70%;
+  padding:8px 12px;
+  border-radius:12px;
+  margin-bottom:6px;
+}
+.them{background:#333}
+.me{background:#0078ff;margin-left:auto}
 
 /* PLAYER */
 #player{
@@ -124,117 +141,147 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 
 <body>
 
-<!-- VIDEO -->
 <video id="video-bg" autoplay muted loop playsinline>
   <source src="fondoo.mp4" type="video/mp4">
 </video>
 
 <div id="desktop">
 
-  <div class="folder" data-open="itami" style="top:20px;left:20px">
-    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-    <div>itami</div>
-  </div>
+<div class="folder" data-open="itami" style="top:20px;left:20px">
+<img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
+<div>itami</div>
+</div>
 
-  <div class="folder" data-open="trabajos" style="top:120px;left:20px">
-    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-    <div>mis trabajos</div>
-  </div>
+<div class="folder" data-open="trabajos" style="top:120px;left:20px">
+<img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
+<div>mis trabajos</div>
+</div>
 
-  <!-- NUEVA CARPETA -->
-  <div class="folder" data-open="codigos" style="top:220px;left:20px">
-    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-    <div>mis códigos</div>
-  </div>
+<div class="folder" data-open="codigos" style="top:220px;left:20px">
+<img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
+<div>mis códigos</div>
+</div>
 
 </div>
 
-<!-- VENTANAS -->
+<!-- ventanas -->
 <div class="window" id="itami">
-  <div class="titlebar">Itami <span onclick="closeWin('itami')">✕</span></div>
-  <div class="content gallery">
-    <img src="https://placekitten.com/400/250">
-  </div>
+<div class="titlebar">Itami <span onclick="closeWin('itami')">✕</span></div>
+<div class="content gallery">
+<img src="https://placekitten.com/400/250">
+</div>
 </div>
 
 <div class="window" id="trabajos">
-  <div class="titlebar">Trabajos <span onclick="closeWin('trabajos')">✕</span></div>
-  <div class="content gallery">
-    <img src="https://placekitten.com/401/250">
-    <img src="https://placekitten.com/402/250">
-  </div>
+<div class="titlebar">Trabajos <span onclick="closeWin('trabajos')">✕</span></div>
+<div class="content gallery">
+<img src="https://placekitten.com/401/250">
+<img src="https://placekitten.com/402/250">
+</div>
 </div>
 
-<!-- GALERÍA VIDEOS -->
 <div class="window" id="codigos">
-  <div class="titlebar">Mis códigos <span onclick="closeWin('codigos')">✕</span></div>
-  <div class="content gallery">
-    
-    <div class="item">
-      <video controls src="demo1.mp4"></video>
-    </div>
+<div class="titlebar">Mis códigos <span onclick="closeWin('codigos')">✕</span></div>
+<div class="content gallery">
+<div class="item"><video controls src="demo1.mp4"></video></div>
+<div class="item"><video controls src="demo2.mp4"></video></div>
+</div>
+</div>
 
-    <div class="item">
-      <video controls src="demo2.mp4"></video>
-    </div>
-
-  </div>
+<!-- CHAT -->
+<div class="window" id="chatApp">
+<div class="titlebar">Chats <span onclick="closeWin('chatApp')">✕</span></div>
+<div class="content chat-wrap">
+<div class="friends" id="friends"></div>
+<div class="chat-box" id="chatBox"></div>
+</div>
 </div>
 
 <div id="taskbar">
-  <div id="clock"></div>
+<div id="notify" onclick="openWin('chatApp')">🔔</div>
+<div id="clock"></div>
 </div>
 
 <!-- PLAYER -->
 <div id="player">
-  <strong>Music Player</strong>
-  <div id="controls">
-    <div id="play">▶</div>
-    <div id="progress"><div id="bar"></div></div>
-  </div>
-  <div id="playlist"></div>
+<strong>Music Player</strong>
+<div id="controls">
+<div id="play">▶</div>
+<div id="progress"><div id="bar"></div></div>
+</div>
+<div id="playlist"></div>
 </div>
 
 <audio id="audio"></audio>
 
 <script>
 
-/* VIDEO FIX */
+/* VIDEO */
 const bg=document.getElementById('video-bg');
 bg.addEventListener('loadeddata',()=>bg.play().catch(()=>{}));
 
-/* VENTANAS */
+/* ventanas */
 let z=10;
 function openWin(id){
-  const w=document.getElementById(id);
-  w.style.display='block';
-  w.style.left='140px';
-  w.style.top='90px';
-  w.style.zIndex=++z;
+ const w=document.getElementById(id);
+ w.style.display='block';
+ w.style.left='140px';
+ w.style.top='90px';
+ w.style.zIndex=++z;
 }
-function closeWin(id){document.getElementById(id).style.display='none';}
+function closeWin(id){
+ document.getElementById(id).style.display='none';
+}
 
-/* DRAG CARPETAS */
+/* drag carpetas */
 document.querySelectorAll('.folder').forEach(folder=>{
-  let drag=false,ox=0,oy=0;
-  folder.addEventListener('mousedown',e=>{
-    drag=true;
-    ox=e.clientX-folder.offsetLeft;
-    oy=e.clientY-folder.offsetTop;
-  });
-  document.addEventListener('mousemove',e=>{
-    if(!drag)return;
-    folder.style.left=e.clientX-ox+'px';
-    folder.style.top=e.clientY-oy+'px';
-  });
-  document.addEventListener('mouseup',()=>drag=false);
-  folder.ondblclick=()=>openWin(folder.dataset.open);
+ let drag=false,ox=0,oy=0;
+ folder.addEventListener('mousedown',e=>{
+   drag=true;
+   ox=e.clientX-folder.offsetLeft;
+   oy=e.clientY-folder.offsetTop;
+ });
+ document.addEventListener('mousemove',e=>{
+   if(!drag)return;
+   folder.style.left=e.clientX-ox+'px';
+   folder.style.top=e.clientY-oy+'px';
+ });
+ document.addEventListener('mouseup',()=>drag=false);
+ folder.ondblclick=()=>openWin(folder.dataset.open);
 });
 
-/* PLAYER */
+/* CHAT */
+const chats={
+ Chris:['Hola 👋','¿Qué haces?'],
+ Taiga:['Eres cotilla 😅'],
+ Cesar:['Spaces en mantenimiento']
+};
+
+const friends=document.getElementById('friends');
+const chatBox=document.getElementById('chatBox');
+
+Object.keys(chats).forEach(n=>{
+ const f=document.createElement('div');
+ f.className='friend';
+ f.innerHTML=`<img src="https://i.pravatar.cc/100?u=${n}">${n}`;
+ f.onclick=()=>loadChat(n);
+ friends.appendChild(f);
+});
+
+function loadChat(n){
+ chatBox.innerHTML='';
+ chats[n].forEach((m,i)=>{
+   const d=document.createElement('div');
+   d.className='msg '+(i%2?'me':'them');
+   d.textContent=m;
+   chatBox.appendChild(d);
+ });
+}
+
+/* PLAYER PRO */
 const tracks=[
-  {name:'Track 1',src:'song.mp3'},
-  {name:'Track 2',src:'cancion2.mp3'}
+ {name:'Track 1',src:'song.mp3'},
+ {name:'Track 2',src:'cancion2.mp3'}
 ];
 
 const audio=document.getElementById('audio');
@@ -242,43 +289,54 @@ const play=document.getElementById('play');
 const bar=document.getElementById('bar');
 const list=document.getElementById('playlist');
 
-let currentTrack=null;
+let current=localStorage.getItem('track') || 0;
+let shuffle=false;
+
+function loadTrack(i){
+ current=i;
+ audio.src=tracks[i].src;
+ localStorage.setItem('track',i);
+ document.querySelectorAll('.track').forEach(x=>x.classList.remove('active'));
+ document.querySelectorAll('.track')[i].classList.add('active');
+}
 
 tracks.forEach((t,i)=>{
-  const d=document.createElement('div');
-  d.className='track';
-  d.textContent=t.name;
-
-  d.onclick=()=>{
-    document.querySelectorAll('.track').forEach(x=>x.classList.remove('active'));
-    d.classList.add('active');
-    currentTrack=i;
-    audio.src=t.src;
-    audio.play();
-    play.textContent='⏸';
-  };
-
-  list.appendChild(d);
+ const d=document.createElement('div');
+ d.className='track';
+ d.textContent=t.name;
+ d.onclick=()=>{loadTrack(i);audio.play();play.textContent='⏸'};
+ list.appendChild(d);
 });
 
+loadTrack(current);
+
 play.onclick=()=>{
-  if(!audio.src) return;
-  audio.paused?(audio.play(),play.textContent='⏸'):(audio.pause(),play.textContent='▶');
+ audio.paused?(audio.play(),play.textContent='⏸'):(audio.pause(),play.textContent='▶');
 };
 
 audio.ontimeupdate=()=>{
-  if(audio.duration)
-    bar.style.width=(audio.currentTime/audio.duration*100)+'%';
+ if(audio.duration)
+  bar.style.width=(audio.currentTime/audio.duration*100)+'%';
+};
+
+audio.onended=()=>{
+ if(shuffle){
+   loadTrack(Math.floor(Math.random()*tracks.length));
+ }else{
+   loadTrack((Number(current)+1)%tracks.length);
+ }
+ audio.play();
 };
 
 /* CLOCK */
 function clock(){
-  const d=new Date();
-  document.getElementById('clock').innerHTML=
-    d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})+
-    '<br>'+d.toLocaleDateString('es-ES');
+ const d=new Date();
+ document.getElementById('clock').innerHTML=
+  d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})+
+  '<br>'+d.toLocaleDateString('es-ES');
 }
-clock();setInterval(clock,1000);
+clock();
+setInterval(clock,1000);
 
 </script>
 
