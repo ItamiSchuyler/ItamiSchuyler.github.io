@@ -505,22 +505,30 @@ folder.ondblclick=()=>openWin(folder.dataset.open);
 
 /* CHAT */
 const chats={
-Chris:['Hola 👋','¿Qué haces?'],
-Taiga:['Eres cotilla 😅'],
-Cesar:['Spaces en mantenimiento']
+Chris:{
+photo:"https://i.imgur.com/1Xq9BiF.png",
+msgs:['Hola 👋','¿Qué haces?']
+},
+Taiga:{
+photo:"https://i.imgur.com/2yAfW0K.png",
+msgs:['Eres cotilla 😅']
+},
+Cesar:{
+photo:"https://i.imgur.com/3fZQZ5G.png",
+msgs:['Spaces en mantenimiento']
+}
 };
-
 const friends=document.getElementById('friends');
 const chatBox=document.getElementById('chatBox');
 
 Object.keys(chats).forEach(n=>{
 const f=document.createElement('div');
 f.className='friend';
-f.innerHTML=`<img src="https://i.pravatar.cc/100?u=${n}">${n}`;
+f.innerHTML=`<img src="${chats[n].photo}">${n}`;
 f.onclick=()=>loadChat(n);
 friends.appendChild(f);
 });
-
+  
 function loadChat(n){
 
 chatBox.innerHTML='';
@@ -529,7 +537,7 @@ let i=0;
 
 function next(){
 
-if(i>=chats[n].length) return;
+if(i>=chats[n].msgs.length) return;
 
 /* typing bubble */
 const typing=document.createElement('div');
@@ -548,8 +556,8 @@ typing.remove();
 
 const d=document.createElement('div');
 d.className='msg '+(i%2?'me':'them');
-d.textContent=chats[n][i];
-
+d.textContent=chats[n].msgs[i];
+  
 chatBox.appendChild(d);
 
 chatBox.scrollTo({
@@ -622,6 +630,7 @@ window.addEventListener("resize",ordenarCarpetas);
 </script>
 </body>
 </html>
+
 
 
 
