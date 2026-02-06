@@ -16,7 +16,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 }
 
 /* Escritorio */
-#desktop{position:relative;width:100%;height:100%}
+#desktop{position:relative;width:100%;height:100%;padding:20px}
 
 /* Carpetas */
 .folder{
@@ -32,7 +32,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 /* Ventanas */
 .window{
   position:absolute;
-  width:420px;
+  width:450px;
   background:#1b1b1b;
   color:#eee;
   border-radius:10px;
@@ -48,6 +48,29 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 }
 .content{padding:15px}
 
+/* Galerías */
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+.item{position:relative}
+.item img,.item video{
+  width:100%;
+  border-radius:6px;
+}
+.overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.75);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  transition:.3s;
+}
+.item:hover .overlay{opacity:1}
+
 /* Barra de tareas */
 #taskbar{
   position:fixed;
@@ -58,7 +81,10 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   display:flex;
   align-items:center;
   padding:0 15px;
+  gap:15px;
 }
+
+/* Notificación */
 #notify{
   font-size:22px;
   cursor:pointer;
@@ -69,40 +95,25 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   50%{opacity:.4}
 }
 
-/* Chat */
-#chatApp{width:700px;height:420px}
-.chat-wrap{display:flex;height:100%}
-.friends{
-  width:200px;
-  background:#111;
+/* Player */
+#player{
+  position:fixed;
+  right:20px;
+  bottom:70px;
+  width:300px;
+  background:rgba(15,15,15,.95);
+  backdrop-filter:blur(10px);
+  border-radius:14px;
+  padding:15px;
+  color:#fff;
 }
-.friend{
-  padding:10px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  cursor:pointer;
-}
-.friend img{
-  width:35px;height:35px;border-radius:50%;
-}
-.friend:hover{background:#222}
-.chat-box{
-  flex:1;
-  padding:10px;
-  overflow:auto;
-}
-.msg{
-  max-width:70%;
-  padding:8px 12px;
-  border-radius:10px;
-  margin-bottom:8px;
-}
-.them{background:#333}
-.me{
-  background:#0078ff;
-  margin-left:auto;
-}
+#controls{display:flex;align-items:center;gap:10px;margin-top:10px}
+#play{font-size:22px;cursor:pointer}
+#progress{flex:1;height:5px;background:#333;border-radius:4px;cursor:pointer}
+#bar{height:100%;width:0;background:#fff;border-radius:4px}
+#volume{width:60px}
+.track{font-size:12px;padding:4px;cursor:pointer;opacity:.6}
+.track.active{opacity:1}
 </style>
 </head>
 
@@ -138,6 +149,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
     <span onclick="closeWin('itami')">✕</span>
   </div>
   <div class="content">
+    <img src="https://placekitten.com/400/200" style="width:100%;border-radius:6px">
     <p><strong>Itami</strong></p>
     <p>Diseñador & Programador</p>
     <p>contacto@email.com</p>
@@ -150,8 +162,15 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
     Mis trabajos
     <span onclick="closeWin('trabajos')">✕</span>
   </div>
-  <div class="content">
-    <p>Galería de proyectos</p>
+  <div class="content gallery">
+    <div class="item">
+      <img src="https://placekitten.com/300/200">
+      <div class="overlay">Proyecto Web</div>
+    </div>
+    <div class="item">
+      <img src="https://placekitten.com/301/200">
+      <div class="overlay">Diseño UI</div>
+    </div>
   </div>
 </div>
 
@@ -161,8 +180,11 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
     Códigos
     <span onclick="closeWin('codigos')">✕</span>
   </div>
-  <div class="content">
-    <p>Vídeos de demos</p>
+  <div class="content gallery">
+    <div class="item">
+      <video src="demo.mp4" muted loop></video>
+      <div class="overlay">Demo Web</div>
+    </div>
   </div>
 </div>
 
@@ -172,105 +194,120 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
     Chats
     <span onclick="closeWin('chatApp')">✕</span>
   </div>
-  <div class="content chat-wrap">
-    <div class="friends" id="friends"></div>
-    <div class="chat-box" id="chatBox"></div>
+  <div class="content">
+    <p>Simulación de chat tipo Messenger</p>
   </div>
 </div>
 
 <!-- Barra -->
 <div id="taskbar">
-  <div id="notify" onclick="openWin('chatApp')">🔔</div>
+  <div id="notify" ondblclick="openWin('chatApp')">🔔</div>
 </div>
 
+<!-- Player -->
+<div id="player">
+  <strong>Music Player</strong>
+  <div id="controls">
+    <div id="play">▶</div>
+    <div id="progress"><div id="bar"></div></div>
+    <input id="volume" type="range" min="0" max="1" step="0.01">
+  </div>
+  <div id="playlist"></div>
+</div>
+
+<audio id="audio"></audio>
+
 <script>
-let z = 10;
+let z=10;
 
 /* Abrir / cerrar */
 function openWin(id){
-  const w = document.getElementById(id);
-  w.style.display = 'block';
-  w.style.zIndex = ++z;
-  w.style.left = '120px';
-  w.style.top = '80px';
+  const w=document.getElementById(id);
+  w.style.display='block';
+  w.style.zIndex=++z;
+  w.style.left='140px';
+  w.style.top='90px';
 }
 function closeWin(id){
-  document.getElementById(id).style.display = 'none';
+  document.getElementById(id).style.display='none';
 }
 
-/* Carpetas */
+/* Carpetas: DOBLE CLICK + arrastre */
 document.querySelectorAll('.folder').forEach(f=>{
-  let dragging = false;
+  let clicks=0,drag=false;
 
-  f.addEventListener('mousedown',e=>{
-    dragging = false;
-    const ox = e.offsetX, oy = e.offsetY;
-
-    document.onmousemove = ev=>{
-      dragging = true;
-      f.style.left = (ev.pageX - ox) + 'px';
-      f.style.top  = (ev.pageY - oy) + 'px';
+  f.onmousedown=e=>{
+    drag=false;
+    const ox=e.offsetX,oy=e.offsetY;
+    document.onmousemove=ev=>{
+      drag=true;
+      f.style.left=(ev.pageX-ox)+'px';
+      f.style.top=(ev.pageY-oy)+'px';
     };
-
-    document.onmouseup = ()=>{
-      document.onmousemove = null;
-      if(!dragging){
-        openWin(f.dataset.open);
+    document.onmouseup=()=>{
+      document.onmousemove=null;
+      if(!drag){
+        clicks++;
+        setTimeout(()=>clicks=0,300);
+        if(clicks===2)openWin(f.dataset.open);
       }
     };
-  });
+  };
 });
 
 /* Arrastrar ventanas */
 document.querySelectorAll('.window').forEach(w=>{
-  const bar = w.querySelector('.titlebar');
-  bar.onmousedown = e=>{
-    const r = w.getBoundingClientRect();
-    const ox = e.clientX - r.left;
-    const oy = e.clientY - r.top;
-    document.onmousemove = ev=>{
-      w.style.left = (ev.clientX - ox) + 'px';
-      w.style.top  = (ev.clientY - oy) + 'px';
+  const bar=w.querySelector('.titlebar');
+  bar.onmousedown=e=>{
+    const r=w.getBoundingClientRect();
+    const ox=e.clientX-r.left,oy=e.clientY-r.top;
+    document.onmousemove=ev=>{
+      w.style.left=(ev.clientX-ox)+'px';
+      w.style.top=(ev.clientY-oy)+'px';
     };
-    document.onmouseup = ()=>document.onmousemove = null;
+    document.onmouseup=()=>document.onmousemove=null;
   };
 });
 
-/* Chat */
-const chats={
-  Ana:[
-    {from:'them',text:'Holaaa 👋'},
-    {from:'me',text:'¿Qué tal?'}
-  ],
-  Carlos:[
-    {from:'them',text:'Ese portfolio es brutal 🔥'}
-  ]
-};
+/* Player */
+const tracks=[
+ {name:'Song One',src:'cancion.mp3'},
+ {name:'Song Two',src:'cancion2.mp3'}
+];
+let current=0;
+const audio=document.getElementById('audio');
+const play=document.getElementById('play');
+const bar=document.getElementById('bar');
+const vol=document.getElementById('volume');
+const list=document.getElementById('playlist');
 
-const friends=document.getElementById('friends');
-const chatBox=document.getElementById('chatBox');
-
-Object.keys(chats).forEach(n=>{
-  const f=document.createElement('div');
-  f.className='friend';
-  f.innerHTML=`<img src="https://i.pravatar.cc/100?u=${n}">${n}`;
-  f.onclick=()=>loadChat(n);
-  friends.appendChild(f);
+tracks.forEach((t,i)=>{
+ let d=document.createElement('div');
+ d.className='track';
+ d.textContent=t.name;
+ d.onclick=()=>load(i,true);
+ list.appendChild(d);
 });
 
-function loadChat(name){
-  chatBox.innerHTML='';
-  chats[name].forEach(m=>{
-    const d=document.createElement('div');
-    d.className='msg '+m.from;
-    d.textContent=m.text;
-    chatBox.appendChild(d);
-  });
+function load(i,a){
+ current=i;
+ audio.src=tracks[i].src;
+ document.querySelectorAll('.track').forEach((t,j)=>t.classList.toggle('active',j===i));
+ if(a){audio.play();play.textContent='⏸'}
 }
+play.onclick=()=>{
+ audio.paused?(audio.play(),play.textContent='⏸')
+ :(audio.pause(),play.textContent='▶');
+};
+audio.ontimeupdate=()=>bar.style.width=(audio.currentTime/audio.duration*100)+'%';
+audio.onended=()=>load((current+1)%tracks.length,true);
+vol.oninput=()=>audio.volume=vol.value;
 </script>
 
 </body>
 </html>
+
+
 
 
 
