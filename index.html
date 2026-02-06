@@ -18,76 +18,115 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 /* Escritorio */
 #desktop{position:relative;width:100%;height:100%;padding:20px}
 .folder{
-  width:90px; color:#fff; text-align:center;
-  position:absolute; cursor:pointer;
+  width:90px;color:#fff;text-align:center;
+  position:absolute;cursor:pointer;
 }
 .folder img{width:64px}
 
 /* Ventanas */
 .window{
-  position:fixed;
-  width:420px;
-  background:#1b1b1b;
-  color:#eee;
+  position:fixed;width:420px;
+  background:#1b1b1b;color:#eee;
   border-radius:10px;
   box-shadow:0 20px 40px rgba(0,0,0,.6);
   display:none;
 }
 .titlebar{
-  background:#000;
-  padding:8px 10px;
-  display:flex;
-  justify-content:space-between;
+  background:#000;padding:8px 10px;
+  display:flex;justify-content:space-between;
   cursor:move;
 }
-.controls span{cursor:pointer}
 .content{padding:15px}
 
-/* Galería */
-.gallery{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
+/* Barra de tareas */
+#taskbar{
+  position:fixed;bottom:0;left:0;
+  width:100%;height:50px;
+  background:rgba(10,10,10,.95);
+  display:flex;align-items:center;
+  padding:0 15px;gap:15px;
 }
-.item{position:relative}
-.item img,.item video{
-  width:100%;
-  border-radius:6px;
+#notify{
+  position:relative;
+  font-size:22px;
+  cursor:pointer;
+  animation:pulse 1.5s infinite;
 }
-.overlay{
+@keyframes pulse{
+  0%,100%{opacity:1}
+  50%{opacity:.4}
+}
+#badge{
   position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.75);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  transition:.3s;
+  top:-5px;right:-5px;
+  background:red;color:#fff;
+  font-size:10px;
+  padding:2px 5px;
+  border-radius:50%;
 }
-.item:hover .overlay{opacity:1}
 
-/* Player */
-#player{
-  position:fixed;
-  right:20px;
-  bottom:70px;
-  width:300px;
-  background:rgba(15,15,15,.95);
-  backdrop-filter:blur(10px);
-  border-radius:14px;
-  padding:15px;
-  color:#fff;
-  z-index:2000;
+/* Chat */
+#chatApp{
+  width:700px;height:420px;
+  display:none;
 }
-#player.min{height:45px;overflow:hidden}
-#controls{display:flex;align-items:center;gap:10px;margin-top:10px}
-#play{font-size:22px;cursor:pointer}
-#progress{flex:1;height:5px;background:#333;border-radius:4px;cursor:pointer}
-#bar{height:100%;width:0;background:#fff;border-radius:4px}
-#volume{width:60px}
-.track{font-size:12px;padding:4px;cursor:pointer;opacity:.6}
-.track.active{opacity:1}
-canvas{width:100%;height:40px;margin-top:10px}
+.chat-wrap{
+  display:flex;height:100%;
+}
+.friends{
+  width:200px;
+  background:#111;
+  overflow:auto;
+}
+.friend{
+  padding:10px;
+  display:flex;align-items:center;
+  gap:10px;cursor:pointer;
+}
+.friend img{
+  width:35px;height:35px;border-radius:50%;
+}
+.friend:hover{background:#222}
+.messages{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+.chat-box{
+  flex:1;padding:10px;
+  overflow:auto;
+}
+.msg{
+  max-width:70%;
+  padding:8px 12px;
+  border-radius:10px;
+  margin-bottom:8px;
+}
+.them{background:#333}
+.me{
+  background:#0078ff;
+  align-self:flex-end;
+}
+.input{
+  padding:10px;
+  border-top:1px solid #333;
+}
+.input input{
+  width:100%;
+  padding:8px;
+  border:none;border-radius:6px;
+}
+
+/* Player (resumen) */
+#player{
+  position:fixed;right:20px;bottom:70px;
+  width:280px;
+  background:#111;padding:10px;
+  border-radius:12px;color:#fff;
+}
+#play{cursor:pointer;font-size:20px}
+#progress{height:5px;background:#333;margin-top:8px}
+#bar{height:100%;width:0;background:#fff}
 </style>
 </head>
 
@@ -102,107 +141,57 @@ canvas{width:100%;height:40px;margin-top:10px}
     <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
     <div>itami</div>
   </div>
-
-  <div class="folder" data-id="trabajos" style="top:120px;left:20px">
-    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-    <div>mis trabajos</div>
-  </div>
-
-  <div class="folder" data-id="codigos" style="top:220px;left:20px">
-    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-    <div>códigos</div>
-  </div>
 </div>
 
-<!-- Ventanas -->
-<div class="window" id="itami">
+<!-- Chat App -->
+<div class="window" id="chatApp">
   <div class="titlebar">
-    Itami
-    <span onclick="closeWin('itami')">✕</span>
+    Chats
+    <span onclick="closeWin('chatApp')">✕</span>
   </div>
-  <div class="content">
-    <img src="https://placekitten.com/300/200" style="width:100%;border-radius:6px">
-    <p><strong>Itami</strong><br>Diseñador & Programador<br>contacto@email.com</p>
-  </div>
-</div>
-
-<div class="window" id="trabajos">
-  <div class="titlebar">
-    Mis trabajos
-    <span onclick="closeWin('trabajos')">✕</span>
-  </div>
-  <div class="content gallery">
-    <div class="item">
-      <img src="https://placekitten.com/200/200">
-      <div class="overlay">Proyecto 1</div>
-    </div>
-    <div class="item">
-      <img src="https://placekitten.com/201/200">
-      <div class="overlay">Proyecto 2</div>
+  <div class="content chat-wrap">
+    <div class="friends" id="friends"></div>
+    <div class="messages">
+      <div class="chat-box" id="chatBox"></div>
+      <div class="input">
+        <input placeholder="Escribe un mensaje..." disabled>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="window" id="codigos">
-  <div class="titlebar">
-    Códigos
-    <span onclick="closeWin('codigos')">✕</span>
-  </div>
-  <div class="content gallery">
-    <div class="item">
-      <video src="demo.mp4" muted loop></video>
-      <div class="overlay">Demo web</div>
-    </div>
+<!-- Barra de tareas -->
+<div id="taskbar">
+  <div id="notify" onclick="openWin('chatApp')">
+    🔔
+    <div id="badge">3</div>
   </div>
 </div>
 
 <!-- Player -->
 <div id="player">
-  <div style="display:flex;justify-content:space-between">
-    <strong>Music Player</strong>
-    <span onclick="toggleMin()">▾</span>
-  </div>
-  <canvas id="viz"></canvas>
-  <div id="controls">
-    <div id="play">▶</div>
-    <div id="progress"><div id="bar"></div></div>
-    <input id="volume" type="range" min="0" max="1" step="0.01">
-  </div>
-  <div id="playlist"></div>
+  <div id="play">▶ Reproducir</div>
+  <div id="progress"><div id="bar"></div></div>
 </div>
 
-<audio id="audio"></audio>
+<audio id="audio" src="cancion.mp3"></audio>
 
 <script>
 let z=10;
 
-/* Abrir / cerrar ventanas */
+/* Ventanas */
 function openWin(id){
   const w=document.getElementById(id);
   w.style.display='block';
   w.style.zIndex=++z;
-  w.style.left='150px';
-  w.style.top='100px';
+  w.style.left='100px';
+  w.style.top='80px';
 }
 function closeWin(id){
   document.getElementById(id).style.display='none';
 }
 
-/* Carpetas */
-document.querySelectorAll('.folder').forEach(f=>{
-  f.onclick=()=>openWin(f.dataset.id);
-
-  f.onmousedown=e=>{
-    let x=e.offsetX,y=e.offsetY;
-    document.onmousemove=ev=>{
-      f.style.left=(ev.pageX-x)+'px';
-      f.style.top=(ev.pageY-y)+'px';
-    };
-    document.onmouseup=()=>document.onmousemove=null;
-  };
-});
-
-/* Arrastrar ventanas */
+/* Arrastrar ventana */
 document.querySelectorAll('.window').forEach(w=>{
   const bar=w.querySelector('.titlebar');
   bar.onmousedown=e=>{
@@ -216,64 +205,63 @@ document.querySelectorAll('.window').forEach(w=>{
   };
 });
 
+/* CHAT */
+const chats={
+  Ana:[
+    {from:'them',text:'Holaaa 👋'},
+    {from:'me',text:'¿Qué tal todo?'},
+    {from:'them',text:'Muy bien, tu web es brutal 😍'}
+  ],
+  Carlos:[
+    {from:'them',text:'Bro, ese portfolio…'},
+    {from:'me',text:'¿Te mola?'},
+    {from:'them',text:'Demasiado 🔥'}
+  ],
+  Lucia:[
+    {from:'them',text:'¿Eso es un SO web?'},
+    {from:'me',text:'Sí 😎'},
+    {from:'them',text:'Wow.'}
+  ]
+};
+
+const friends=document.getElementById('friends');
+const chatBox=document.getElementById('chatBox');
+
+Object.keys(chats).forEach(name=>{
+  let d=document.createElement('div');
+  d.className='friend';
+  d.innerHTML=`<img src="https://i.pravatar.cc/100?u=${name}">${name}`;
+  d.onclick=()=>loadChat(name);
+  friends.appendChild(d);
+});
+
+function loadChat(name){
+  chatBox.innerHTML='';
+  chats[name].forEach(m=>{
+    let div=document.createElement('div');
+    div.className='msg '+m.from;
+    div.textContent=m.text;
+    chatBox.appendChild(div);
+  });
+}
+
 /* Player */
-const tracks=[
- {name:'Song One',src:'cancion.mp3'},
- {name:'Song Two',src:'cancion2.mp3'}
-];
-let current=0;
 const audio=document.getElementById('audio');
 const play=document.getElementById('play');
 const bar=document.getElementById('bar');
-const vol=document.getElementById('volume');
-const list=document.getElementById('playlist');
-
-tracks.forEach((t,i)=>{
- let d=document.createElement('div');
- d.className='track';
- d.textContent=t.name;
- d.onclick=()=>load(i,true);
- list.appendChild(d);
-});
-
-function load(i,a){
- current=i;
- audio.src=tracks[i].src;
- document.querySelectorAll('.track').forEach((t,j)=>t.classList.toggle('active',j===i));
- if(a){audio.play();play.textContent='⏸'}
-}
 
 play.onclick=()=>{
- audio.paused?(audio.play(),play.textContent='⏸')
- :(audio.pause(),play.textContent='▶');
+  audio.paused?(audio.play(),play.textContent='⏸ Pausa')
+  :(audio.pause(),play.textContent='▶ Reproducir');
 };
-
-audio.ontimeupdate=()=>bar.style.width=(audio.currentTime/audio.duration*100)+'%';
-audio.onended=()=>load((current+1)%tracks.length,true);
-vol.oninput=()=>audio.volume=vol.value;
-
-/* Visualizador */
-const ctx=document.getElementById('viz').getContext('2d');
-const actx=new AudioContext();
-const src=actx.createMediaElementSource(audio);
-const analyser=actx.createAnalyser();
-src.connect(analyser);analyser.connect(actx.destination);
-analyser.fftSize=64;
-const data=new Uint8Array(analyser.frequencyBinCount);
-
-(function draw(){
- requestAnimationFrame(draw);
- analyser.getByteFrequencyData(data);
- ctx.clearRect(0,0,300,40);
- data.forEach((v,i)=>ctx.fillRect(i*6,40-v/4,4,v/4));
-})();
-
-function toggleMin(){
- document.getElementById('player').classList.toggle('min');
-}
+audio.ontimeupdate=()=>{
+  bar.style.width=(audio.currentTime/audio.duration*100)+'%';
+};
 </script>
 
 </body>
 </html>
+
+
 
 
