@@ -65,21 +65,10 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   gap:10px;
 }
 .item{position:relative}
-.item img{
+.item video,.item img{
   width:100%;
   border-radius:8px;
 }
-.overlay{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.7);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  transition:.3s;
-}
-.item:hover .overlay{opacity:1}
 
 /* TASKBAR */
 #taskbar{
@@ -113,38 +102,6 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   text-align:right;
 }
 
-/* CHAT */
-#chatApp{width:700px}
-.chat-wrap{display:flex;height:100%}
-.friends{width:200px;background:#111}
-.friend{
-  padding:10px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  cursor:pointer;
-}
-.friend img{
-  width:36px;
-  height:36px;
-  border-radius:50%;
-}
-.friend:hover{background:#222}
-.chat-box{flex:1;padding:10px}
-.msg{
-  max-width:70%;
-  padding:8px 12px;
-  border-radius:12px;
-  margin-bottom:6px;
-  animation:msg .2s ease;
-}
-@keyframes msg{
-  from{opacity:0;transform:translateY(5px)}
-  to{opacity:1}
-}
-.them{background:#333}
-.me{background:#0078ff;margin-left:auto}
-
 /* PLAYER */
 #player{
   position:fixed;
@@ -173,6 +130,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 </video>
 
 <div id="desktop">
+
   <div class="folder" data-open="itami" style="top:20px;left:20px">
     <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
     <div>itami</div>
@@ -182,46 +140,52 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
     <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
     <div>mis trabajos</div>
   </div>
+
+  <!-- NUEVA CARPETA -->
+  <div class="folder" data-open="codigos" style="top:220px;left:20px">
+    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
+    <div>mis códigos</div>
+  </div>
+
 </div>
 
 <!-- VENTANAS -->
 <div class="window" id="itami">
   <div class="titlebar">Itami <span onclick="closeWin('itami')">✕</span></div>
   <div class="content gallery">
-    <div class="item">
-      <img src="https://placekitten.com/400/250">
-      <div class="overlay">Perfil</div>
-    </div>
+    <img src="https://placekitten.com/400/250">
   </div>
 </div>
 
 <div class="window" id="trabajos">
   <div class="titlebar">Trabajos <span onclick="closeWin('trabajos')">✕</span></div>
   <div class="content gallery">
-    <div class="item">
-      <img src="https://placekitten.com/401/250">
-      <div class="overlay">Proyecto Web</div>
-    </div>
-    <div class="item">
-      <img src="https://placekitten.com/402/250">
-      <div class="overlay">UI Design</div>
-    </div>
+    <img src="https://placekitten.com/401/250">
+    <img src="https://placekitten.com/402/250">
   </div>
 </div>
 
-<div class="window" id="chatApp">
-  <div class="titlebar">Chats <span onclick="closeWin('chatApp')">✕</span></div>
-  <div class="content chat-wrap">
-    <div class="friends" id="friends"></div>
-    <div class="chat-box" id="chatBox"></div>
+<!-- GALERÍA VIDEOS -->
+<div class="window" id="codigos">
+  <div class="titlebar">Mis códigos <span onclick="closeWin('codigos')">✕</span></div>
+  <div class="content gallery">
+    
+    <div class="item">
+      <video controls src="demo1.mp4"></video>
+    </div>
+
+    <div class="item">
+      <video controls src="demo2.mp4"></video>
+    </div>
+
   </div>
 </div>
 
 <div id="taskbar">
-  <div id="notify" onclick="openWin('chatApp')">🔔</div>
   <div id="clock"></div>
 </div>
 
+<!-- PLAYER -->
 <div id="player">
   <strong>Music Player</strong>
   <div id="controls">
@@ -234,10 +198,10 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 <audio id="audio"></audio>
 
 <script>
+
 /* VIDEO FIX */
 const bg=document.getElementById('video-bg');
-bg.muted=true;
-bg.play().catch(()=>{});
+bg.addEventListener('loadeddata',()=>bg.play().catch(()=>{}));
 
 /* VENTANAS */
 let z=10;
@@ -250,80 +214,61 @@ function openWin(id){
 }
 function closeWin(id){document.getElementById(id).style.display='none';}
 
-/* CARPETAS DRAG */
+/* DRAG CARPETAS */
 document.querySelectorAll('.folder').forEach(folder=>{
   let drag=false,ox=0,oy=0;
   folder.addEventListener('mousedown',e=>{
     drag=true;
     ox=e.clientX-folder.offsetLeft;
     oy=e.clientY-folder.offsetTop;
-    folder.classList.add('selected');
   });
   document.addEventListener('mousemove',e=>{
     if(!drag)return;
     folder.style.left=e.clientX-ox+'px';
     folder.style.top=e.clientY-oy+'px';
   });
-  document.addEventListener('mouseup',()=>{
-    drag=false;
-    folder.classList.remove('selected');
-  });
+  document.addEventListener('mouseup',()=>drag=false);
   folder.ondblclick=()=>openWin(folder.dataset.open);
 });
-
-/* CHAT */
-const chats={
-  Chris:['Hola 👋','¿Qué haces?'],
-  Taiga:['Eres muy cotilla 😅'],
-  Cesar:['Spaces en mantenimiento']
-};
-const friends=document.getElementById('friends');
-const chatBox=document.getElementById('chatBox');
-
-Object.keys(chats).forEach(n=>{
-  const f=document.createElement('div');
-  f.className='friend';
-  f.innerHTML=`<img src="https://i.pravatar.cc/100?u=${n}">${n}`;
-  f.onclick=()=>loadChat(n);
-  friends.appendChild(f);
-});
-
-function loadChat(n){
-  chatBox.innerHTML='';
-  chats[n].forEach((m,i)=>{
-    setTimeout(()=>{
-      const d=document.createElement('div');
-      d.className='msg '+(i%2?'me':'them');
-      d.textContent=m;
-      chatBox.appendChild(d);
-    },i*300);
-  });
-}
 
 /* PLAYER */
 const tracks=[
   {name:'Track 1',src:'song.mp3'},
   {name:'Track 2',src:'cancion2.mp3'}
 ];
+
 const audio=document.getElementById('audio');
 const play=document.getElementById('play');
 const bar=document.getElementById('bar');
 const list=document.getElementById('playlist');
 
+let currentTrack=null;
+
 tracks.forEach((t,i)=>{
   const d=document.createElement('div');
   d.className='track';
   d.textContent=t.name;
-  d.onclick=()=>{audio.src=t.src;audio.play();play.textContent='⏸'};
+
+  d.onclick=()=>{
+    document.querySelectorAll('.track').forEach(x=>x.classList.remove('active'));
+    d.classList.add('active');
+    currentTrack=i;
+    audio.src=t.src;
+    audio.play();
+    play.textContent='⏸';
+  };
+
   list.appendChild(d);
 });
 
 play.onclick=()=>{
+  if(!audio.src) return;
   audio.paused?(audio.play(),play.textContent='⏸'):(audio.pause(),play.textContent='▶');
 };
 
 audio.ontimeupdate=()=>{
-  if(audio.duration) bar.style.width=audio.currentTime/audio.duration*100+'%';
+  if(audio.duration)
+    bar.style.width=(audio.currentTime/audio.duration*100)+'%';
 };
 
 /* CLOCK */
@@ -334,8 +279,8 @@ function clock(){
     '<br>'+d.toLocaleDateString('es-ES');
 }
 clock();setInterval(clock,1000);
+
 </script>
 
 </body>
 </html>
-
