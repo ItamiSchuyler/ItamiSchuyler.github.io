@@ -26,26 +26,20 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   position:absolute;
   cursor:pointer;
   user-select:none;
-  transition:background .2s;
   border-radius:6px;
 }
-.folder.selected{background:rgba(255,255,255,.15)}
 .folder img{width:64px}
+.folder.selected{background:rgba(255,255,255,.15)}
 
 /* Ventanas */
 .window{
   position:absolute;
-  width:480px;
+  width:500px;
   background:#1b1b1b;
   color:#eee;
   border-radius:12px;
   box-shadow:0 20px 50px rgba(0,0,0,.7);
   display:none;
-  animation:open .25s ease;
-}
-@keyframes open{
-  from{opacity:0;transform:scale(.95)}
-  to{opacity:1;transform:scale(1)}
 }
 .titlebar{
   background:#000;
@@ -54,108 +48,48 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   justify-content:space-between;
   cursor:move;
 }
-.content{
-  padding:15px;
-  max-height:400px;
-  overflow:auto;
-}
+.content{padding:15px;max-height:420px;overflow:auto}
 
 /* Galería */
-.gallery{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
+.gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .item{position:relative}
-.item img,.item video{
-  width:100%;
-  border-radius:8px;
-}
+.item img,.item video{width:100%;border-radius:8px}
 .overlay{
-  position:absolute;inset:0;
-  background:rgba(0,0,0,.7);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  transition:.3s;
+  position:absolute;inset:0;background:rgba(0,0,0,.7);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:.3s
 }
 .item:hover .overlay{opacity:1}
 
-/* Barra de tareas */
+/* Barra tareas */
 #taskbar{
-  position:fixed;
-  bottom:0;left:0;
-  width:100%;
-  height:50px;
+  position:fixed;bottom:0;left:0;width:100%;height:50px;
   background:rgba(10,10,10,.95);
-  display:flex;
-  align-items:center;
-  padding:0 15px;
-  gap:15px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 15px;color:#fff
 }
 
-/* Notificación */
-#notify{
-  font-size:22px;
-  cursor:pointer;
-  animation:pulse 1.5s infinite;
-}
-@keyframes pulse{
-  0%,100%{opacity:1}
-  50%{opacity:.4}
-}
+#notify{font-size:22px;cursor:pointer;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+#clock{font-size:13px;text-align:right}
 
 /* Chat */
 #chatApp{width:700px}
 .chat-wrap{display:flex;height:100%}
-.friends{
-  width:200px;
-  background:#111;
-}
-.friend{
-  padding:10px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  cursor:pointer;
-}
-.friend img{
-  width:36px;height:36px;border-radius:50%;
-}
+.friends{width:200px;background:#111}
+.friend{padding:10px;display:flex;gap:10px;cursor:pointer}
+.friend img{width:36px;height:36px;border-radius:50%}
 .friend:hover{background:#222}
-.chat-box{
-  flex:1;
-  padding:10px;
-}
-.msg{
-  max-width:70%;
-  padding:8px 12px;
-  border-radius:12px;
-  margin-bottom:6px;
-  animation:msg .2s ease;
-}
-@keyframes msg{
-  from{opacity:0;transform:translateY(5px)}
-  to{opacity:1;transform:none}
-}
+.chat-box{flex:1;padding:10px}
+.msg{max-width:70%;padding:8px 12px;border-radius:12px;margin-bottom:6px}
 .them{background:#333}
-.me{
-  background:#0078ff;
-  margin-left:auto;
-}
+.me{background:#0078ff;margin-left:auto}
 
 /* Player */
 #player{
-  position:fixed;
-  right:20px;
-  bottom:70px;
-  width:300px;
-  background:rgba(15,15,15,.95);
-  backdrop-filter:blur(10px);
-  border-radius:14px;
-  padding:15px;
-  color:#fff;
+  position:fixed;right:20px;bottom:70px;width:300px;
+  background:rgba(15,15,15,.95);border-radius:14px;padding:15px;color:#fff
 }
 #controls{display:flex;align-items:center;gap:10px;margin-top:10px}
 #play{font-size:22px;cursor:pointer}
@@ -169,28 +103,22 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 
 <body>
 
-<video autoplay muted loop id="video-bg">
-  <source src="fondo 1.mp4">
+<video id="video-bg" autoplay muted loop playsinline>
+  <source src="fondo.mp4" type="video/mp4">
 </video>
 
 <div id="desktop">
   <div class="folder" data-open="itami" style="top:20px;left:20px">
-    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-    <div>itami</div>
+    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png"><div>itami</div>
   </div>
-
   <div class="folder" data-open="trabajos" style="top:120px;left:20px">
-    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-    <div>mis trabajos</div>
+    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png"><div>mis trabajos</div>
   </div>
-
   <div class="folder" data-open="codigos" style="top:220px;left:20px">
-    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-    <div>códigos</div>
+    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png"><div>códigos</div>
   </div>
 </div>
 
-<!-- Ventanas -->
 <div class="window" id="itami">
   <div class="titlebar">Itami <span onclick="closeWin('itami')">✕</span></div>
   <div class="content">
@@ -223,7 +151,8 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 </div>
 
 <div id="taskbar">
-  <div id="notify" ondblclick="openWin('chatApp')">🔔</div>
+  <div id="notify" onclick="openWin('chatApp')">🔔</div>
+  <div id="clock"></div>
 </div>
 
 <div id="player">
@@ -231,53 +160,37 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   <div id="controls">
     <div id="play">▶</div>
     <div id="progress"><div id="bar"></div></div>
-    <input id="volume" type="range" min="0" max="1" step="0.01">
+    <input id="volume" type="range" min="0" max="1" step="0.01" value="0.7">
   </div>
   <div id="playlist"></div>
 </div>
 
-<audio id="audio"></audio>
+<audio id="audio" preload="auto"></audio>
 
 <script>
 let z=10;
 
-/* Ventanas */
 function openWin(id){
   const w=document.getElementById(id);
   w.style.display='block';
   w.style.zIndex=++z;
-  w.style.left='140px';
-  w.style.top='90px';
+  w.style.left='150px';
+  w.style.top='100px';
 }
-function closeWin(id){
-  document.getElementById(id).style.display='none';
-}
+function closeWin(id){document.getElementById(id).style.display='none';}
 
-/* Carpetas doble click + drag */
+/* Carpetas */
 document.querySelectorAll('.folder').forEach(f=>{
-  let clicks=0,drag=false;
-  f.onmousedown=e=>{
-    drag=false;
-    const ox=e.offsetX,oy=e.offsetY;
-    document.onmousemove=ev=>{
-      drag=true;
-      f.style.left=(ev.pageX-ox)+'px';
-      f.style.top=(ev.pageY-oy)+'px';
-    };
-    document.onmouseup=()=>{
-      document.onmousemove=null;
-      if(!drag){
-        clicks++;
-        f.classList.add('selected');
-        setTimeout(()=>f.classList.remove('selected'),200);
-        setTimeout(()=>clicks=0,300);
-        if(clicks===2)openWin(f.dataset.open);
-      }
-    };
+  let clicks=0;
+  f.onclick=()=>{
+    clicks++;f.classList.add('selected');
+    setTimeout(()=>f.classList.remove('selected'),200);
+    setTimeout(()=>clicks=0,300);
+    if(clicks===2)openWin(f.dataset.open);
   };
 });
 
-/* Drag ventanas */
+/* Arrastrar ventanas */
 document.querySelectorAll('.window').forEach(w=>{
   const bar=w.querySelector('.titlebar');
   bar.onmousedown=e=>{
@@ -292,13 +205,9 @@ document.querySelectorAll('.window').forEach(w=>{
 });
 
 /* Chat */
-const chats={
-  Ana:['Hola 👋','Tu web es increíble','Me encanta el estilo'],
-  Carlos:['Esto parece un sistema operativo','Muy pro 🔥']
-};
+const chats={Ana:['Hola 👋','Qué buen portfolio'],Carlos:['Esto parece Windows 😮','Muy pro']};
 const friends=document.getElementById('friends');
 const chatBox=document.getElementById('chatBox');
-
 Object.keys(chats).forEach(n=>{
   const f=document.createElement('div');
   f.className='friend';
@@ -306,25 +215,14 @@ Object.keys(chats).forEach(n=>{
   f.onclick=()=>loadChat(n);
   friends.appendChild(f);
 });
+function loadChat(n){chatBox.innerHTML='';chats[n].forEach((t,i)=>{setTimeout(()=>{
+  const d=document.createElement('div');
+  d.className='msg '+(i%2?'me':'them');
+  d.textContent=t;chatBox.appendChild(d);
+},i*400);});}
 
-function loadChat(name){
-  chatBox.innerHTML='';
-  chats[name].forEach((t,i)=>{
-    setTimeout(()=>{
-      const d=document.createElement('div');
-      d.className='msg '+(i%2?'me':'them');
-      d.textContent=t;
-      chatBox.appendChild(d);
-    },i*400);
-  });
-}
-
-/* Player */
-const tracks=[
- {name:'Song One',src:'song.mp3'},
- {name:'Song Two',src:'song2.mp3'}
-];
-let current=0;
+/* Player FIX */
+const tracks=[{name:'Canción',src:'cancion.mp3'}];
 const audio=document.getElementById('audio');
 const play=document.getElementById('play');
 const bar=document.getElementById('bar');
@@ -332,29 +230,29 @@ const vol=document.getElementById('volume');
 const list=document.getElementById('playlist');
 
 tracks.forEach((t,i)=>{
- const d=document.createElement('div');
- d.className='track';
- d.textContent=t.name;
- d.onclick=()=>load(i,true);
- list.appendChild(d);
+  const d=document.createElement('div');
+  d.className='track';d.textContent=t.name;
+  d.onclick=()=>{audio.src=t.src;audio.play();play.textContent='⏸';};
+  list.appendChild(d);
 });
 
-function load(i,a){
- current=i;
- audio.src=tracks[i].src;
- document.querySelectorAll('.track').forEach((t,j)=>t.classList.toggle('active',j===i));
- if(a){audio.play();play.textContent='⏸'}
-}
 play.onclick=()=>{
- audio.paused?(audio.play(),play.textContent='⏸')
- :(audio.pause(),play.textContent='▶');
+  if(!audio.src)audio.src=tracks[0].src;
+  if(audio.paused){audio.play();play.textContent='⏸'}
+  else{audio.pause();play.textContent='▶'}
 };
-audio.ontimeupdate=()=>bar.style.width=(audio.currentTime/audio.duration*100)+'%';
+
+audio.ontimeupdate=()=>{if(audio.duration)bar.style.width=(audio.currentTime/audio.duration*100)+'%'};
 vol.oninput=()=>audio.volume=vol.value;
+
+/* Reloj */
+function updateClock(){
+  const d=new Date();
+  document.getElementById('clock').innerHTML=
+    d.toLocaleTimeString().slice(0,5)+'<br>'+d.toLocaleDateString();
+}
+setInterval(updateClock,1000);updateClock();
 </script>
 
 </body>
 </html>
-
-
-
