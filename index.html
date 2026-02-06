@@ -49,38 +49,38 @@ pointer-events:none;
 
 /* FOLDERS */
 .folder{
-width:95px;
-color:#fff;
+width:100px;
+color:#e4e4e4;
 text-align:center;
 position:absolute;
 cursor:pointer;
 user-select:none;
-padding:8px;
-border-radius:14px;
+padding:10px;
+border-radius:12px;
+
+/* NUEVO COLOR */
+background:rgba(30,30,40,0.35);
+border:1px solid rgba(255,255,255,0.08);
+
 transition:.25s;
-background:rgba(255,255,255,0.03);
-backdrop-filter:blur(6px);
 }
 
 .folder img{
 width:64px;
-transition:.25s;
-filter:drop-shadow(0 4px 8px rgba(0,0,0,.5));
+transition:.2s;
 }
 
+.folder span{
+font-size:13px;
+margin-top:4px;
+display:block;
+}
+
+/* Hover mantiene tu efecto pero más elegante */
 .folder:hover{
-background:rgba(255,255,255,0.08);
-transform:translateY(-3px);
+background:rgba(60,60,90,0.45);
+border-color:rgba(140,170,255,0.4);
 }
-
-.folder:hover img{
-transform:scale(1.08);
-}
-
-.folder:active{
-transform:scale(.96);
-}
-
 /* WINDOWS */
 .window{
 position:absolute;
@@ -272,17 +272,17 @@ margin-top:6px;
 
 <div id="desktop">
 
-<div class="folder" data-open="itami" style="top:20px;left:20px">
+<div class="folder" data-open="itami">
 <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
 <div>itami</div>
 </div>
 
-<div class="folder" data-open="trabajos" style="top:120px;left:20px">
+<div class="folder" data-open="trabajos">
 <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
 <div>mis trabajos</div>
 </div>
 
-<div class="folder" data-open="codigos" style="top:220px;left:20px">
+<div class="folder" data-open="codigos">
 <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
 <div>mis códigos</div>
 </div>
@@ -339,6 +339,37 @@ margin-top:6px;
 <audio id="audio"></audio>
 
 <script>
+  
+  function ordenarCarpetas(){
+
+const carpetas=[...document.querySelectorAll(".folder")];
+
+const margenX=30;
+const margenY=40;
+
+const ancho=110;
+const alto=110;
+
+let x=margenX;
+let y=80;
+
+/* columnas tipo escritorio */
+const limiteAltura=window.innerHeight-150;
+
+carpetas.forEach(f=>{
+
+f.style.left=x+"px";
+f.style.top=y+"px";
+
+y+=alto;
+
+if(y>limiteAltura){
+y=80;
+x+=ancho;
+}
+
+});
+}
 
 /* WALLPAPER */
 document.getElementById("wallpaper").style.backgroundImage =
@@ -576,7 +607,12 @@ d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})+
 clock();
 setInterval(clock,1000);
 
+  ordenarCarpetas();
+
+window.addEventListener("resize",ordenarCarpetas);
+
 </script>
 </body>
 </html>
+
 
