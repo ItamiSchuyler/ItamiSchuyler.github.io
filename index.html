@@ -120,6 +120,33 @@ font-size:13px;
 text-align:right;
 }
 
+/* CHAT */
+#chatApp{width:700px}
+.chat-wrap{display:flex;height:350px}
+.friends{width:200px;background:#111}
+.friend{
+padding:10px;
+display:flex;
+align-items:center;
+gap:10px;
+cursor:pointer;
+}
+.friend img{
+width:36px;
+height:36px;
+border-radius:50%;
+}
+.friend:hover{background:#222}
+.chat-box{flex:1;padding:10px;overflow:auto}
+.msg{
+max-width:70%;
+padding:8px 12px;
+border-radius:12px;
+margin-bottom:6px;
+}
+.them{background:#333}
+.me{background:#0078ff;margin-left:auto}
+
 /* PLAYER GLASS */
 #player{
 position:fixed;
@@ -183,12 +210,17 @@ margin-top:6px;
 
 <div class="folder" data-open="trabajos" style="top:120px;left:20px">
 <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
-<div>trabajos</div>
+<div>mis trabajos</div>
+</div>
+
+<div class="folder" data-open="codigos" style="top:220px;left:20px">
+<img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
+<div>mis códigos</div>
 </div>
 
 </div>
 
-<!-- WINDOWS -->
+<!-- VENTANAS -->
 <div class="window" id="itami">
 <div class="titlebar">Itami <span onclick="closeWin('itami')">✕</span></div>
 <div class="content gallery">
@@ -200,11 +232,29 @@ margin-top:6px;
 <div class="titlebar">Trabajos <span onclick="closeWin('trabajos')">✕</span></div>
 <div class="content gallery">
 <img src="https://placekitten.com/401/250">
+<img src="https://placekitten.com/402/250">
+</div>
+</div>
+
+<div class="window" id="codigos">
+<div class="titlebar">Mis códigos <span onclick="closeWin('codigos')">✕</span></div>
+<div class="content gallery">
+<div class="item"><video controls src="demo1.mp4"></video></div>
+<div class="item"><video controls src="demo2.mp4"></video></div>
+</div>
+</div>
+
+<!-- CHAT -->
+<div class="window" id="chatApp">
+<div class="titlebar">Chats <span onclick="closeWin('chatApp')">✕</span></div>
+<div class="content chat-wrap">
+<div class="friends" id="friends"></div>
+<div class="chat-box" id="chatBox"></div>
 </div>
 </div>
 
 <div id="taskbar">
-<div id="notify" onclick="openWin('itami')">🔔</div>
+<div id="notify" onclick="openWin('chatApp')">🔔</div>
 <div id="clock"></div>
 </div>
 
@@ -222,17 +272,22 @@ margin-top:6px;
 <script>
 
 /* WALLPAPER */
-document.getElementById("wallpaper").style.backgroundImage=
+document.getElementById("wallpaper").style.backgroundImage =
 "url(https://i.ibb.co/S4wLCz9M/1399771.png)";
 
 /* PARTICLES */
 const canvas=document.getElementById("particles");
 const ctx=canvas.getContext("2d");
-
-let particles=[];
 canvas.width=innerWidth;
 canvas.height=innerHeight;
 
+let mouse={x:0,y:0};
+window.onmousemove=e=>{
+mouse.x=e.clientX;
+mouse.y=e.clientY;
+};
+
+let particles=[];
 for(let i=0;i<80;i++){
 particles.push({
 x:Math.random()*canvas.width,
@@ -241,12 +296,6 @@ vx:(Math.random()-0.5)*0.5,
 vy:(Math.random()-0.5)*0.5
 });
 }
-
-let mouse={x:0,y:0};
-window.onmousemove=e=>{
-mouse.x=e.clientX;
-mouse.y=e.clientY;
-};
 
 function animate(){
 ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -274,13 +323,13 @@ requestAnimationFrame(animate);
 }
 animate();
 
-/* WINDOWS OPEN/CLOSE */
+/* WINDOWS */
 let z=10;
 
 function openWin(id){
 const w=document.getElementById(id);
 w.style.display='block';
-w.style.left='150px';
+w.style.left='140px';
 w.style.top='90px';
 w.style.zIndex=++z;
 document.getElementById("blur-layer").classList.add("active");
@@ -338,6 +387,34 @@ document.onmouseup=()=>drag=false;
 folder.ondblclick=()=>openWin(folder.dataset.open);
 });
 
+/* CHAT */
+const chats={
+Chris:['Hola 👋','¿Qué haces?'],
+Taiga:['Eres cotilla 😅'],
+Cesar:['Spaces en mantenimiento']
+};
+
+const friends=document.getElementById('friends');
+const chatBox=document.getElementById('chatBox');
+
+Object.keys(chats).forEach(n=>{
+const f=document.createElement('div');
+f.className='friend';
+f.innerHTML=`<img src="https://i.pravatar.cc/100?u=${n}">${n}`;
+f.onclick=()=>loadChat(n);
+friends.appendChild(f);
+});
+
+function loadChat(n){
+chatBox.innerHTML='';
+chats[n].forEach((m,i)=>{
+const d=document.createElement('div');
+d.className='msg '+(i%2?'me':'them');
+d.textContent=m;
+chatBox.appendChild(d);
+});
+}
+
 /* PLAYER */
 const tracks=[
 {name:'Confidence',src:'song.mp3'},
@@ -354,7 +431,6 @@ let current=0;
 function loadTrack(i){
 current=i;
 audio.src=tracks[i].src;
-
 document.querySelectorAll('.track').forEach(x=>x.classList.remove('active'));
 document.querySelectorAll('.track')[i].classList.add('active');
 }
