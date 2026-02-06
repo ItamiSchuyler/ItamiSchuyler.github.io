@@ -26,29 +26,41 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   position:absolute;
   cursor:pointer;
   user-select:none;
+  transition:background .2s;
+  border-radius:6px;
 }
+.folder.selected{background:rgba(255,255,255,.15)}
 .folder img{width:64px}
 
 /* Ventanas */
 .window{
   position:absolute;
-  width:450px;
+  width:480px;
   background:#1b1b1b;
   color:#eee;
-  border-radius:10px;
-  box-shadow:0 20px 40px rgba(0,0,0,.6);
+  border-radius:12px;
+  box-shadow:0 20px 50px rgba(0,0,0,.7);
   display:none;
+  animation:open .25s ease;
+}
+@keyframes open{
+  from{opacity:0;transform:scale(.95)}
+  to{opacity:1;transform:scale(1)}
 }
 .titlebar{
   background:#000;
-  padding:8px 10px;
+  padding:10px;
   display:flex;
   justify-content:space-between;
   cursor:move;
 }
-.content{padding:15px}
+.content{
+  padding:15px;
+  max-height:400px;
+  overflow:auto;
+}
 
-/* Galerías */
+/* Galería */
 .gallery{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -57,12 +69,11 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 .item{position:relative}
 .item img,.item video{
   width:100%;
-  border-radius:6px;
+  border-radius:8px;
 }
 .overlay{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.75);
+  position:absolute;inset:0;
+  background:rgba(0,0,0,.7);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -95,6 +106,45 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
   50%{opacity:.4}
 }
 
+/* Chat */
+#chatApp{width:700px}
+.chat-wrap{display:flex;height:100%}
+.friends{
+  width:200px;
+  background:#111;
+}
+.friend{
+  padding:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  cursor:pointer;
+}
+.friend img{
+  width:36px;height:36px;border-radius:50%;
+}
+.friend:hover{background:#222}
+.chat-box{
+  flex:1;
+  padding:10px;
+}
+.msg{
+  max-width:70%;
+  padding:8px 12px;
+  border-radius:12px;
+  margin-bottom:6px;
+  animation:msg .2s ease;
+}
+@keyframes msg{
+  from{opacity:0;transform:translateY(5px)}
+  to{opacity:1;transform:none}
+}
+.them{background:#333}
+.me{
+  background:#0078ff;
+  margin-left:auto;
+}
+
 /* Player */
 #player{
   position:fixed;
@@ -124,7 +174,6 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 </video>
 
 <div id="desktop">
-
   <div class="folder" data-open="itami" style="top:20px;left:20px">
     <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
     <div>itami</div>
@@ -139,72 +188,44 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
     <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
     <div>códigos</div>
   </div>
-
 </div>
 
-<!-- Ventana Itami -->
+<!-- Ventanas -->
 <div class="window" id="itami">
-  <div class="titlebar">
-    Itami
-    <span onclick="closeWin('itami')">✕</span>
-  </div>
+  <div class="titlebar">Itami <span onclick="closeWin('itami')">✕</span></div>
   <div class="content">
-    <img src="https://placekitten.com/400/200" style="width:100%;border-radius:6px">
-    <p><strong>Itami</strong></p>
-    <p>Diseñador & Programador</p>
-    <p>contacto@email.com</p>
+    <img src="https://placekitten.com/450/220" style="width:100%;border-radius:8px">
+    <p><strong>Itami</strong><br>Diseñador & Programador</p>
   </div>
 </div>
 
-<!-- Ventana Trabajos -->
 <div class="window" id="trabajos">
-  <div class="titlebar">
-    Mis trabajos
-    <span onclick="closeWin('trabajos')">✕</span>
-  </div>
+  <div class="titlebar">Mis trabajos <span onclick="closeWin('trabajos')">✕</span></div>
   <div class="content gallery">
-    <div class="item">
-      <img src="https://placekitten.com/300/200">
-      <div class="overlay">Proyecto Web</div>
-    </div>
-    <div class="item">
-      <img src="https://placekitten.com/301/200">
-      <div class="overlay">Diseño UI</div>
-    </div>
+    <div class="item"><img src="https://placekitten.com/300/200"><div class="overlay">Proyecto Web</div></div>
+    <div class="item"><img src="https://placekitten.com/301/200"><div class="overlay">UI Design</div></div>
   </div>
 </div>
 
-<!-- Ventana Códigos -->
 <div class="window" id="codigos">
-  <div class="titlebar">
-    Códigos
-    <span onclick="closeWin('codigos')">✕</span>
-  </div>
+  <div class="titlebar">Códigos <span onclick="closeWin('codigos')">✕</span></div>
   <div class="content gallery">
-    <div class="item">
-      <video src="demo.mp4" muted loop></video>
-      <div class="overlay">Demo Web</div>
-    </div>
+    <div class="item"><video src="demo.mp4" muted loop></video><div class="overlay">Demo</div></div>
   </div>
 </div>
 
-<!-- Chat -->
 <div class="window" id="chatApp">
-  <div class="titlebar">
-    Chats
-    <span onclick="closeWin('chatApp')">✕</span>
-  </div>
-  <div class="content">
-    <p>Simulación de chat tipo Messenger</p>
+  <div class="titlebar">Chats <span onclick="closeWin('chatApp')">✕</span></div>
+  <div class="content chat-wrap">
+    <div class="friends" id="friends"></div>
+    <div class="chat-box" id="chatBox"></div>
   </div>
 </div>
 
-<!-- Barra -->
 <div id="taskbar">
   <div id="notify" ondblclick="openWin('chatApp')">🔔</div>
 </div>
 
-<!-- Player -->
 <div id="player">
   <strong>Music Player</strong>
   <div id="controls">
@@ -220,7 +241,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 <script>
 let z=10;
 
-/* Abrir / cerrar */
+/* Ventanas */
 function openWin(id){
   const w=document.getElementById(id);
   w.style.display='block';
@@ -232,10 +253,9 @@ function closeWin(id){
   document.getElementById(id).style.display='none';
 }
 
-/* Carpetas: DOBLE CLICK + arrastre */
+/* Carpetas doble click + drag */
 document.querySelectorAll('.folder').forEach(f=>{
   let clicks=0,drag=false;
-
   f.onmousedown=e=>{
     drag=false;
     const ox=e.offsetX,oy=e.offsetY;
@@ -248,6 +268,8 @@ document.querySelectorAll('.folder').forEach(f=>{
       document.onmousemove=null;
       if(!drag){
         clicks++;
+        f.classList.add('selected');
+        setTimeout(()=>f.classList.remove('selected'),200);
         setTimeout(()=>clicks=0,300);
         if(clicks===2)openWin(f.dataset.open);
       }
@@ -255,7 +277,7 @@ document.querySelectorAll('.folder').forEach(f=>{
   };
 });
 
-/* Arrastrar ventanas */
+/* Drag ventanas */
 document.querySelectorAll('.window').forEach(w=>{
   const bar=w.querySelector('.titlebar');
   bar.onmousedown=e=>{
@@ -268,6 +290,34 @@ document.querySelectorAll('.window').forEach(w=>{
     document.onmouseup=()=>document.onmousemove=null;
   };
 });
+
+/* Chat */
+const chats={
+  Ana:['Hola 👋','Tu web es increíble','Me encanta el estilo'],
+  Carlos:['Esto parece un sistema operativo','Muy pro 🔥']
+};
+const friends=document.getElementById('friends');
+const chatBox=document.getElementById('chatBox');
+
+Object.keys(chats).forEach(n=>{
+  const f=document.createElement('div');
+  f.className='friend';
+  f.innerHTML=`<img src="https://i.pravatar.cc/100?u=${n}">${n}`;
+  f.onclick=()=>loadChat(n);
+  friends.appendChild(f);
+});
+
+function loadChat(name){
+  chatBox.innerHTML='';
+  chats[name].forEach((t,i)=>{
+    setTimeout(()=>{
+      const d=document.createElement('div');
+      d.className='msg '+(i%2?'me':'them');
+      d.textContent=t;
+      chatBox.appendChild(d);
+    },i*400);
+  });
+}
 
 /* Player */
 const tracks=[
@@ -282,7 +332,7 @@ const vol=document.getElementById('volume');
 const list=document.getElementById('playlist');
 
 tracks.forEach((t,i)=>{
- let d=document.createElement('div');
+ const d=document.createElement('div');
  d.className='track';
  d.textContent=t.name;
  d.onclick=()=>load(i,true);
@@ -300,17 +350,8 @@ play.onclick=()=>{
  :(audio.pause(),play.textContent='▶');
 };
 audio.ontimeupdate=()=>bar.style.width=(audio.currentTime/audio.duration*100)+'%';
-audio.onended=()=>load((current+1)%tracks.length,true);
 vol.oninput=()=>audio.volume=vol.value;
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
