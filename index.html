@@ -84,7 +84,7 @@ display:block;
 /* WINDOWS */
 .window{
 position:absolute;
-width:480px;
+width:600px;
 background:#1b1b1bdd;
 color:#eee;
 border-radius:12px;
@@ -113,6 +113,19 @@ grid-template-columns:repeat(2,1fr);
 gap:10px;
 }
 .item video,.item img{width:100%;border-radius:8px}
+
+  #codigos .gallery{
+  display:grid;
+  grid-template-columns:1fr; /* 1 columna = videos grandes */
+  gap:15px;
+}
+
+#codigos video{
+  width:100%;
+  height:auto;
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.6);
+}
 
   /* PERFIL ITAMI */
 .profile{
@@ -730,6 +743,7 @@ window.addEventListener("resize",ordenarCarpetas);
 </script>
 </body>
 </html>
+
 
 
 
