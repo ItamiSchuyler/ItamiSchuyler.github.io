@@ -19,6 +19,13 @@ background-position:center;
 z-index:-3;
 }
 
+  #particles{
+position:fixed;
+inset:0;
+pointer-events:none;
+z-index:-2;
+}
+  
 /* BLUR */
 #blur-layer{
 position:fixed;inset:0;
@@ -225,6 +232,7 @@ font-size:12px;cursor:pointer;opacity:.6;margin-top:6px
 <body>
 
 <div id="wallpaper"></div>
+  <canvas id="particles"></canvas>
 <div id="blur-layer"></div>
 
 <div id="desktop">
@@ -242,11 +250,6 @@ font-size:12px;cursor:pointer;opacity:.6;margin-top:6px
 <div class="folder" data-open="codigos">
 <img src="https://cdn-icons-png.flaticon.com/128/456/456793.png">
 <span>Códigos</span>
-</div>
-
-<div class="folder" data-open="chatApp">
-<img src="https://cdn-icons-png.flaticon.com/128/456/456793.png">
-<span>Chat</span>
 </div>
 
 </div>
@@ -521,6 +524,46 @@ d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})+
 }
 clock();
 setInterval(clock,1000);
+
+  // PARTICLES
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas(){
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+const particles = Array.from({length:80},()=>({
+x:Math.random()*window.innerWidth,
+y:Math.random()*window.innerHeight,
+r:Math.random()*2+1,
+vx:(Math.random()-.5)*0.4,
+vy:(Math.random()-.5)*0.4
+}));
+
+function drawParticles(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+particles.forEach(p=>{
+p.x+=p.vx;
+p.y+=p.vy;
+
+if(p.x<0||p.x>canvas.width) p.vx*=-1;
+if(p.y<0||p.y>canvas.height) p.vy*=-1;
+
+ctx.beginPath();
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+ctx.fillStyle="rgba(255,255,255,.6)";
+ctx.fill();
+});
+
+requestAnimationFrame(drawParticles);
+}
+drawParticles();
 </script>
 </body>
 </html>
+
