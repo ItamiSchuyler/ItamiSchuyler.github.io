@@ -798,6 +798,37 @@ ${chats[n].status.toUpperCase()}
 let i=0;
 
 function next(){
+
+if(i>=chats[n].msgs.length) return;
+
+/* typing */
+const typing=document.createElement('div');
+typing.className='typing them';
+typing.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+chatBox.appendChild(typing);
+
+chatBox.scrollTop=chatBox.scrollHeight;
+
+setTimeout(()=>{
+
+typing.remove();
+
+const d=document.createElement('div');
+d.className='msg '+(i%2?'me':'them');
+d.textContent=chats[n].msgs[i];
+
+chatBox.appendChild(d);
+chatBox.scrollTop=chatBox.scrollHeight;
+
+i++;
+setTimeout(next,500);
+
+},700);
+}
+
+next();
+}
+
 if(i>=chats[n].msgs.length) return;
 
 /* typing */
@@ -924,8 +955,8 @@ Estado: ${p.status}
 `;
 
 box.style.display="block";
-box.style.left=event.clientX+"px";
-box.style.top=event.clientY+"px";
+box.style.left=e.clientX+"px";
+box.style.top=e.clientY+"px";
 }
 
 document.addEventListener("click",e=>{
@@ -937,6 +968,7 @@ document.getElementById("profilePopup").style.display="none";
 </script>
 </body>
 </html>
+
 
 
 
