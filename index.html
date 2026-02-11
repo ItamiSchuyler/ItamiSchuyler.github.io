@@ -283,12 +283,20 @@ font-weight:500;
 
 /* FLOAT IMAGE */
 .itami-img{
-position:absolute;
-right:18px;
-top:80px;
-width:190px;
-filter:drop-shadow(0 15px 35px rgba(0,0,0,.6));
-animation:floatImg 4.5s ease-in-out infinite;
+  position:absolute;
+  right:18px;
+  top:80px;
+  width:190px;
+  filter:drop-shadow(0 15px 35px rgba(0,0,0,.6));
+  transition:.35s ease;
+  animation:floatImg 4.5s ease-in-out infinite;
+}
+
+.itami-img:hover{
+  filter:drop-shadow(0 15px 35px rgba(0,0,0,.6)) 
+         grayscale(1) 
+         brightness(1.2);
+  transform:scale(1.03);
 }
 
 @keyframes floatImg{
@@ -350,6 +358,36 @@ background:rgba(255,255,255,.22);
 width:20px;height:20px;
 fill:white;
 }
+
+  .mini-grid{
+  margin-top:16px;
+  width:180px;
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:12px;
+}
+
+.mini-grid a{
+  width:78px;
+  height:78px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(6px);
+  transition:.2s ease;
+}
+
+.mini-grid a:hover{
+  background:rgba(255,255,255,.18);
+  transform:scale(1.08);
+}
+
+.mini-grid img{
+  width:28px;
+  opacity:.9;
+}
+
 </style>
 </head>
 
@@ -389,6 +427,13 @@ fill:white;
   <div class="itami-top">
     <h1>I T A M I</h1>
     <p>(1481199396)</p>
+
+    <div class="mini-grid">
+  <a href="#"><img src="https://ibb.co/2T1bgdF"></a>
+  <a href="#"><img src="https://i.ibb.co/SX4TJJCN/tumblr-b987ccd63f93a2bbcde158dce80a0776-6a42963f-400.jpg"></a>
+  <a href="#"><img src="https://ibb.co/hTPg6Yt"></a>
+  <a href="#"><img src="https://i.ibb.co/RG3tF8gN/tumblr-466aadaf37e97bf451653edece07081c-cd3061d2-400.jpg"></a>
+</div>
   </div>
 
   <img class="itami-img" src="https://i.ibb.co/WWHTzk6s/uwvglqx0si1b1.png">
@@ -720,6 +765,7 @@ drawParticles();
 </script>
 </body>
 </html>
+
 
 
 
