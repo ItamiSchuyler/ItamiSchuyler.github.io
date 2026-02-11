@@ -57,29 +57,80 @@ transition:.2s ease;
 .folder img{width:64px}
 .folder span{font-size:13px;margin-top:4px;display:block}
 
-/* WINDOWS */
+/* WINDOWS — WINDOWS STYLE */
 .window{
-position:absolute;
-width:600px;
-background:#1b1b1bdd;
-color:#eee;
-border-radius:0px;
-box-shadow:0 20px 50px rgba(0,0,0,.7);
-display:none;
-animation:open .25s ease;
-}
-@keyframes open{
-from{opacity:0;transform:scale(.95)}
-to{opacity:1;transform:scale(1)}
+  position:absolute;
+  width:640px;
+  background:rgba(20,20,20,.92);
+  backdrop-filter:blur(18px) saturate(120%);
+  color:#eee;
+  border-radius:14px;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.65),
+    inset 0 1px rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.08);
+  display:none;
+  overflow:hidden;
+  animation:open .22s ease;
 }
 
-.titlebar{
-background:#000;
-padding:10px;
-display:flex;
-justify-content:space-between;
-cursor:grab;
+  .window > div:not(.titlebar){
+  padding:18px 20px;
 }
+
+/* OPEN ANIMATION */
+@keyframes open{
+  from{opacity:0;transform:scale(.96) translateY(8px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
+
+/* TITLE BAR */
+.titlebar{
+  height:46px;
+  background:linear-gradient(180deg,#101010,#0b0b0b);
+  padding:0 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  cursor:grab;
+  font-weight:600;
+  font-size:14px;
+  letter-spacing:.3px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+/* WINDOW CONTROLS */
+.titlebar span{
+  display:flex;
+  gap:6px;
+  font-size:14px;
+}
+
+/* BUTTONS */
+.titlebar span button{
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  border:none;
+  cursor:pointer;
+  transition:.15s ease;
+}
+
+/* CLOSE */
+.titlebar span button.close{
+  background:#ff5f57;
+}
+.titlebar span button.min{
+  background:#ffbd2e;
+}
+.titlebar span button.max{
+  background:#28c840;
+}
+
+.titlebar span button:hover{
+  transform:scale(1.15);
+}
+
 
 /* TASKBAR */
 #taskbar{
@@ -469,6 +520,13 @@ fill:white;
   from{ transform:translateX(0); }
   to{ transform:translateX(-100%); }
 }
+
+  .window.active{
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.75),
+    0 0 0 1px rgba(255,255,255,.12),
+    inset 0 1px rgba(255,255,255,.1);
+}
 </style>
 </head>
 
@@ -501,7 +559,14 @@ fill:white;
 
 <!-- WINDOWS -->
 <div class="window" id="itami">
-  <div class="titlebar">Sobre mí <span onclick="closeWin('itami')">✕</span></div>
+<div class="titlebar">
+  Sobre mí
+  <span>
+    <button class="min"></button>
+    <button class="max"></button>
+    <button class="close" onclick="closeWin('itami')"></button>
+  </span>
+</div>
 
 <div class="itami-card">
 
@@ -610,14 +675,20 @@ window.addEventListener("resize",ordenarCarpetas);
 
 // WINDOWS
 let z=10;
+
 function openWin(id){
-const w=document.getElementById(id);
-w.style.display='block';
-w.style.left=(window.innerWidth-w.offsetWidth)/2+"px";
-w.style.top=(window.innerHeight-w.offsetHeight)/2+"px";
-w.style.zIndex=++z;
-document.getElementById("blur-layer").classList.add("active");
+  document.querySelectorAll(".window").forEach(w=>w.classList.remove("active"));
+
+  const w=document.getElementById(id);
+  w.style.display='block';
+  w.style.left=(window.innerWidth-w.offsetWidth)/2+"px";
+  w.style.top=(window.innerHeight-w.offsetHeight)/2+"px";
+  w.style.zIndex=++z;
+  w.classList.add("active");
+
+  document.getElementById("blur-layer").classList.add("active");
 }
+
 function closeWin(id){
 document.getElementById(id).style.display='none';
 document.getElementById("blur-layer").classList.remove("active");
@@ -880,6 +951,7 @@ drawParticles();
 </script>
 </body>
 </html>
+
 
 
 
