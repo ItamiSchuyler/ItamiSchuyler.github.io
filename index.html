@@ -531,6 +531,74 @@ fill:white;
     0 0 0 1px rgba(255,255,255,.12),
     inset 0 1px rgba(255,255,255,.1);
 }
+
+  .portfolio-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
+  gap:16px;
+}
+
+.portfolio-item{
+  position:relative;
+  border-radius:14px;
+  overflow:hidden;
+  cursor:pointer;
+  background:#111;
+  transition:.25s ease;
+}
+
+.portfolio-item img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+  transition:.3s ease;
+}
+
+.portfolio-item:hover img{
+  transform:scale(1.08);
+  filter:brightness(.8);
+}
+
+.portfolio-item span{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  padding:8px 10px;
+  background:linear-gradient(transparent, rgba(0,0,0,.85));
+  font-size:13px;
+}
+
+  .video-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+  gap:16px;
+}
+
+.video-card{
+  background:#111;
+  border-radius:14px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.video-card:hover{
+  transform:scale(1.03);
+  box-shadow:0 0 25px rgba(255,255,255,.12);
+}
+
+.video-card video{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+}
+
+.video-card p{
+  padding:10px;
+  font-size:13px;
+  opacity:.85;
+}
+  
 </style>
 </head>
 
@@ -614,13 +682,33 @@ fill:white;
   </div>
 
 <div class="window" id="trabajos">
-<div class="titlebar">Trabajos <span onclick="closeWin('trabajos')">✕</span></div>
-<div style="padding:15px">Galería aquí</div>
+  <div class="titlebar">
+    Trabajos
+    <span>
+      <button class="min"></button>
+      <button class="max"></button>
+      <button class="close" onclick="closeWin('trabajos')"></button>
+    </span>
+  </div>
+
+  <div class="window-content">
+    <div class="portfolio-grid" id="designGrid"></div>
+  </div>
 </div>
 
-<div class="window" id="codigos">
-<div class="titlebar">Mis códigos <span onclick="closeWin('codigos')">✕</span></div>
-<div style="padding:15px">Videos aquí</div>
+  <div class="window" id="codigos">
+  <div class="titlebar">
+    Mis códigos
+    <span>
+      <button class="min"></button>
+      <button class="max"></button>
+      <button class="close" onclick="closeWin('codigos')"></button>
+    </span>
+  </div>
+
+  <div class="window-content">
+    <div class="video-grid" id="codeGrid"></div>
+  </div>
 </div>
 
 <!-- CHAT -->
@@ -954,9 +1042,48 @@ ctx.fill();
 requestAnimationFrame(drawParticles);
 }
 drawParticles();
+
+  const designs = [
+  {title:"UI Discord", img:"https://i.postimg.cc/..."},
+  {title:"Landing Page", img:"https://i.postimg.cc/..."},
+  {title:"Brand Concept", img:"https://i.postimg.cc/..."}
+];
+
+const designGrid = document.getElementById("designGrid");
+
+designs.forEach(d=>{
+  const item = document.createElement("div");
+  item.className = "portfolio-item";
+  item.innerHTML = `
+    <img src="${d.img}">
+    <span>${d.title}</span>
+  `;
+  designGrid.appendChild(item);
+});
+  const codeVideos = [
+  {title:"Desktop UI Build", src:"video1.mp4"},
+  {title:"CSS Animations", src:"video2.mp4"}
+];
+
+const codeGrid = document.getElementById("codeGrid");
+
+codeVideos.forEach(v=>{
+  const card = document.createElement("div");
+  card.className = "video-card";
+  card.innerHTML = `
+    <video src="${v.src}" muted loop></video>
+    <p>${v.title}</p>
+  `;
+
+  card.onmouseenter = () => card.querySelector("video").play();
+  card.onmouseleave = () => card.querySelector("video").pause();
+
+  codeGrid.appendChild(card);
+});
 </script>
 </body>
 </html>
+
 
 
 
