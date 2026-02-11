@@ -443,6 +443,32 @@ fill:white;
   opacity:1;
   border-radius:12px;
 }
+
+  #nowPlaying{
+  font-size:14px;
+  font-weight:600;
+  margin-bottom:10px;
+  overflow:hidden;
+  white-space:nowrap;
+  position:relative;
+}
+
+#songTitle{
+  display:inline-block;
+  padding-left:100%;
+  animation: scrollTitle 12s linear infinite;
+  opacity:.85;
+}
+
+#player.playing #songTitle{
+  opacity:1;
+  text-shadow:0 0 10px rgba(255,255,255,.35);
+}
+
+@keyframes scrollTitle{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-100%); }
+}
 </style>
 </head>
 
@@ -548,7 +574,9 @@ fill:white;
 </div>
 
 <!-- PLAYER -->
-<div id="player">
+<div id="player"><div id="nowPlaying">
+  <span id="songTitle"></span>
+</div>
 <div id="controls">
 <div id="play">▶</div>
 <div id="progress"><div id="bar"></div></div>
@@ -743,6 +771,8 @@ const list=document.getElementById('playlist');
 
 let current=0;
 
+
+
   function loadTrack(i){
   current = i;
   audio.src = tracks[i].src;
@@ -754,6 +784,12 @@ let current=0;
     .classList.add('active');
 
   bar.style.width = '0%';
+
+  const title = document.getElementById("songTitle");
+  title.style.animation = "none";
+  title.textContent = tracks[i].name;
+  void title.offsetWidth;
+  title.style.animation = "scrollTitle 12s linear infinite";
 }
 
 tracks.forEach((t,i)=>{
@@ -844,6 +880,7 @@ drawParticles();
 </script>
 </body>
 </html>
+
 
 
 
