@@ -299,20 +299,22 @@ animation:floatImg 4.5s ease-in-out infinite;
 /* WAVE REAL FLUID */
 .wave{
 position:absolute;
-bottom:-40px;
+bottom:-80px;
 left:0;
-width:300%;
-height:200px;
+width:400%;
+height:260px;
 background:linear-gradient(180deg,#7a5cff,#a88cff);
-border-radius:100%;
-animation:waveFlow 10s linear infinite;
-opacity:.9;
+border-radius:50% 50% 0 0;
+animation:waveFlow 12s linear infinite;
+opacity:.95;
+filter:blur(2px);
 }
 
 @keyframes waveFlow{
 0%{transform:translateX(0)}
-100%{transform:translateX(-33.333%)}
+100%{transform:translateX(-25%)}
 }
+
 
 /* SOCIALS MODERN */
 .socials{
@@ -402,7 +404,7 @@ fill:white;
   </div>
 
   <div class="wave"></div>
-
+</div>
 </div>
 
 <div class="window" id="trabajos">
@@ -709,6 +711,7 @@ drawParticles();
 </script>
 </body>
 </html>
+
 
 
 
