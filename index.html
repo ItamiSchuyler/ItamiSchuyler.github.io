@@ -8,33 +8,20 @@
 *{box-sizing:border-box;font-family:Arial,sans-serif}
 
 html,body{
-margin:0;
-width:100%;
-height:100%;
-overflow:hidden;
+margin:0;width:100%;height:100%;overflow:hidden;
 }
 
 /* WALLPAPER */
 #wallpaper{
-position:fixed;
-inset:0;
+position:fixed;inset:0;
 background-size:cover;
 background-position:center;
 z-index:-3;
 }
 
-/* PARTICLES */
-#particles{
-position:fixed;
-inset:0;
-z-index:-2;
-pointer-events:none;
-}
-
 /* BLUR */
 #blur-layer{
-position:fixed;
-inset:0;
+position:fixed;inset:0;
 backdrop-filter:blur(12px);
 background:rgba(0,0,0,.25);
 opacity:0;
@@ -57,8 +44,6 @@ cursor:pointer;
 user-select:none;
 padding:10px;
 border-radius:10px;
-background:transparent;
-border:1px solid transparent;
 transition:.2s ease;
 }
 .folder:hover{transform:scale(1.04)}
@@ -89,8 +74,6 @@ justify-content:space-between;
 cursor:grab;
 }
 
-.content{padding:0}
-
 /* TASKBAR */
 #taskbar{
 position:fixed;
@@ -107,25 +90,6 @@ gap:15px;
 #notify{font-size:22px;cursor:pointer}
 #clock{margin-left:auto;color:#fff;font-size:13px;text-align:right}
 
-/* STATUS DOT */
-.status-dot{
-width:10px;
-height:10px;
-border-radius:50%;
-display:inline-block;
-margin-right:6px;
-box-shadow:0 0 8px currentColor;
-animation:pulseStatus 1.6s infinite;
-}
-
-.online{color:#00ff9c}
-.away{color:#ffaa00}
-.busy{color:#ff4444}
-
-@keyframes pulseStatus{
-50%{opacity:.4; transform:scale(.85)}
-}
-
 /* CHAT */
 .chat-wrap{display:flex;height:360px}
 .friends{width:200px;background:#111;padding:5px}
@@ -136,14 +100,13 @@ align-items:center;
 gap:10px;
 cursor:pointer;
 border-radius:10px;
-transition:.2s;
 }
 .friend:hover{background:#222}
 .friend img{width:36px;height:36px;border-radius:50%}
 
 .chat-box{flex:1;padding:12px;overflow:auto}
 
-/* HEADER CHAT */
+/* CHAT HEADER */
 .chat-header{
 height:90px;
 display:flex;
@@ -157,9 +120,7 @@ color:white;
 }
 
 .chat-header img{
-width:48px;
-height:48px;
-border-radius:50%;
+width:48px;height:48px;border-radius:50%;
 border:2px solid white;
 cursor:pointer;
 }
@@ -174,7 +135,6 @@ opacity:0;
 transform:translateY(8px);
 animation:msgAppear .35s forwards;
 }
-
 .msg.them{background:#333}
 .msg.me{background:#0078ff;margin-left:auto}
 
@@ -182,75 +142,140 @@ animation:msgAppear .35s forwards;
 to{opacity:1;transform:translateY(0)}
 }
 
-/* typing */
-.typing{
-width:60px;
-padding:8px 12px;
-border-radius:12px;
-background:#333;
-display:flex;
-gap:4px;
+/* STATUS */
+.status-dot{
+width:10px;height:10px;border-radius:50%;
+display:inline-block;margin-right:6px;
+box-shadow:0 0 8px currentColor;
+animation:pulseStatus 1.6s infinite;
+}
+.online{color:#00ff9c}
+.away{color:#ffaa00}
+.busy{color:#ff4444}
+@keyframes pulseStatus{
+50%{opacity:.4; transform:scale(.85)}
 }
 
+/* TYPING */
+.typing{
+width:60px;padding:8px 12px;border-radius:12px;
+background:#333;display:flex;gap:4px;
+}
 .dot{
-width:6px;
-height:6px;
-background:white;
-border-radius:50%;
+width:6px;height:6px;background:white;border-radius:50%;
 animation:blink 1.2s infinite;
 }
 .dot:nth-child(2){animation-delay:.2s}
 .dot:nth-child(3){animation-delay:.4s}
 @keyframes blink{
-0%,100%{opacity:.2}
-50%{opacity:1}
+0%,100%{opacity:.2}50%{opacity:1}
 }
 
 /* PROFILE POPUP */
 .profile-popup{
-position:absolute;
-width:260px;
+position:absolute;width:260px;
 background:rgba(20,20,20,.95);
 backdrop-filter:blur(12px);
-border-radius:16px;
-padding:15px;
+border-radius:16px;padding:15px;
 box-shadow:0 20px 40px rgba(0,0,0,.7);
-color:white;
-display:none;
-z-index:9999;
+color:white;display:none;z-index:9999;
 }
 
 .profile-popup img{
-width:90px;
-height:90px;
-border-radius:18px;
-display:block;
-margin:auto;
-margin-bottom:10px;
+width:90px;height:90px;border-radius:18px;
+display:block;margin:auto;margin-bottom:10px;
 }
+
+/* PLAYER */
+#player{
+position:fixed;
+right:20px;
+bottom:70px;
+width:300px;
+background:rgba(25,25,25,.45);
+backdrop-filter:blur(15px);
+border-radius:16px;
+padding:15px;
+color:#fff;
+box-shadow:0 10px 30px rgba(0,0,0,.5);
+}
+
+#controls{display:flex;gap:10px;align-items:center}
+
+#play{
+font-size:22px;cursor:pointer;
+padding:6px 10px;border-radius:8px;
+background:rgba(255,255,255,.1);
+}
+
+#progress{
+flex:1;height:6px;background:rgba(255,255,255,.2);
+border-radius:4px;overflow:hidden;
+}
+
+#bar{height:100%;width:0;background:white}
+
+.track{
+font-size:12px;cursor:pointer;opacity:.6;margin-top:6px
+}
+.track.active{opacity:1}
 </style>
 </head>
 
 <body>
 
 <div id="wallpaper"></div>
-<canvas id="particles"></canvas>
 <div id="blur-layer"></div>
 
 <div id="desktop">
+
+<div class="folder" data-open="itami">
+<img src="https://cdn-icons-png.flaticon.com/128/456/456793.png">
+<span>Sobre mí</span>
+</div>
+
+<div class="folder" data-open="trabajos">
+<img src="https://cdn-icons-png.flaticon.com/128/456/456793.png">
+<span>Trabajos</span>
+</div>
+
+<div class="folder" data-open="codigos">
+<img src="https://cdn-icons-png.flaticon.com/128/456/456793.png">
+<span>Códigos</span>
+</div>
+
 <div class="folder" data-open="chatApp">
 <img src="https://cdn-icons-png.flaticon.com/128/456/456793.png">
-<div>Chat</div>
+<span>Chat</span>
 </div>
+
 </div>
 
 <div id="profilePopup" class="profile-popup"></div>
 
-<!-- CHAT WINDOW -->
+<!-- WINDOWS -->
+<div class="window" id="itami">
+<div class="titlebar">Sobre mí <span onclick="closeWin('itami')">✕</span></div>
+<div style="padding:15px">
+<h2>Itami</h2>
+<p>Diseñadora y programadora autodidacta 💙</p>
+</div>
+</div>
+
+<div class="window" id="trabajos">
+<div class="titlebar">Trabajos <span onclick="closeWin('trabajos')">✕</span></div>
+<div style="padding:15px">Galería aquí</div>
+</div>
+
+<div class="window" id="codigos">
+<div class="titlebar">Mis códigos <span onclick="closeWin('codigos')">✕</span></div>
+<div style="padding:15px">Videos aquí</div>
+</div>
+
+<!-- CHAT -->
 <div class="window" id="chatApp">
 <div class="titlebar">Amigos <span onclick="closeWin('chatApp')">✕</span></div>
 
-<div class="content">
 <div class="chat-header" id="chatHeader"></div>
 
 <div class="chat-wrap">
@@ -258,19 +283,47 @@ margin-bottom:10px;
 <div class="chat-box" id="chatBox"></div>
 </div>
 </div>
-</div>
 
+<!-- TASKBAR -->
 <div id="taskbar">
 <div id="notify" onclick="openWin('chatApp')">🔔</div>
 <div id="clock"></div>
 </div>
 
+<!-- PLAYER -->
+<div id="player">
+<div id="controls">
+<div id="play">▶</div>
+<div id="progress"><div id="bar"></div></div>
+</div>
+<div id="playlist"></div>
+</div>
+
+<audio id="audio"></audio>
+
 <script>
-/* WALLPAPER */
+// WALLPAPER
 document.getElementById("wallpaper").style.backgroundImage =
 "url(https://i.ibb.co/S4wLCz9M/1399771.png)";
 
-/* WINDOWS */
+// ORGANIZAR CARPETAS
+function ordenarCarpetas(){
+const carpetas=[...document.querySelectorAll(".folder")];
+let x=30,y=80;
+const alto=110,ancho=110;
+const limite=window.innerHeight-150;
+
+carpetas.forEach(f=>{
+f.style.left=x+"px";
+f.style.top=y+"px";
+y+=alto;
+if(y>limite){y=80;x+=ancho;}
+});
+}
+ordenarCarpetas();
+window.addEventListener("resize",ordenarCarpetas);
+
+// WINDOWS
 let z=10;
 function openWin(id){
 const w=document.getElementById(id);
@@ -280,14 +333,48 @@ w.style.top=(window.innerHeight-w.offsetHeight)/2+"px";
 w.style.zIndex=++z;
 document.getElementById("blur-layer").classList.add("active");
 }
-
 function closeWin(id){
 document.getElementById(id).style.display='none';
 document.getElementById("blur-layer").classList.remove("active");
 }
 
-/* CHAT DATA */
-const chats = {
+// DRAG WINDOWS
+document.querySelectorAll(".window").forEach(win=>{
+const bar=win.querySelector(".titlebar");
+let drag=false,ox,oy;
+
+bar.onmousedown=e=>{
+drag=true;
+ox=e.clientX-win.offsetLeft;
+oy=e.clientY-win.offsetTop;
+};
+document.onmousemove=e=>{
+if(!drag)return;
+win.style.left=e.clientX-ox+"px";
+win.style.top=e.clientY-oy+"px";
+};
+document.onmouseup=()=>drag=false;
+});
+
+// DRAG FOLDERS
+document.querySelectorAll(".folder").forEach(folder=>{
+let drag=false,ox,oy;
+folder.onmousedown=e=>{
+drag=true;
+ox=e.clientX-folder.offsetLeft;
+oy=e.clientY-folder.offsetTop;
+};
+document.onmousemove=e=>{
+if(!drag)return;
+folder.style.left=e.clientX-ox+"px";
+folder.style.top=e.clientY-oy+"px";
+};
+document.onmouseup=()=>drag=false;
+folder.ondblclick=()=>openWin(folder.dataset.open);
+});
+
+// CHAT DATA
+const chats={
 Chris:{
 photo:"https://i.ibb.co/CKXkQQnS/dice2.png",
 bg:"https://64.media.tumblr.com/286bdab6edbbe4b07b85ca48313573fa/d084846138f4cb8a-e4/s2048x3072_c200,0,99600,100000/f6ef2d85ee29d6a654fc1f11e8ac5286cc112e07.gif",
@@ -315,7 +402,6 @@ const friends=document.getElementById('friends');
 const chatBox=document.getElementById('chatBox');
 const header=document.getElementById("chatHeader");
 
-/* FRIEND LIST */
 Object.keys(chats).forEach(name=>{
 const f=document.createElement('div');
 f.className='friend';
@@ -324,13 +410,10 @@ f.onclick=()=>loadChat(name);
 friends.appendChild(f);
 });
 
-/* LOAD CHAT */
 function loadChat(name){
-
 chatBox.innerHTML="";
 const user=chats[name];
 
-/* HEADER BG */
 header.style.backgroundImage=`url(${user.bg})`;
 header.innerHTML=`
 <img src="${user.photo}" onclick="openProfile('${name}', event)">
@@ -341,9 +424,8 @@ header.innerHTML=`
 `;
 
 let i=0;
-
 function next(){
-if(i>=user.msgs.length) return;
+if(i>=user.msgs.length)return;
 
 const typing=document.createElement('div');
 typing.className='typing them';
@@ -367,7 +449,7 @@ setTimeout(next,500);
 next();
 }
 
-/* PROFILE POPUP */
+// PROFILE
 function openProfile(name,e){
 const p=chats[name];
 const box=document.getElementById("profilePopup");
@@ -391,7 +473,46 @@ if(!e.target.closest(".chat-header img"))
 document.getElementById("profilePopup").style.display="none";
 });
 
-/* CLOCK */
+// PLAYER
+const tracks=[
+{name:'Justin Bieber - Confidence',src:'song.mp3'},
+{name:'Yapi - ¿Dónde te escondes?',src:'song2.mp3'}
+];
+
+const audio=document.getElementById('audio');
+const play=document.getElementById('play');
+const bar=document.getElementById('bar');
+const list=document.getElementById('playlist');
+
+let current=0;
+
+function loadTrack(i){
+current=i;
+audio.src=tracks[i].src;
+document.querySelectorAll('.track').forEach(x=>x.classList.remove('active'));
+document.querySelectorAll('.track')[i].classList.add('active');
+}
+
+tracks.forEach((t,i)=>{
+const d=document.createElement('div');
+d.className='track';
+d.textContent=t.name;
+d.onclick=()=>{loadTrack(i);audio.play();play.textContent='⏸'};
+list.appendChild(d);
+});
+
+loadTrack(0);
+
+play.onclick=()=>{
+audio.paused?(audio.play(),play.textContent='⏸'):(audio.pause(),play.textContent='▶');
+};
+
+audio.ontimeupdate=()=>{
+if(audio.duration)
+bar.style.width=(audio.currentTime/audio.duration*100)+'%';
+};
+
+// CLOCK
 function clock(){
 const d=new Date();
 document.getElementById('clock').innerHTML=
