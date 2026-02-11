@@ -296,52 +296,30 @@ animation:floatImg 4.5s ease-in-out infinite;
 50%{transform:translateY(-10px)}
 }
 
-/* WAVE REAL FLUID */
-.wave{
-position:absolute;
-bottom:-80px;
-left:0;
-width:400%;
-height:260px;
-background:linear-gradient(180deg,#7a5cff,#a88cff);
-border-radius:50% 50% 0 0;
-animation:waveFlow 12s linear infinite;
-opacity:.95;
-filter:blur(2px);
-}
 
-@keyframes waveFlow{
-0%{transform:translateX(0)}
-100%{transform:translateX(-25%)}
-}
-
-  .wave-container {
+ .wave-container {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 140px;
+  height: 160px;
   overflow: hidden;
+  z-index: 1;
 }
 
 .wave-container svg {
-  width: 200%;
+  width: 220%;
   height: 100%;
-  animation: waveMove 8s linear infinite;
+  animation: waveMove 10s linear infinite;
 }
 
 .wave-container path {
-  fill: white;
+  fill: #2b2b2b; /* gris oscuro */
 }
 
 @keyframes waveMove {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
-
 /* SOCIALS MODERN */
 .socials{
 position:absolute;
@@ -429,11 +407,11 @@ fill:white;
     </a>
   </div>
 
-  <div class="wave"><div class="wave-container">
+ <div class="wave-container">
   <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
     <path d="M0,60 C200,120 400,0 600,60 800,120 1000,0 1200,60 V120 H0 Z"></path>
   </svg>
-</div></div>
+</div>
   
 </div>
 </div>
@@ -742,6 +720,7 @@ drawParticles();
 </script>
 </body>
 </html>
+
 
 
 
