@@ -204,6 +204,25 @@ font-size:13px;
 text-align:right;
 }
 
+  /* STATUS DOT */
+.status-dot{
+width:10px;
+height:10px;
+border-radius:50%;
+display:inline-block;
+margin-right:6px;
+box-shadow:0 0 8px currentColor;
+animation:pulseStatus 1.6s infinite;
+}
+
+.online{color:#00ff9c}
+.away{color:#ffaa00}
+.busy{color:#ff4444}
+
+@keyframes pulseStatus{
+50%{opacity:.4; transform:scale(.85)}
+}
+
 /* CHAT */
 #chatApp{width:700px}
 .chat-wrap{display:flex;height:350px}
@@ -700,7 +719,7 @@ folder.ondblclick=()=>openWin(folder.dataset.open);
 const chats={
 Chris:{
 photo:"https://i.ibb.co/CKXkQQnS/dice2.png",
-bio:"Diseñadora UX. Ama interfaces limpias.",
+bio:"Gamer pro",
 status:"Online",
 msgs:[
 "Hola 👋",
@@ -710,13 +729,13 @@ msgs:[
 },
 Taiga:{
 photo:"https://i.ibb.co/Kzc35TgL/41-2.png",
-bio:"Artista digital. Fan del cyberpunk.",
+bio:"Mi mejor amiga <3",
 status:"Ausente",
 msgs:["Eres cotilla 😅"]
 },
 Cesar:{
 photo:"https://i.ibb.co/Q7wWGYsP/kuro7.png",
-bio:"Dev backend. Odia el frontend.",
+bio:"El cesarr <3",
 status:"Ocupado",
 msgs:["Deja de chismear 😑"]
 }
@@ -744,9 +763,13 @@ header.innerHTML=`
 <img src="${chats[n].photo}" onclick="openProfile('${n}', event)">
 <div>
 <b>${n}</b><br>
-<small>${chats[n].status}</small>
+<small>
+<span class="status-dot ${chats[n].status}"></span>
+${chats[n].status.toUpperCase()}
+</small>
 </div>
 `;
+
 
 let i=0;
 
@@ -862,6 +885,7 @@ document.getElementById("profilePopup").style.display="none";
 </script>
 </body>
 </html>
+
 
 
 
