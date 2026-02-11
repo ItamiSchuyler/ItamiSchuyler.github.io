@@ -252,6 +252,79 @@ border-radius:4px;overflow:hidden;
 font-size:12px;cursor:pointer;opacity:.6;margin-top:6px
 }
 .track.active{opacity:1}
+ .itami-card{
+width:100%;
+height:420px;
+background:#faf7ff;
+border-radius:18px;
+overflow:hidden;
+position:relative;
+color:#444;
+font-family:'Poppins',sans-serif;
+}
+
+/* TOP TEXT */
+.itami-top{
+padding:20px;
+}
+.itami-top h1{
+font-size:38px;
+margin:0;
+font-weight:800;
+color:#222;
+}
+.itami-top p{
+margin-top:6px;
+opacity:.7;
+font-size:14px;
+}
+
+/* IMAGE */
+.itami-img{
+position:absolute;
+right:20px;
+top:90px;
+width:180px;
+pointer-events:none;
+filter:drop-shadow(0 10px 25px rgba(0,0,0,.25));
+}
+
+/* WAVE */
+.wave{
+position:absolute;
+bottom:0;
+width:200%;
+height:180px;
+background:#caa5ff;
+border-radius:100% 100% 0 0;
+animation:waveMove 6s infinite linear;
+}
+
+@keyframes waveMove{
+0%{transform:translateX(0)}
+100%{transform:translateX(-50%)}
+}
+
+/* SOCIALS */
+.socials{
+position:absolute;
+bottom:18px;
+left:0;
+right:0;
+display:flex;
+justify-content:center;
+gap:26px;
+font-size:22px;
+}
+
+.socials a{
+color:white;
+text-decoration:none;
+transition:.2s;
+}
+.socials a:hover{
+transform:scale(1.2);
+}
 </style>
 </head>
 
@@ -284,11 +357,26 @@ font-size:12px;cursor:pointer;opacity:.6;margin-top:6px
 
 <!-- WINDOWS -->
 <div class="window" id="itami">
-<div class="titlebar">Sobre mí <span onclick="closeWin('itami')">✕</span></div>
-<div style="padding:15px">
-<h2>Itami</h2>
-<p>Diseñadora y programadora autodidacta 💙</p>
-</div>
+  <div class="titlebar">Sobre mí <span onclick="closeWin('itami')">✕</span></div>
+
+  <div class="itami-card">
+
+    <div class="itami-top">
+      <h1>itami</h1>
+      <p>27 — Española viviendo en Alemania</p>
+    </div>
+
+    <img class="itami-img" src="https://i.ibb.co/WWHTzk6s/uwvglqx0si1b1.png">
+
+    <div class="wave"></div>
+
+    <div class="socials">
+      <a href="https://instagram.com/itamich_" target="_blank">📷</a>
+      <a href="https://twitch.tv/itamich" target="_blank">🎮</a>
+      <a href="https://x.com/needsushi" target="_blank">𝕏</a>
+    </div>
+
+  </div>
 </div>
 
 <div class="window" id="trabajos">
@@ -595,5 +683,6 @@ drawParticles();
 </script>
 </body>
 </html>
+
 
 
