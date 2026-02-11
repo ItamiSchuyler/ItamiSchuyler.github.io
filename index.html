@@ -6,42 +6,16 @@
 
 <style>
 *{box-sizing:border-box;font-family:Arial,sans-serif}
-
-html,body{
-margin:0;
-width:100%;
-height:100%;
-overflow:hidden;
-}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
 
 /* WALLPAPER */
-#wallpaper{
-position:fixed;
-inset:0;
-background-size:cover;
-background-position:center;
-z-index:-3;
-}
+#wallpaper{position:fixed;inset:0;background-size:cover;background-position:center;z-index:-3}
 
 /* PARTICLES */
-#particles{
-position:fixed;
-inset:0;
-z-index:-2;
-pointer-events:none;
-}
+#particles{position:fixed;inset:0;z-index:-2;pointer-events:none}
 
 /* BLUR */
-#blur-layer{
-position:fixed;
-inset:0;
-backdrop-filter:blur(12px);
-background:rgba(0,0,0,.25);
-opacity:0;
-transition:.3s;
-z-index:-1;
-pointer-events:none;
-}
+#blur-layer{position:fixed;inset:0;backdrop-filter:blur(12px);background:rgba(0,0,0,.25);opacity:0;transition:.3s;z-index:-1;pointer-events:none}
 #blur-layer.active{opacity:1}
 
 /* DESKTOP */
@@ -49,320 +23,92 @@ pointer-events:none;
 
 /* FOLDERS */
 .folder{
-width:100px;
-color:#EDEDED;
-text-align:center;
-position:absolute;
-cursor:pointer;
-user-select:none;
-padding:10px;
-border-radius:10px;
-
-/* CARPETA SÓLIDA NORMAL (SIN CRISTAL) */
-background:#00;
-border:1px solid #00;
-
-transition:.2s ease;
+width:100px;color:#EDEDED;text-align:center;position:absolute;
+cursor:pointer;padding:10px;border-radius:10px;transition:.2s ease;
 }
-
-
-.folder:hover{
-transform:scale(1.04);
-}
-
-.folder img{
-width:64px;
-transition:.2s;
-}
-
-.folder span{
-font-size:13px;
-margin-top:4px;
-display:block;
-}
+.folder:hover{transform:scale(1.04)}
+.folder img{width:64px}
+.folder span{font-size:13px;margin-top:4px;display:block}
 
 /* WINDOWS */
 .window{
-position:absolute;
-width:600px;
-background:#1b1b1bdd;
-color:#eee;
-border-radius:12px;
-box-shadow:0 20px 50px rgba(0,0,0,.7);
-display:none;
-animation:open .25s ease;
+position:absolute;width:600px;background:#1b1b1bdd;color:#eee;
+border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,.7);
+display:none;animation:open .25s ease
 }
-@keyframes open{
-from{opacity:0;transform:scale(.95)}
-to{opacity:1;transform:scale(1)}
-}
-
-.titlebar{
-background:#000;
-padding:10px;
-display:flex;
-justify-content:space-between;
-cursor:grab;
-}
-
+@keyframes open{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.titlebar{background:#000;padding:10px;display:flex;justify-content:space-between;cursor:grab}
 .content{padding:15px}
 
-.gallery{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:10px;
-}
-.item video,.item img{width:100%;border-radius:8px}
+/* PROFILE */
+.profile{text-align:center}
+.profile-icon{width:120px;height:120px;border-radius:20px;object-fit:cover;box-shadow:0 10px 25px rgba(0,0,0,.6)}
+.socials{display:flex;justify-content:center;gap:15px;margin-top:10px}
+.socials img{width:32px;transition:.2s}
+.socials img:hover{transform:scale(1.2)}
 
-  #codigos .gallery{
-  display:grid;
-  grid-template-columns:1fr; /* 1 columna = videos grandes */
-  gap:15px;
-}
-
-#codigos video{
-  width:100%;
-  height:auto;
-  border-radius:12px;
-  box-shadow:0 10px 30px rgba(0,0,0,.6);
-}
-
-  /* PERFIL ITAMI */
-.profile{
-text-align:center;
-color:#eee;
-}
-
-.profile-icon{
-width:120px;
-height:120px;
-border-radius:20px;
-object-fit:cover;
-margin-bottom:10px;
-box-shadow:0 10px 25px rgba(0,0,0,.6);
-}
-
-.profile h2{
-margin:8px 0 2px;
-font-size:22px;
-}
-
-.age{
-font-size:14px;
-opacity:.7;
-margin-bottom:10px;
-}
-
-.bio{
-font-size:14px;
-line-height:1.5;
-opacity:.85;
-margin-bottom:15px;
-}
-
-.socials{
-display:flex;
-justify-content:center;
-gap:15px;
-margin-top:10px;
-}
-
-.socials img{
-width:32px;
-transition:.2s;
-}
-
-.socials img:hover{
-transform:scale(1.2);
-}
 /* TASKBAR */
 #taskbar{
-position:fixed;
-bottom:0;
-width:100%;
-height:50px;
-background:rgba(10,10,10,.95);
-display:flex;
-align-items:center;
-padding:0 15px;
-gap:15px;
+position:fixed;bottom:0;width:100%;height:50px;background:rgba(10,10,10,.95);
+display:flex;align-items:center;padding:0 15px;gap:15px
 }
+#notify{font-size:22px;cursor:pointer;animation:pulse 1.5s infinite}
+@keyframes pulse{50%{opacity:.4}}
+#clock{margin-left:auto;color:#fff;font-size:13px;text-align:right}
 
-#notify{
-font-size:22px;
-cursor:pointer;
-animation:pulse 1.5s infinite;
-}
-@keyframes pulse{
-50%{opacity:.4}
-}
-
-#clock{
-margin-left:auto;
-color:#fff;
-font-size:13px;
-text-align:right;
-}
-
-  /* STATUS DOT */
+/* STATUS */
 .status-dot{
-width:10px;
-height:10px;
-border-radius:50%;
-display:inline-block;
-margin-right:6px;
-box-shadow:0 0 8px currentColor;
-animation:pulseStatus 1.6s infinite;
+width:10px;height:10px;border-radius:50%;display:inline-block;
+margin-right:6px;box-shadow:0 0 8px currentColor;animation:pulseStatus 1.6s infinite
 }
-
 .online{color:#00ff9c}
 .away{color:#ffaa00}
 .busy{color:#ff4444}
+@keyframes pulseStatus{50%{opacity:.4;transform:scale(.85)}}
 
-@keyframes pulseStatus{
-50%{opacity:.4; transform:scale(.85)}
+/* CHAT UI */
+.chat-wrap{display:flex;height:360px}
+.friends{width:140px;border-right:1px solid #333;overflow:auto}
+.friend{
+display:flex;align-items:center;gap:8px;padding:8px;
+cursor:pointer;border-radius:8px
 }
+.friend:hover{background:rgba(255,255,255,.08)}
+.friend img{width:32px;border-radius:50%}
 
-/* CHAT */
-const chats = {
-Chris:{
-photo:"https://i.ibb.co/CKXkQQnS/dice2.png",
-bg:"https://64.media.tumblr.com/286bdab6edbbe4b07b85ca48313573fa/d084846138f4cb8a-e4/s2048x3072_c200,0,99600,100000/f6ef2d85ee29d6a654fc1f11e8ac5286cc112e07.gif",
-bio:"Gamer pro",
-status:"online",
-msgs:[
-"Hola 👋",
-"El space está en mantenimiento",
-"No hago 3D pero hago UI bonita 😼"
-]
-},
-Taiga:{
-photo:"https://i.ibb.co/Kzc35TgL/41-2.png",
-bg:"https://i.pinimg.com/originals/30/f5/b4/30f5b4a2330bb25e08830e461846ac35.gif",
-bio:"Mi mejor amiga <3",
-status:"away",
-msgs:["Eres cotilla 😅"]
-},
-Cesar:{
-photo:"https://i.ibb.co/Q7wWGYsP/kuro7.png",
-bg:"https://66.media.tumblr.com/a96b0af62bf964e684620a333493c9a2/tumblr_inline_pr07k50MJD1wc6jir_540.gif",
-bio:"El cesarr <3",
-status:"busy",
-msgs:["Deja de chismear 😑"]
+.chat-box{flex:1;padding:10px;overflow:auto;display:flex;flex-direction:column;gap:8px}
+
+.chat-header{
+height:90px;background-size:cover;background-position:center;
+border-radius:10px;margin-bottom:10px;display:flex;align-items:end;
+gap:10px;padding:10px;background-blend-mode:overlay
 }
-};
+.chat-header img{width:55px;height:55px;border-radius:50%;border:2px solid white;cursor:pointer}
 
-const friends = document.getElementById('friends');
-const chatBox = document.getElementById('chatBox');
-
-const header = document.createElement("div");
-header.className = "chat-header";
-document.querySelector("#chatApp .content").prepend(header);
-
-/* LISTA AMIGOS */
-Object.keys(chats).forEach(n=>{
-const f = document.createElement('div');
-f.className = 'friend';
-f.innerHTML = `<img src="${chats[n].photo}">${n}`;
-f.onclick = ()=> loadChat(n);
-friends.appendChild(f);
-});
-
-/* CARGAR CHAT */
-function loadChat(name){
-
-chatBox.innerHTML = "";
-const user = chats[name];
-
-/* HEADER */
-header.style.backgroundImage = `url(${user.bg})`;
-header.innerHTML = `
-<img src="${user.photo}" onclick="openProfile('${name}', event)">
-<div>
-<b>${name}</b><br>
-<small>
-<span class="status-dot ${user.status}"></span>
-${user.status.toUpperCase()}
-</small>
-</div>
-`;
-
-/* MENSAJES */
-let i = 0;
-
-function next(){
-if(i >= user.msgs.length) return;
-
-/* typing */
-const typing = document.createElement('div');
-typing.className = 'typing them';
-typing.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
-chatBox.appendChild(typing);
-chatBox.scrollTop = chatBox.scrollHeight;
-
-setTimeout(()=>{
-typing.remove();
-
-/* mensaje */
-const msg = document.createElement('div');
-msg.className = 'msg ' + (i % 2 ? 'me' : 'them');
-msg.textContent = user.msgs[i];
-chatBox.appendChild(msg);
-chatBox.scrollTop = chatBox.scrollHeight;
-
-i++;
-setTimeout(next, 500);
-
-}, 700);
+.msg{
+padding:8px 12px;border-radius:12px;max-width:70%;
+font-size:14px
 }
+.me{align-self:flex-end;background:#00ff9c;color:#000}
+.them{align-self:flex-start;background:#333}
 
-next();
-}
+.typing{display:flex;gap:4px;margin-left:5px}
+.dot{width:6px;height:6px;border-radius:50%;background:#aaa;animation:blink 1.2s infinite}
+.dot:nth-child(2){animation-delay:.2s}
+.dot:nth-child(3){animation-delay:.4s}
+@keyframes blink{50%{opacity:.2}}
 
-/* PLAYER GLASS */
+/* PLAYER */
 #player{
-position:fixed;
-right:20px;
-bottom:70px;
-width:300px;
-background:rgba(25,25,25,.45);
-backdrop-filter:blur(15px);
-border-radius:16px;
-padding:15px;
-color:#fff;
-box-shadow:0 10px 30px rgba(0,0,0,.5);
+position:fixed;right:20px;bottom:70px;width:300px;
+background:rgba(25,25,25,.45);backdrop-filter:blur(15px);
+border-radius:16px;padding:15px;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.5)
 }
-
 #controls{display:flex;gap:10px;margin-top:10px;align-items:center}
-
-#play{
-font-size:22px;
-cursor:pointer;
-padding:6px 10px;
-border-radius:8px;
-background:rgba(255,255,255,.1);
-}
-
-#progress{
-flex:1;
-height:6px;
-background:rgba(255,255,255,.2);
-border-radius:4px;
-overflow:hidden;
-}
-
-#bar{
-height:100%;
-width:0;
-background:white;
-}
-
-.track{
-font-size:12px;
-cursor:pointer;
-opacity:.6;
-margin-top:6px;
-}
+#play{font-size:22px;cursor:pointer;padding:6px 10px;border-radius:8px;background:rgba(255,255,255,.1)}
+#progress{flex:1;height:6px;background:rgba(255,255,255,.2);border-radius:4px;overflow:hidden}
+#bar{height:100%;width:0;background:white}
+.track{font-size:12px;cursor:pointer;opacity:.6;margin-top:6px}
 .track.active{opacity:1}
 </style>
 </head>
@@ -377,57 +123,34 @@ margin-top:6px;
 
 <div class="folder" data-open="itami">
 <img src="https://cdn-icons-png.flaticon.com/128/456/456793.png">
-<div>xxx</div>
+<span>Sobre mí</span>
 </div>
 
 <div class="folder" data-open="trabajos">
 <img src="https://cdn-icons-png.flaticon.com/128/456/456793.png">
-<div>mis trabajos</div>
+<span>Trabajos</span>
 </div>
 
 <div class="folder" data-open="codigos">
 <img src="https://cdn-icons-png.flaticon.com/128/456/456793.png">
-<div>mis códigos</div>
+<span>Códigos</span>
 </div>
 
 </div>
 
- <div id="profilePopup" class="profile-popup"></div>
-<!-- VENTANAS -->
+<!-- WINDOWS -->
 <div class="window" id="itami">
 <div class="titlebar">Sobre mí <span onclick="closeWin('itami')">✕</span></div>
-
 <div class="content profile">
-
 <img class="profile-icon" src="https://i.ibb.co/LbvmSPQ/tumblr-e713e2c82e644a8bc52da44ac92babd5-e2b86cef-400.jpg">
-
 <h2>Itami</h2>
-<p class="age">27 años - Española viviendo en Alemania</p>
-
-<p class="bio">
-Diseñadora y programadora autodidacta. Me gusta crear interfaces, conceptos visuales y experiencias interactivas.
-</p>
-
-<div class="socials">
-<a href="https://twitter.com/@needsushi" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/128/14776/14776528.png">
-</a>
-
-  <a href="https://twitch.tv/itamich" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/128/15455/15455920.png">
-</a>
-  
-<a href="https://instagram.com/itamich_" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/128/13969/13969520.png">
-</a>
-
-</div>
-
+<p>Diseñadora y programadora autodidacta 💻</p>
 </div>
 </div>
+
 <div class="window" id="trabajos">
 <div class="titlebar">Trabajos <span onclick="closeWin('trabajos')">✕</span></div>
-<div class="content gallery">
+<div class="content">
 <img src="https://placekitten.com/401/250">
 <img src="https://placekitten.com/402/250">
 </div>
@@ -435,9 +158,8 @@ Diseñadora y programadora autodidacta. Me gusta crear interfaces, conceptos vis
 
 <div class="window" id="codigos">
 <div class="titlebar">Mis códigos <span onclick="closeWin('codigos')">✕</span></div>
-<div class="content gallery">
-<div class="item"><video controls src="demo 1.mp4"></video></div>
-<div class="item"><video controls src="demo2.mp4"></video></div>
+<div class="content">
+<video controls width="100%" src="demo1.mp4"></video>
 </div>
 </div>
 
@@ -467,403 +189,92 @@ Diseñadora y programadora autodidacta. Me gusta crear interfaces, conceptos vis
 <audio id="audio"></audio>
 
 <script>
-  
-  function ordenarCarpetas(){
-
-const carpetas=[...document.querySelectorAll(".folder")];
-
-const margenX=30;
-const margenY=40;
-
-const ancho=110;
-const alto=110;
-
-let x=margenX;
-let y=80;
-
-/* columnas tipo escritorio */
-const limiteAltura=window.innerHeight-150;
-
-carpetas.forEach(f=>{
-
-f.style.left=x+"px";
-f.style.top=y+"px";
-
-y+=alto;
-
-if(y>limiteAltura){
-y=80;
-x+=ancho;
-}
-
-});
-}
-
 /* WALLPAPER */
 document.getElementById("wallpaper").style.backgroundImage =
 "url(https://i.ibb.co/S4wLCz9M/1399771.png)";
 
-/* PARTICLES */
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
-
-canvas.width = innerWidth;
-canvas.height = innerHeight;
-
-let mouse = { x: -9999, y: -9999 };
-window.onmousemove = e => {
-  mouse.x = e.clientX;
-  mouse.y = e.clientY;
-};
-
-let particles = [];
-
-for (let i = 0; i < 120; i++) {
-  particles.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    vx: (Math.random() - 0.5) * 0.15,
-    vy: (Math.random() - 0.5) * 0.15,
-    size: Math.random() * 1.5 + 0.8,
-    baseAlpha: Math.random() * 0.5 + 0.3,
-    glow: 0
-  });
-}
-
-function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  particles.forEach(p => {
-
-    let dx = mouse.x - p.x;
-    let dy = mouse.y - p.y;
-    let dist = Math.sqrt(dx * dx + dy * dy);
-
-    /* atracción suave tipo galaxia */
-    if (dist < 180) {
-      p.vx += dx / 25000;
-      p.vy += dy / 25000;
-      p.glow = Math.min(1, p.glow + 0.05);
-    } else {
-      p.glow *= 0.96;
-    }
-
-    /* movimiento flotante */
-    p.x += p.vx;
-    p.y += p.vy;
-
-    /* drift suave */
-    p.vx *= 0.995;
-    p.vy *= 0.995;
-
-    /* wrap screen (no rebotan, se reciclan como estrellas) */
-    if (p.x < 0) p.x = canvas.width;
-    if (p.x > canvas.width) p.x = 0;
-    if (p.y < 0) p.y = canvas.height;
-    if (p.y > canvas.height) p.y = 0;
-
-    /* brillo dinámico */
-    let alpha = p.baseAlpha + p.glow * 0.9;
-    let radius = p.size + p.glow * 2.2;
-
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
-    ctx.shadowBlur = p.glow * 18;
-    ctx.shadowColor = "white";
-    ctx.fill();
-  });
-
-  requestAnimationFrame(animate);
-}
-
-animate();
-
-/* resize support */
-window.onresize = () => {
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
-};
-
-
 /* WINDOWS */
 let z=10;
-
 function openWin(id){
 const w=document.getElementById(id);
-
 w.style.display='block';
-
-/* centrar ventana */
-const width=w.offsetWidth;
-const height=w.offsetHeight;
-
-w.style.left=(window.innerWidth-width)/2+"px";
-w.style.top=(window.innerHeight-height)/2+"px";
-
+w.style.left=(innerWidth-w.offsetWidth)/2+"px";
+w.style.top=(innerHeight-w.offsetHeight)/2+"px";
 w.style.zIndex=++z;
-
 document.getElementById("blur-layer").classList.add("active");
 }
-
 function closeWin(id){
 document.getElementById(id).style.display='none';
-
-const abiertas=[...document.querySelectorAll(".window")]
-.some(w=>w.style.display==="block");
-
-if(!abiertas)
 document.getElementById("blur-layer").classList.remove("active");
 }
 
-/* DRAG WINDOWS */
-document.querySelectorAll(".window").forEach(win=>{
-const bar=win.querySelector(".titlebar");
-
-let drag=false,ox,oy;
-
-bar.onmousedown=e=>{
-drag=true;
-ox=e.clientX-win.offsetLeft;
-oy=e.clientY-win.offsetTop;
+/* CHAT DATA */
+const chats={
+Chris:{photo:"https://i.ibb.co/CKXkQQnS/dice2.png",bg:"https://i.pinimg.com/originals/28/63/76/286376f59d6c6e1a18a08a1c5c35b5ef.gif",bio:"Gamer pro",status:"online",msgs:["Hola 👋","¿Jugamos luego?"]},
+Taiga:{photo:"https://i.ibb.co/Kzc35TgL/41-2.png",bg:"https://i.pinimg.com/originals/30/f5/b4/30f5b4a2330bb25e08830e461846ac35.gif",bio:"Bestie 💖",status:"away",msgs:["Te vi conectada 😅"]},
+Cesar:{photo:"https://i.ibb.co/Q7wWGYsP/kuro7.png",bg:"https://66.media.tumblr.com/a96b0af62bf964e684620a333493c9a2/tumblr_inline_pr07k50MJD1wc6jir_540.gif",bio:"Bro 😈",status:"busy",msgs:["Deja de stalkear 😑"]}
 };
 
-document.onmousemove=e=>{
-if(!drag)return;
-win.style.left=e.clientX-ox+"px";
-win.style.top=e.clientY-oy+"px";
-};
+const friends=document.getElementById("friends");
+const chatBox=document.getElementById("chatBox");
 
-document.onmouseup=()=>drag=false;
-});
-
-/* DRAG FOLDERS */
-document.querySelectorAll('.folder').forEach(folder=>{
-let drag=false,ox,oy;
-
-folder.onmousedown=e=>{
-drag=true;
-ox=e.clientX-folder.offsetLeft;
-oy=e.clientY-folder.offsetTop;
-};
-
-document.onmousemove=e=>{
-if(!drag)return;
-folder.style.left=e.clientX-ox+'px';
-folder.style.top=e.clientY-oy+'px';
-};
-
-document.onmouseup=()=>drag=false;
-
-folder.ondblclick=()=>openWin(folder.dataset.open);
-});
-
-/* CHAT */
-const chats = {
-Chris:{
-photo:"https://i.ibb.co/CKXkQQnS/dice2.png",
-bg:"https://64.media.tumblr.com/286bdab6edbbe4b07b85ca48313573fa/d084846138f4cb8a-e4/s2048x3072_c200,0,99600,100000/f6ef2d85ee29d6a654fc1f11e8ac5286cc112e07.gif",
-bio:"Gamer pro",
-status:"online",
-msgs:[
-"Hola 👋",
-"El space está en mantenimiento",
-"No hago 3D pero hago UI bonita 😼"
-]
-},
-Taiga:{
-photo:"https://i.ibb.co/Kzc35TgL/41-2.png",
-bg:"https://i.pinimg.com/originals/30/f5/b4/30f5b4a2330bb25e08830e461846ac35.gif",
-bio:"Mi mejor amiga <3",
-status:"away",
-msgs:["Eres cotilla 😅"]
-},
-Cesar:{
-photo:"https://i.ibb.co/Q7wWGYsP/kuro7.png",
-bg:"https://66.media.tumblr.com/a96b0af62bf964e684620a333493c9a2/tumblr_inline_pr07k50MJD1wc6jir_540.gif",
-bio:"El cesarr <3",
-status:"busy",
-msgs:["Deja de chismear 😑"]
-}
-};
-
-const friends = document.getElementById('friends');
-const chatBox = document.getElementById('chatBox');
-
-/* HEADER */
-const header = document.createElement("div");
-header.className = "chat-header";
+const header=document.createElement("div");
+header.className="chat-header";
 document.querySelector("#chatApp .content").prepend(header);
 
-/* LISTA DE AMIGOS */
 Object.keys(chats).forEach(name=>{
-const f = document.createElement('div');
-f.className = 'friend';
-f.innerHTML = `<img src="${chats[name].photo}">${name}`;
-f.onclick = ()=> loadChat(name);
+const f=document.createElement("div");
+f.className="friend";
+f.innerHTML=`<img src="${chats[name].photo}">${name}`;
+f.onclick=()=>loadChat(name);
 friends.appendChild(f);
 });
 
-/* CARGAR CHAT */
 function loadChat(name){
+chatBox.innerHTML="";
+const user=chats[name];
 
-chatBox.innerHTML = "";
-const user = chats[name];
-
-/* HEADER */
-header.style.backgroundImage = `url(${user.bg})`;
-header.innerHTML = `
-<img src="${user.photo}" onclick="openProfile('${name}', event)">
+header.style.backgroundImage=`url(${user.bg})`;
+header.innerHTML=`
+<img src="${user.photo}">
 <div>
 <b>${name}</b><br>
-<small>
-<span class="status-dot ${user.status}"></span>
-${user.status.toUpperCase()}
-</small>
+<small><span class="status-dot ${user.status}"></span>${user.status.toUpperCase()}</small>
 </div>
 `;
 
-/* MENSAJES */
-let i = 0;
-
+let i=0;
 function next(){
-if(i >= user.msgs.length) return;
+if(i>=user.msgs.length) return;
 
-/* typing */
-const typing = document.createElement('div');
-typing.className = 'typing them';
-typing.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+const typing=document.createElement("div");
+typing.className="typing them";
+typing.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
 chatBox.appendChild(typing);
-chatBox.scrollTop = chatBox.scrollHeight;
 
 setTimeout(()=>{
 typing.remove();
-
-/* mensaje */
-const msg = document.createElement('div');
-msg.className = 'msg ' + (i % 2 ? 'me' : 'them');
-msg.textContent = user.msgs[i];
+const msg=document.createElement("div");
+msg.className="msg "+(i%2?"me":"them");
+msg.textContent=user.msgs[i];
 chatBox.appendChild(msg);
-chatBox.scrollTop = chatBox.scrollHeight;
-
+chatBox.scrollTop=chatBox.scrollHeight;
 i++;
-setTimeout(next, 500);
-
-}, 700);
+setTimeout(next,500);
+},700);
 }
-
 next();
 }
-
-/* PLAYER */
-const tracks=[
-{name:'Justin Bieber - Confidence (track 1)',src:'song.mp3'},
-{name:'Yapi - ¿Dónde te escondes? (track 2)',src:'song2.mp3'}
-];
-
-const audio=document.getElementById('audio');
-const play=document.getElementById('play');
-const bar=document.getElementById('bar');
-const list=document.getElementById('playlist');
-
-let current=0;
-
-function loadTrack(i){
-current=i;
-audio.src=tracks[i].src;
-document.querySelectorAll('.track').forEach(x=>x.classList.remove('active'));
-document.querySelectorAll('.track')[i].classList.add('active');
-}
-
-tracks.forEach((t,i)=>{
-const d=document.createElement('div');
-d.className='track';
-d.textContent=t.name;
-d.onclick=()=>{loadTrack(i);audio.play();play.textContent='⏸'};
-list.appendChild(d);
-});
-
-loadTrack(0);
-
-play.onclick=()=>{
-audio.paused?(audio.play(),play.textContent='⏸'):(audio.pause(),play.textContent='▶');
-};
-
-audio.ontimeupdate=()=>{
-if(audio.duration)
-bar.style.width=(audio.currentTime/audio.duration*100)+'%';
-};
 
 /* CLOCK */
 function clock(){
 const d=new Date();
 document.getElementById('clock').innerHTML=
-d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})+
-'<br>'+d.toLocaleDateString('es-ES');
+d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})+"<br>"+
+d.toLocaleDateString('es-ES');
 }
-clock();
-setInterval(clock,1000);
-
-  ordenarCarpetas();
-
-window.addEventListener("resize",ordenarCarpetas);
-
-  function openProfile(name, e){
-const p=chats[name];
-const box=document.getElementById("profilePopup");
-
-box.innerHTML=`
-<img src="${p.photo}">
-<h3>${name}</h3>
-<p style="text-align:center;opacity:.8">${p.bio}</p>
-<p style="text-align:center;font-size:13px;margin-top:6px">
-Estado: ${p.status}
-</p>
-`;
-
-box.style.display="block";
-box.style.left=e.clientX+"px";
-box.style.top=e.clientY+"px";
-}
-
-document.addEventListener("click",e=>{
-if(!e.target.closest(".chat-header img"))
-document.getElementById("profilePopup").style.display="none";
-});
-
-
+clock();setInterval(clock,1000);
 </script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
