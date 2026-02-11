@@ -224,176 +224,100 @@ animation:pulseStatus 1.6s infinite;
 }
 
 /* CHAT */
-#chatApp{width:700px}
-.chat-wrap{display:flex;height:350px}
-.friends{width:200px;background:#111}
-  
-.friend{
-padding:10px;
-display:flex;
-align-items:center;
-gap:10px;
-cursor:pointer;
+const chats = {
+Chris:{
+photo:"https://i.ibb.co/CKXkQQnS/dice2.png",
+bg:"https://64.media.tumblr.com/286bdab6edbbe4b07b85ca48313573fa/d084846138f4cb8a-e4/s2048x3072_c200,0,99600,100000/f6ef2d85ee29d6a654fc1f11e8ac5286cc112e07.gif",
+bio:"Gamer pro",
+status:"online",
+msgs:[
+"Hola 👋",
+"El space está en mantenimiento",
+"No hago 3D pero hago UI bonita 😼"
+]
+},
+Taiga:{
+photo:"https://i.ibb.co/Kzc35TgL/41-2.png",
+bg:"https://i.pinimg.com/originals/30/f5/b4/30f5b4a2330bb25e08830e461846ac35.gif",
+bio:"Mi mejor amiga <3",
+status:"away",
+msgs:["Eres cotilla 😅"]
+},
+Cesar:{
+photo:"https://i.ibb.co/Q7wWGYsP/kuro7.png",
+bg:"https://66.media.tumblr.com/a96b0af62bf964e684620a333493c9a2/tumblr_inline_pr07k50MJD1wc6jir_540.gif",
+bio:"El cesarr <3",
+status:"busy",
+msgs:["Deja de chismear 😑"]
 }
-.friend img{
-width:36px;
-height:36px;
-border-radius:50%;
-}
-.friend:hover{background:#222}
-.chat-box{flex:1;padding:10px;overflow:auto}
-.msg{
-max-width:70%;
-padding:8px 12px;
-border-radius:12px;
-margin-bottom:6px;
-}
+};
 
-  .msg{
-max-width:70%;
-padding:8px 12px;
-border-radius:12px;
-margin-bottom:6px;
-opacity:0;
-transform:translateY(8px);
-animation:msgAppear .35s forwards;
-}
+const friends = document.getElementById('friends');
+const chatBox = document.getElementById('chatBox');
 
-@keyframes msgAppear{
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
+const header = document.createElement("div");
+header.className = "chat-header";
+document.querySelector("#chatApp .content").prepend(header);
 
-/* CHAT PREMIUM LOOK */
-.friends{
-background:linear-gradient(180deg,#111,#0b0b0b);
-border-right:1px solid rgba(255,255,255,.08);
-}
+/* LISTA AMIGOS */
+Object.keys(chats).forEach(n=>{
+const f = document.createElement('div');
+f.className = 'friend';
+f.innerHTML = `<img src="${chats[n].photo}">${n}`;
+f.onclick = ()=> loadChat(n);
+friends.appendChild(f);
+});
 
-.friend{
-transition:.25s;
-border-radius:10px;
-margin:4px;
-}
+/* CARGAR CHAT */
+function loadChat(name){
 
-.friend:hover{
-background:rgba(255,255,255,.06);
-transform:scale(1.02);
-}
+chatBox.innerHTML = "";
+const user = chats[name];
 
-.friend img{
-box-shadow:0 0 10px rgba(0,120,255,.35);
-}
-
-/* HEADER CHAT */
-.chat-header{
-display:flex;
-align-items:center;
-gap:10px;
-padding:12px;
-border-bottom:1px solid rgba(255,255,255,.08);
-background-size:cover;
-background-position:center;
-position:relative;
-overflow:hidden;
-}
-
-/* overlay oscuro para que el texto se lea */
-.chat-header::before{
-content:"";
-position:absolute;
-inset:0;
-background:linear-gradient(to bottom, rgba(0,0,0,.65), rgba(0,0,0,.85));
-backdrop-filter:blur(6px);
-}
-
-/* contenido encima del overlay */
-.chat-header > *{
-position:relative;
-z-index:2;
-}
-
-
-.chat-header img{
-width:42px;
-height:42px;
-border-radius:50%;
-box-shadow:0 0 12px rgba(0,120,255,.45);
-}
+/* HEADER */
+header.style.backgroundImage = `url(${user.bg})`;
+header.innerHTML = `
+<img src="${user.photo}" onclick="openProfile('${name}', event)">
+<div>
+<b>${name}</b><br>
+<small>
+<span class="status-dot ${user.status}"></span>
+${user.status.toUpperCase()}
+</small>
+</div>
+`;
 
 /* MENSAJES */
-.msg.them{
-background:linear-gradient(145deg,#333,#222);
-border-top-left-radius:4px;
+let i = 0;
+
+function next(){
+if(i >= user.msgs.length) return;
+
+/* typing */
+const typing = document.createElement('div');
+typing.className = 'typing them';
+typing.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+chatBox.appendChild(typing);
+chatBox.scrollTop = chatBox.scrollHeight;
+
+setTimeout(()=>{
+typing.remove();
+
+/* mensaje */
+const msg = document.createElement('div');
+msg.className = 'msg ' + (i % 2 ? 'me' : 'them');
+msg.textContent = user.msgs[i];
+chatBox.appendChild(msg);
+chatBox.scrollTop = chatBox.scrollHeight;
+
+i++;
+setTimeout(next, 500);
+
+}, 700);
 }
 
-.msg.me{
-background:linear-gradient(145deg,#0078ff,#00b4ff);
-border-top-right-radius:4px;
-box-shadow:0 6px 18px rgba(0,120,255,.4);
+next();
 }
-
-/* PERFIL POPUP */
-.profile-popup{
-position:absolute;
-width:260px;
-background:rgba(20,20,20,.9);
-backdrop-filter:blur(12px);
-border-radius:16px;
-padding:15px;
-box-shadow:0 20px 40px rgba(0,0,0,.7);
-color:white;
-display:none;
-z-index:9999;
-animation:open .25s ease;
-}
-
-.profile-popup img{
-width:90px;
-height:90px;
-border-radius:18px;
-display:block;
-margin:auto;
-margin-bottom:10px;
-box-shadow:0 0 18px rgba(0,120,255,.45);
-}
-
-.profile-popup h3{
-text-align:center;
-margin:5px 0;
-}
-/* typing bubble */
-.typing{
-width:60px;
-padding:8px 12px;
-border-radius:12px;
-background:#333;
-display:flex;
-gap:4px;
-}
-
-.dot{
-width:6px;
-height:6px;
-background:white;
-border-radius:50%;
-animation:blink 1.2s infinite;
-}
-
-.dot:nth-child(2){animation-delay:.2s}
-.dot:nth-child(3){animation-delay:.4s}
-
-@keyframes blink{
-0%,100%{opacity:.2}
-50%{opacity:1}
-}
-
-.them{background:#333}
-.me{background:#0078ff;margin-left:auto}
-
-
 
 /* PLAYER GLASS */
 #player{
@@ -968,6 +892,7 @@ document.getElementById("profilePopup").style.display="none";
 </script>
 </body>
 </html>
+
 
 
 
