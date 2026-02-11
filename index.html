@@ -741,7 +741,7 @@ function loadChat(n){
 chatBox.innerHTML="";
 
 header.innerHTML=`
-<img src="${chats[n].photo}" onclick="openProfile('${n}')">
+<img src="${chats[n].photo}" onclick="openProfile('${n}', event)">
 <div>
 <b>${n}</b><br>
 <small>${chats[n].status}</small>
@@ -781,40 +781,6 @@ setTimeout(next,500);
 next();
 }
 
-/* typing bubble */
-const typing=document.createElement('div');
-typing.className='typing them';
-typing.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
-chatBox.appendChild(typing);
-
-chatBox.scrollTo({
-top:chatBox.scrollHeight,
-behavior:'smooth'
-});
-
-setTimeout(()=>{
-
-typing.remove();
-
-const d=document.createElement('div');
-d.className='msg '+(i%2?'me':'them');
-d.textContent=chats[n].msgs[i];
-  
-chatBox.appendChild(d);
-
-chatBox.scrollTo({
-top:chatBox.scrollHeight,
-behavior:'smooth'
-});
-
-i++;
-setTimeout(next,500);
-
-},700);
-}
-
-next();
-}
 
 /* PLAYER */
 const tracks=[
@@ -869,7 +835,7 @@ setInterval(clock,1000);
 
 window.addEventListener("resize",ordenarCarpetas);
 
-  function openProfile(name){
+  function openProfile(name, e){
 const p=chats[name];
 const box=document.getElementById("profilePopup");
 
@@ -896,6 +862,7 @@ document.getElementById("profilePopup").style.display="none";
 </script>
 </body>
 </html>
+
 
 
 
