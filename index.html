@@ -743,11 +743,17 @@ const list=document.getElementById('playlist');
 
 let current=0;
 
-function loadTrack(i){
-current=i;
-audio.src=tracks[i].src;
-document.querySelectorAll('.track').forEach(x=>x.classList.remove('active'));
-document.querySelectorAll('.track')[i].classList.add('active');
+  function loadTrack(i){
+  current = i;
+  audio.src = tracks[i].src;
+
+  document.querySelectorAll('.track')
+    .forEach(x => x.classList.remove('active'));
+
+  document.querySelectorAll('.track')[i]
+    .classList.add('active');
+
+  bar.style.width = '0%';
 }
 
 tracks.forEach((t,i)=>{
@@ -771,6 +777,20 @@ play.textContent='▶';
 player.classList.remove("playing");
 }
 };
+
+  audio.ontimeupdate = () => {
+  if (audio.duration) {
+    bar.style.width = (audio.currentTime / audio.duration * 100) + '%';
+  }
+};
+audio.onended = () => {
+  current++;
+  if (current >= tracks.length) current = 0;
+  loadTrack(current);
+  audio.play();
+  play.textContent = '⏸';
+};
+
 
 
 // CLOCK
@@ -824,6 +844,7 @@ drawParticles();
 </script>
 </body>
 </html>
+
 
 
 
