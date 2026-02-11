@@ -247,6 +247,85 @@ transform:translateY(0);
 }
 }
 
+/* CHAT PREMIUM LOOK */
+.friends{
+background:linear-gradient(180deg,#111,#0b0b0b);
+border-right:1px solid rgba(255,255,255,.08);
+}
+
+.friend{
+transition:.25s;
+border-radius:10px;
+margin:4px;
+}
+
+.friend:hover{
+background:rgba(255,255,255,.06);
+transform:scale(1.02);
+}
+
+.friend img{
+box-shadow:0 0 10px rgba(0,120,255,.35);
+}
+
+/* HEADER CHAT */
+.chat-header{
+display:flex;
+align-items:center;
+gap:10px;
+padding:10px;
+border-bottom:1px solid rgba(255,255,255,.08);
+background:#0f0f0f;
+}
+
+.chat-header img{
+width:42px;
+height:42px;
+border-radius:50%;
+box-shadow:0 0 12px rgba(0,120,255,.45);
+}
+
+/* MENSAJES */
+.msg.them{
+background:linear-gradient(145deg,#333,#222);
+border-top-left-radius:4px;
+}
+
+.msg.me{
+background:linear-gradient(145deg,#0078ff,#00b4ff);
+border-top-right-radius:4px;
+box-shadow:0 6px 18px rgba(0,120,255,.4);
+}
+
+/* PERFIL POPUP */
+.profile-popup{
+position:absolute;
+width:260px;
+background:rgba(20,20,20,.9);
+backdrop-filter:blur(12px);
+border-radius:16px;
+padding:15px;
+box-shadow:0 20px 40px rgba(0,0,0,.7);
+color:white;
+display:none;
+z-index:9999;
+animation:open .25s ease;
+}
+
+.profile-popup img{
+width:90px;
+height:90px;
+border-radius:18px;
+display:block;
+margin:auto;
+margin-bottom:10px;
+box-shadow:0 0 18px rgba(0,120,255,.45);
+}
+
+.profile-popup h3{
+text-align:center;
+margin:5px 0;
+}
 /* typing bubble */
 .typing{
 width:60px;
@@ -351,6 +430,7 @@ margin-top:6px;
 
 </div>
 
+ <div id="profilePopup" class="profile-popup"></div>
 <!-- VENTANAS -->
 <div class="window" id="itami">
 <div class="titlebar">Sobre mí <span onclick="closeWin('itami')">✕</span></div>
@@ -620,15 +700,25 @@ folder.ondblclick=()=>openWin(folder.dataset.open);
 const chats={
 Chris:{
 photo:"https://i.ibb.co/CKXkQQnS/dice2.png",
-msgs:['Hola 👋','El space está en mantenimiento hasta que tenga pc','Soy diseñadora y programadora, pero no hago 3D :@, puedes consultar mis trabajos y precios preguntándome ehé']
+bio:"Diseñadora UX. Ama interfaces limpias.",
+status:"Online",
+msgs:[
+"Hola 👋",
+"El space está en mantenimiento",
+"No hago 3D pero hago UI bonita 😼"
+]
 },
 Taiga:{
 photo:"https://i.ibb.co/Kzc35TgL/41-2.png",
-msgs:['Eres cotilla 😅']
+bio:"Artista digital. Fan del cyberpunk.",
+status:"Ausente",
+msgs:["Eres cotilla 😅"]
 },
 Cesar:{
 photo:"https://i.ibb.co/Q7wWGYsP/kuro7.png",
-msgs:['deja de chismear que no está terminado :@']
+bio:"Dev backend. Odia el frontend.",
+status:"Ocupado",
+msgs:["Deja de chismear 😑"]
 }
 };
 const friends=document.getElementById('friends');
@@ -641,16 +731,55 @@ f.innerHTML=`<img src="${chats[n].photo}">${n}`;
 f.onclick=()=>loadChat(n);
 friends.appendChild(f);
 });
+
+ const header=document.createElement("div");
+header.className="chat-header";
+document.querySelector("#chatApp .content").prepend(header);
   
 function loadChat(n){
 
-chatBox.innerHTML='';
+chatBox.innerHTML="";
+
+header.innerHTML=`
+<img src="${chats[n].photo}" onclick="openProfile('${n}')">
+<div>
+<b>${n}</b><br>
+<small>${chats[n].status}</small>
+</div>
+`;
 
 let i=0;
 
 function next(){
 
 if(i>=chats[n].msgs.length) return;
+
+const typing=document.createElement('div');
+typing.className='typing them';
+typing.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+chatBox.appendChild(typing);
+
+chatBox.scrollTop=chatBox.scrollHeight;
+
+setTimeout(()=>{
+
+typing.remove();
+
+const d=document.createElement('div');
+d.className='msg '+(i%2?'me':'them');
+d.textContent=chats[n].msgs[i];
+
+chatBox.appendChild(d);
+chatBox.scrollTop=chatBox.scrollHeight;
+
+i++;
+setTimeout(next,500);
+
+},700);
+}
+
+next();
+}
 
 /* typing bubble */
 const typing=document.createElement('div');
@@ -740,9 +869,34 @@ setInterval(clock,1000);
 
 window.addEventListener("resize",ordenarCarpetas);
 
+  function openProfile(name){
+const p=chats[name];
+const box=document.getElementById("profilePopup");
+
+box.innerHTML=`
+<img src="${p.photo}">
+<h3>${name}</h3>
+<p style="text-align:center;opacity:.8">${p.bio}</p>
+<p style="text-align:center;font-size:13px;margin-top:6px">
+Estado: ${p.status}
+</p>
+`;
+
+box.style.display="block";
+box.style.left=event.clientX+"px";
+box.style.top=event.clientY+"px";
+}
+
+document.addEventListener("click",e=>{
+if(!e.target.closest(".chat-header img"))
+document.getElementById("profilePopup").style.display="none";
+});
+
+
 </script>
 </body>
 </html>
+
 
 
 
