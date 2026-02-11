@@ -659,7 +659,7 @@ folder.ondblclick=()=>openWin(folder.dataset.open);
 });
 
 /* CHAT */
-const chats={
+const chats = {
 Chris:{
 photo:"https://i.ibb.co/CKXkQQnS/dice2.png",
 bg:"https://64.media.tumblr.com/286bdab6edbbe4b07b85ca48313573fa/d084846138f4cb8a-e4/s2048x3072_c200,0,99600,100000/f6ef2d85ee29d6a654fc1f11e8ac5286cc112e07.gif",
@@ -686,131 +686,74 @@ status:"busy",
 msgs:["Deja de chismear 😑"]
 }
 };
-const friends=document.getElementById('friends');
-const chatBox=document.getElementById('chatBox');
 
-Object.keys(chats).forEach(n=>{
-const f=document.createElement('div');
-f.className='friend';
-f.innerHTML=`<img src="${chats[n].photo}">${n}`;
-f.onclick=()=>loadChat(n);
+const friends = document.getElementById('friends');
+const chatBox = document.getElementById('chatBox');
+
+/* HEADER */
+const header = document.createElement("div");
+header.className = "chat-header";
+document.querySelector("#chatApp .content").prepend(header);
+
+/* LISTA DE AMIGOS */
+Object.keys(chats).forEach(name=>{
+const f = document.createElement('div');
+f.className = 'friend';
+f.innerHTML = `<img src="${chats[name].photo}">${name}`;
+f.onclick = ()=> loadChat(name);
 friends.appendChild(f);
 });
 
- const header=document.createElement("div");
-header.className="chat-header";
-document.querySelector("#chatApp .content").prepend(header);
-  
-function loadChat(n){
+/* CARGAR CHAT */
+function loadChat(name){
 
-chatBox.innerHTML="";
+chatBox.innerHTML = "";
+const user = chats[name];
 
-/* fondo personalizado del contacto */
-header.style.backgroundImage = `url(${chats[n].bg})`;
-
-header.innerHTML=`
-<img src="${chats[n].photo}" onclick="openProfile('${n}', event)">
+/* HEADER */
+header.style.backgroundImage = `url(${user.bg})`;
+header.innerHTML = `
+<img src="${user.photo}" onclick="openProfile('${name}', event)">
 <div>
-<b>${n}</b><br>
+<b>${name}</b><br>
 <small>
-<span class="status-dot ${chats[n].status}"></span>
-${chats[n].status.toUpperCase()}
+<span class="status-dot ${user.status}"></span>
+${user.status.toUpperCase()}
 </small>
 </div>
 `;
 
-let i=0;
+/* MENSAJES */
+let i = 0;
 
 function next(){
-
-
-
-/* typing */
-const typing=document.createElement('div');
-typing.className='typing them';
-typing.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
-chatBox.appendChild(typing);
-
-chatBox.scrollTop=chatBox.scrollHeight;
-
-setTimeout(()=>{
-
-typing.remove();
-
-const d=document.createElement('div');
-d.className='msg '+(i%2?'me':'them');
-d.textContent=chats[n].msgs[i];
-
-chatBox.appendChild(d);
-chatBox.scrollTop=chatBox.scrollHeight;
-
-i++;
-setTimeout(next,500);
-
-},700);
-}
-
-next();
-}
-
-if(i>=chats[n].msgs.length) return;
+if(i >= user.msgs.length) return;
 
 /* typing */
-const typing=document.createElement('div');
-typing.className='typing them';
-typing.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+const typing = document.createElement('div');
+typing.className = 'typing them';
+typing.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
 chatBox.appendChild(typing);
-
-chatBox.scrollTop=chatBox.scrollHeight;
+chatBox.scrollTop = chatBox.scrollHeight;
 
 setTimeout(()=>{
 typing.remove();
 
-const d=document.createElement('div');
-d.className='msg '+(i%2?'me':'them');
-d.textContent=chats[n].msgs[i];
-
-chatBox.appendChild(d);
-chatBox.scrollTop=chatBox.scrollHeight;
-
-i++;
-setTimeout(next,500);
-
-},700);
-}
-
-next();
-}{
-
-if(i>=chats[n].msgs.length) return;
-
-const typing=document.createElement('div');
-typing.className='typing them';
-typing.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
-chatBox.appendChild(typing);
-
-chatBox.scrollTop=chatBox.scrollHeight;
-
-setTimeout(()=>{
-
-typing.remove();
-
-const d=document.createElement('div');
-d.className='msg '+(i%2?'me':'them');
-d.textContent=chats[n].msgs[i];
-
-chatBox.appendChild(d);
-chatBox.scrollTop=chatBox.scrollHeight;
+/* mensaje */
+const msg = document.createElement('div');
+msg.className = 'msg ' + (i % 2 ? 'me' : 'them');
+msg.textContent = user.msgs[i];
+chatBox.appendChild(msg);
+chatBox.scrollTop = chatBox.scrollHeight;
 
 i++;
-setTimeout(next,500);
+setTimeout(next, 500);
 
-},700);
+}, 700);
 }
 
 next();
 }
-
 
 /* PLAYER */
 const tracks=[
@@ -892,6 +835,7 @@ document.getElementById("profilePopup").style.display="none";
 </script>
 </body>
 </html>
+
 
 
 
