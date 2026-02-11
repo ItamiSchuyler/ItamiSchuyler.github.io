@@ -95,6 +95,32 @@ gap:15px;
 }
 
 #notify{font-size:22px;cursor:pointer}
+
+  #notify{
+font-size:22px;
+cursor:pointer;
+position:relative;
+transition:.2s;
+}
+#notify:hover{transform:scale(1.15)}
+
+#notifBadge{
+position:absolute;
+top:-6px;
+right:-6px;
+background:red;
+color:white;
+font-size:11px;
+padding:2px 6px;
+border-radius:12px;
+font-weight:bold;
+box-shadow:0 0 8px red;
+animation:pulseNotif 1.2s infinite;
+}
+
+@keyframes pulseNotif{
+50%{transform:scale(1.15)}
+}
 #clock{margin-left:auto;color:#fff;font-size:13px;text-align:right}
 
 /* CHAT */
@@ -289,7 +315,10 @@ font-size:12px;cursor:pointer;opacity:.6;margin-top:6px
 
 <!-- TASKBAR -->
 <div id="taskbar">
-<div id="notify" onclick="openWin('chatApp')">🔔</div>
+<div id="notify" onclick="openWin('chatApp')">
+🔔
+<span id="notifBadge">3</span>
+</div>
 <div id="clock"></div>
 </div>
 
@@ -566,4 +595,5 @@ drawParticles();
 </script>
 </body>
 </html>
+
 
