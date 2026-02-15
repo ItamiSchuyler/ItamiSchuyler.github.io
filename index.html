@@ -1238,33 +1238,38 @@ profilePopup.addEventListener("mousemove", e => {
   profilePopup.style.setProperty("--mouse-y", y + "px");
 });
 
+  document.addEventListener("DOMContentLoaded", () => {
+
   const wallpapers = [
-  "https://i.ibb.co/S4wLCz9M/1399771.png",
-  "https://i.ibb.co/qYdngK8R/yofukashi-no-uta-nazuna-nanakusa-anime-screenshot-anime-anime-girls-hd-wallpaper-48461da8a0004c48e0c.jpg",
-  "https://i.ibb.co/XkXwpnmK/1261867.png",
-  "https://i.ibb.co/9H6TZRDb/1261249.png"
-];
+    "https://i.ibb.co/S4wLCz9M/1399771.png",
+    "https://i.ibb.co/qYdngK8R/yofukashi-no-uta-nazuna-nanakusa-anime-screenshot-anime-anime-girls-hd-wallpaper-48461da8a0004c48e0c.jpg",
+    "https://i.ibb.co/XkXwpnmK/1261867.png",
+    "https://i.ibb.co/9H6TZRDb/1261249.png"
+  ];
 
-let currentWallpaper = 0;
-
-document.getElementById("changeBg").onclick = () => {
-  currentWallpaper++;
-  if(currentWallpaper >= wallpapers.length){
-    currentWallpaper = 0;
-  }
-
+  let currentWallpaper = 0;
   const wall = document.getElementById("wallpaper");
-  
-  wall.style.opacity = 0;
+  const btn = document.getElementById("changeBg");
 
-  setTimeout(()=>{
-    wall.style.backgroundImage = `url(${wallpapers[currentWallpaper]})`;
-    wall.style.opacity = 1;
-  },300);
-};
+  btn.addEventListener("click", () => {
+    currentWallpaper++;
+    if (currentWallpaper >= wallpapers.length) {
+      currentWallpaper = 0;
+    }
+
+    wall.style.opacity = 0;
+
+    setTimeout(() => {
+      wall.style.backgroundImage = `url(${wallpapers[currentWallpaper]})`;
+      wall.style.opacity = 1;
+    }, 300);
+  });
+
+});
   
 </script>
   
 </body>
 </html>
+
 
