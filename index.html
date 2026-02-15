@@ -12,15 +12,24 @@ margin:0;width:100%;height:100%;overflow:hidden;
 }
 
 /* WALLPAPER */
-#wallpaper{
+#wallpaper-container{
   position:fixed;
+  inset:0;
+  z-index:-3;
+}
+
+.wallpaper-layer{
+  position:absolute;
   inset:0;
   background-size:cover;
   background-position:center;
-  z-index:-3;
-  transition:opacity .4s ease;
+  opacity:0;
+  transition:opacity .8s ease;
 }
 
+.wallpaper-layer.active{
+  opacity:1;
+}
   #particles{
 position:fixed;
 inset:0;
@@ -698,14 +707,55 @@ fill:white;
   transform:scale(1.08);
 }
 
+  #wallSelector{
+  position:fixed;
+  bottom:70px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:12px;
+  padding:12px 16px;
+  border-radius:20px;
+  background:rgba(20,20,20,.7);
+  backdrop-filter:blur(20px);
+  z-index:9999;
+}
+
+.wall-thumb{
+  width:70px;
+  height:45px;
+  border-radius:10px;
+  background-size:cover;
+  background-position:center;
+  cursor:pointer;
+  opacity:.6;
+  transition:.25s ease;
+  border:2px solid transparent;
+}
+
+.wall-thumb:hover{
+  opacity:1;
+  transform:scale(1.1);
+}
+
+.wall-thumb.active{
+  opacity:1;
+  border:2px solid white;
+}
+
 
 </style>
 </head>
 
 <body>
   <button id="changeBg">Cambiar fondo</button>
+<div id="wallSelector"></div>
 
-<div id="wallpaper"></div>
+  
+<div id="wallpaper-container">
+  <div class="wallpaper-layer active"></div>
+  <div class="wallpaper-layer"></div>
+</div>
   <canvas id="particles"></canvas>
 <div id="blur-layer"></div>
 
@@ -1238,7 +1288,7 @@ profilePopup.addEventListener("mousemove", e => {
   profilePopup.style.setProperty("--mouse-y", y + "px");
 });
 
-  document.addEventListener("DOMContentLoaded", () => {
+ document.addEventListener("DOMContentLoaded", () => {
 
   const wallpapers = [
     "https://i.ibb.co/S4wLCz9M/1399771.png",
@@ -1247,29 +1297,57 @@ profilePopup.addEventListener("mousemove", e => {
     "https://i.ibb.co/9H6TZRDb/1261249.png"
   ];
 
-  let currentWallpaper = 0;
-  const wall = document.getElementById("wallpaper");
-  const btn = document.getElementById("changeBg");
+  const layers = document.querySelectorAll(".wallpaper-layer");
+  const selector = document.getElementById("wallSelector");
 
-  btn.addEventListener("click", () => {
-    currentWallpaper++;
-    if (currentWallpaper >= wallpapers.length) {
-      currentWallpaper = 0;
-    }
+  let current = localStorage.getItem("wall") || 0;
+  current = Number(current);
 
-    wall.style.opacity = 0;
+  let activeLayer = 0;
 
-    setTimeout(() => {
-      wall.style.backgroundImage = `url(${wallpapers[currentWallpaper]})`;
-      wall.style.opacity = 1;
-    }, 300);
+  layers[activeLayer].style.backgroundImage = `url(${wallpapers[current]})`;
+  layers[activeLayer].classList.add("active");
+
+  wallpapers.forEach((src, i) => {
+
+    const thumb = document.createElement("div");
+    thumb.className = "wall-thumb";
+    thumb.style.backgroundImage = `url(${src})`;
+
+    if(i === current) thumb.classList.add("active");
+
+    thumb.onclick = () => {
+
+      if(i === current) return;
+
+      localStorage.setItem("wall", i);
+
+      const nextLayer = activeLayer === 0 ? 1 : 0;
+
+      layers[nextLayer].style.backgroundImage = `url(${src})`;
+      layers[nextLayer].classList.add("active");
+      layers[activeLayer].classList.remove("active");
+
+      activeLayer = nextLayer;
+      current = i;
+
+      document.querySelectorAll(".wall-thumb")
+        .forEach(t => t.classList.remove("active"));
+
+      thumb.classList.add("active");
+    };
+
+    selector.appendChild(thumb);
+
   });
 
 });
+
   
 </script>
   
 </body>
 </html>
+
 
 
