@@ -260,6 +260,7 @@ animation:blink 1.2s infinite;
 }
 
 /* PROFILE POPUP */
+
 .profile-popup{
 position:absolute;
 width:280px;
@@ -278,33 +279,8 @@ box-shadow:
 inset 0 1px rgba(255,255,255,.1);
 
 animation:popupFade .25s ease;
-}
 
-@keyframes popupFade{
-from{opacity:0;transform:translateY(10px) scale(.95)}
-to{opacity:1;transform:translateY(0) scale(1)}
-}
-
-  .profile-popup{
-position:absolute;
-width:280px;
-border-radius:22px;
-padding:0;
-overflow:hidden;
-display:none;
-z-index:9999;
-
-background:rgba(25,25,25,.55);
-backdrop-filter:blur(20px) saturate(140%);
-border:1px solid rgba(255,255,255,.08);
-
-box-shadow:
-0 25px 60px rgba(0,0,0,.65),
-inset 0 1px rgba(255,255,255,.1);
-
-animation:popupFade .25s ease;
-
-/* 🔥 glow base */
+/* variables glow */
 --mouse-x:50%;
 --mouse-y:50%;
 }
@@ -316,11 +292,10 @@ inset:0;
 border-radius:inherit;
 pointer-events:none;
 
-/* Glow que sigue el cursor */
 background:radial-gradient(
-  200px circle at var(--mouse-x) var(--mouse-y),
-  rgba(255,255,255,.15),
-  transparent 60%
+  180px circle at var(--mouse-x) var(--mouse-y),
+  rgba(255,255,255,.18),
+  transparent 65%
 );
 
 opacity:0;
@@ -330,7 +305,6 @@ transition:opacity .2s ease;
 .profile-popup:hover::before{
 opacity:1;
 }
-
 /* HEADER CON FONDO */
 .profile-top{
 height:90px;
@@ -997,7 +971,7 @@ friends.appendChild(f);
 
 function loadChat(name){
   const user = chats[name]; // FIX 🔥
-
+ 
   chatBox.innerHTML = "";
   header.innerHTML = "";
   header.style.backgroundImage = `url(${user.bg})`;
@@ -1040,9 +1014,7 @@ function loadChat(name){
 
   next();
   
-  if(id === "chatApp"){
-  loadChat(Object.keys(chats)[0]);
-}
+ 
 }
 // PROFILE
 function openProfile(name,e){
@@ -1240,6 +1212,7 @@ profilePopup.addEventListener("mousemove", e => {
 </script>
 </body>
 </html>
+
 
 
 
