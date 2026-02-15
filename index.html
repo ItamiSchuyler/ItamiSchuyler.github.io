@@ -285,6 +285,52 @@ from{opacity:0;transform:translateY(10px) scale(.95)}
 to{opacity:1;transform:translateY(0) scale(1)}
 }
 
+  .profile-popup{
+position:absolute;
+width:280px;
+border-radius:22px;
+padding:0;
+overflow:hidden;
+display:none;
+z-index:9999;
+
+background:rgba(25,25,25,.55);
+backdrop-filter:blur(20px) saturate(140%);
+border:1px solid rgba(255,255,255,.08);
+
+box-shadow:
+0 25px 60px rgba(0,0,0,.65),
+inset 0 1px rgba(255,255,255,.1);
+
+animation:popupFade .25s ease;
+
+/* 🔥 glow base */
+--mouse-x:50%;
+--mouse-y:50%;
+}
+
+.profile-popup::before{
+content:"";
+position:absolute;
+inset:0;
+border-radius:inherit;
+pointer-events:none;
+
+/* Glow que sigue el cursor */
+background:radial-gradient(
+  200px circle at var(--mouse-x) var(--mouse-y),
+  rgba(255,255,255,.15),
+  transparent 60%
+);
+
+opacity:0;
+transition:opacity .2s ease;
+}
+
+.profile-popup:hover::before{
+opacity:1;
+}
+
 /* HEADER CON FONDO */
 .profile-top{
 height:90px;
@@ -1002,6 +1048,7 @@ function loadChat(name){
 function openProfile(name,e){
 const p = chats[name];
 const box = document.getElementById("profilePopup");
+  box.className = "profile-popup " + p.status;
 
 box.innerHTML = `
   <div class="profile-top" style="background-image:url('${p.bg}')"></div>
@@ -1178,9 +1225,22 @@ codeVideos.forEach(v=>{
 
   codeGrid.appendChild(card);
 });
+
+  const profilePopup = document.getElementById("profilePopup");
+
+profilePopup.addEventListener("mousemove", e => {
+  const rect = profilePopup.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  profilePopup.style.setProperty("--mouse-x", x + "px");
+  profilePopup.style.setProperty("--mouse-y", y + "px");
+});
+
 </script>
 </body>
 </html>
+
 
 
 
