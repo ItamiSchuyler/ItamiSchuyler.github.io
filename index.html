@@ -877,44 +877,50 @@ friends.appendChild(f);
 });
 
 function loadChat(name){
-  const user = chats[name];
-  chatBox.innerHTML="";
-  header.innerHTML="";
-  header.style.backgroundImage="none";
-header.innerHTML=`
-<img src="${user.photo}" onclick="openProfile('${name}', event)">
-<div>
-<b>${name}</b><br>
-<small><span class="status-dot ${user.status}"></span>${user.status.toUpperCase()}</small>
-</div>
-`;
+  const user = chats[name]; // FIX 🔥
 
-let i=0;
-function next(){
-if(i>=user.msgs.length)return;
+  chatBox.innerHTML = "";
+  header.innerHTML = "";
+  header.style.backgroundImage = `url(${user.bg})`;
 
-const typing=document.createElement('div');
-typing.className='typing them';
-typing.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
-chatBox.appendChild(typing);
-chatBox.scrollTop=chatBox.scrollHeight;
+  header.innerHTML = `
+    <img src="${user.photo}" onclick="openProfile('${name}', event)">
+    <div>
+      <b>${name}</b><br>
+      <small>
+        <span class="status-dot ${user.status}"></span>
+        ${user.status.toUpperCase()}
+      </small>
+    </div>
+  `;
 
-setTimeout(()=>{
-typing.remove();
+  let i = 0;
 
-const msg=document.createElement('div');
-msg.className='msg '+(i%2?'me':'them');
-msg.textContent=user.msgs[i];
-chatBox.appendChild(msg);
-chatBox.scrollTop=chatBox.scrollHeight;
+  function next(){
+    if(i >= user.msgs.length) return;
 
-i++;
-setTimeout(next,500);
-},700);
+    const typing = document.createElement('div');
+    typing.className = 'typing them';
+    typing.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+    chatBox.appendChild(typing);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    setTimeout(() => {
+      typing.remove();
+
+      const msg = document.createElement('div');
+      msg.className = 'msg ' + (i % 2 ? 'me' : 'them');
+      msg.textContent = user.msgs[i];
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      i++;
+      setTimeout(next, 500);
+    }, 700);
+  }
+
+  next();
 }
-next();
-}
-
 // PROFILE
 function openProfile(name,e){
 const p=chats[name];
@@ -1099,6 +1105,7 @@ codeVideos.forEach(v=>{
 </script>
 </body>
 </html>
+
 
 
 
