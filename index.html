@@ -263,14 +263,13 @@ animation:blink 1.2s infinite;
 
 .profile-popup{
 position:absolute;
-width:280px;
+width:260px;
 border-radius:22px;
-padding:0;
-overflow:hidden;
+padding:24px 20px;
 display:none;
 z-index:9999;
 
-background:rgba(25,25,25,.55);
+background:rgba(25,25,25,.65);
 backdrop-filter:blur(20px) saturate(140%);
 border:1px solid rgba(255,255,255,.08);
 
@@ -280,28 +279,11 @@ inset 0 1px rgba(255,255,255,.1);
 
 animation:popupFade .25s ease;
 
-/* variables glow */
 --mouse-x:50%;
 --mouse-y:50%;
 }
 
-.profile-popup::before{
-content:"";
-position:absolute;
-inset:0;
-border-radius:inherit;
-pointer-events:none;
-
-background:radial-gradient(
-  180px circle at var(--mouse-x) var(--mouse-y),
-  rgba(255,255,255,.18),
-  transparent 65%
-);
-
-opacity:0;
-transition:opacity .2s ease;
-}
-
+/* GLOW */
 .profile-popup::before{
 content:"";
 position:absolute;
@@ -322,33 +304,14 @@ radial-gradient(
 );
 
 opacity:0;
-transition:opacity .2s ease;
+transition:.2s ease;
 }
 
-/* HEADER CON FONDO */
-.profile-top{
-height:90px;
-background-size:cover;
-background-position:center;
-position:relative;
+.profile-popup:hover::before{
+opacity:1;
 }
 
-/* FOTO */
-.profile-avatar{
-position:absolute;
-bottom:-35px;
-left:50%;
-transform:translateX(-50%);
-width:80px;
-height:80px;
-border-radius:20px;
-border:3px solid white;
-box-shadow:0 10px 25px rgba(0,0,0,.6);
-}
 
-/* CONTENIDO */
-.profile-body{
-padding:50px 20px 20px;
 text-align:center;
 }
 
@@ -1038,26 +1001,47 @@ function loadChat(name){
 }
 // PROFILE
 function openProfile(name,e){
-const p = chats[name];
-const box = document.getElementById("profilePopup");
-  box.className = "profile-popup " + p.status;
+  const p = chats[name];
+  const box = document.getElementById("profilePopup");
 
-box.innerHTML = `
-  <div class="profile-top" style="background-image:url('${p.bg}')"></div>
-  <img class="profile-avatar" src="${p.photo}">
-  <div class="profile-body">
-    <h3>${name}</h3>
-    <div class="profile-bio">${p.bio}</div>
-    <div class="profile-status ${p.status}">
+  box.innerHTML = `
+    <img src="${p.photo}" 
+         style="width:90px;height:90px;border-radius:22px;
+         display:block;margin:0 auto 14px;
+         box-shadow:0 10px 25px rgba(0,0,0,.6);">
+
+    <h3 style="text-align:center;margin:0;">
+      ${name}
+    </h3>
+
+    <p style="text-align:center;opacity:.7;font-size:13px;margin:6px 0 10px;">
+      ${p.bio}
+    </p>
+
+    <div style="
+      text-align:center;
+      font-size:12px;
+      padding:6px 12px;
+      border-radius:20px;
+      background:rgba(255,255,255,.08);
+      display:inline-block;
+      margin:auto;
+    ">
       ● ${p.status.toUpperCase()}
     </div>
-  </div>
-`;
+  `;
 
-box.style.display = "block";
-box.style.left = e.clientX + "px";
-box.style.top = e.clientY + "px";
+  box.style.display = "block";
+  box.style.left = e.clientX + "px";
+  box.style.top = e.clientY + "px";
 }
+
+  document.addEventListener("click", e => {
+  const popup = document.getElementById("profilePopup");
+  if(!popup.contains(e.target) && !e.target.closest(".chat-header img")){
+    popup.style.display = "none";
+  }
+});
 
 
 // PLAYER
@@ -1232,6 +1216,7 @@ profilePopup.addEventListener("mousemove", e => {
 </script>
 </body>
 </html>
+
 
 
 
