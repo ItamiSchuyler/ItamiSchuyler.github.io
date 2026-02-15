@@ -770,6 +770,7 @@ window.addEventListener("resize",ordenarCarpetas);
 // WINDOWS
 let z=10;
 
+
 function openWin(id){
   document.querySelectorAll(".window").forEach(w=>w.classList.remove("active"));
 
@@ -781,6 +782,10 @@ function openWin(id){
   w.classList.add("active");
 
   document.getElementById("blur-layer").classList.add("active");
+
+  if(id === "chatApp"){
+    loadChat(Object.keys(chats)[0]);
+  }
 }
 
 function closeWin(id){
@@ -872,10 +877,9 @@ friends.appendChild(f);
 });
 
 function loadChat(name){
-chatBox.innerHTML="";
-const user=chats[name];
-
-header.style.backgroundImage=`url(${user.bg})`;
+  chatBox.innerHTML="";
+  header.innerHTML="";
+  header.style.backgroundImage="none";
 header.innerHTML=`
 <img src="${user.photo}" onclick="openProfile('${name}', event)">
 <div>
@@ -1094,6 +1098,7 @@ codeVideos.forEach(v=>{
 </script>
 </body>
 </html>
+
 
 
 
