@@ -261,17 +261,90 @@ animation:blink 1.2s infinite;
 
 /* PROFILE POPUP */
 .profile-popup{
-position:absolute;width:260px;
-background:rgba(20,20,20,.95);
-backdrop-filter:blur(12px);
-border-radius:16px;padding:15px;
-box-shadow:0 20px 40px rgba(0,0,0,.7);
-color:white;display:none;z-index:9999;
+position:absolute;
+width:280px;
+border-radius:22px;
+padding:0;
+overflow:hidden;
+display:none;
+z-index:9999;
+
+background:rgba(25,25,25,.55);
+backdrop-filter:blur(20px) saturate(140%);
+border:1px solid rgba(255,255,255,.08);
+
+box-shadow:
+0 25px 60px rgba(0,0,0,.65),
+inset 0 1px rgba(255,255,255,.1);
+
+animation:popupFade .25s ease;
 }
 
-.profile-popup img{
-width:90px;height:90px;border-radius:18px;
-display:block;margin:auto;margin-bottom:10px;
+@keyframes popupFade{
+from{opacity:0;transform:translateY(10px) scale(.95)}
+to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+/* HEADER CON FONDO */
+.profile-top{
+height:90px;
+background-size:cover;
+background-position:center;
+position:relative;
+}
+
+/* FOTO */
+.profile-avatar{
+position:absolute;
+bottom:-35px;
+left:50%;
+transform:translateX(-50%);
+width:80px;
+height:80px;
+border-radius:20px;
+border:3px solid white;
+box-shadow:0 10px 25px rgba(0,0,0,.6);
+}
+
+/* CONTENIDO */
+.profile-body{
+padding:50px 20px 20px;
+text-align:center;
+}
+
+.profile-body h3{
+margin:0;
+font-size:18px;
+}
+
+.profile-bio{
+opacity:.7;
+font-size:13px;
+margin-top:6px;
+}
+
+.profile-status{
+margin-top:10px;
+font-size:12px;
+padding:6px 12px;
+border-radius:20px;
+display:inline-block;
+backdrop-filter:blur(8px);
+}
+
+.profile-status.online{
+background:rgba(0,255,156,.15);
+color:#00ff9c;
+}
+
+.profile-status.away{
+background:rgba(255,170,0,.15);
+color:#ffaa00;
+}
+
+.profile-status.busy{
+background:rgba(255,70,70,.15);
+color:#ff4444;
 }
 
 /* PLAYER */
@@ -927,27 +1000,26 @@ function loadChat(name){
 }
 // PROFILE
 function openProfile(name,e){
-const p=chats[name];
-const box=document.getElementById("profilePopup");
+const p = chats[name];
+const box = document.getElementById("profilePopup");
 
-box.innerHTML=`
-<img src="${p.photo}">
-<h3 style="text-align:center">${name}</h3>
-<p style="text-align:center;opacity:.8">${p.bio}</p>
-<p style="text-align:center;font-size:13px;margin-top:6px">
-Estado: ${p.status}
-</p>
+box.innerHTML = `
+  <div class="profile-top" style="background-image:url('${p.bg}')"></div>
+  <img class="profile-avatar" src="${p.photo}">
+  <div class="profile-body">
+    <h3>${name}</h3>
+    <div class="profile-bio">${p.bio}</div>
+    <div class="profile-status ${p.status}">
+      ● ${p.status.toUpperCase()}
+    </div>
+  </div>
 `;
 
-box.style.display="block";
-box.style.left=e.clientX+"px";
-box.style.top=e.clientY+"px";
+box.style.display = "block";
+box.style.left = e.clientX + "px";
+box.style.top = e.clientY + "px";
 }
 
-document.addEventListener("click",e=>{
-if(!e.target.closest(".chat-header img"))
-document.getElementById("profilePopup").style.display="none";
-});
 
 // PLAYER
 const tracks=[
@@ -1109,6 +1181,7 @@ codeVideos.forEach(v=>{
 </script>
 </body>
 </html>
+
 
 
 
