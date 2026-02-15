@@ -920,6 +920,10 @@ function loadChat(name){
   }
 
   next();
+  
+  if(id === "chatApp"){
+  loadChat(Object.keys(chats)[0]);
+}
 }
 // PROFILE
 function openProfile(name,e){
@@ -1105,6 +1109,7 @@ codeVideos.forEach(v=>{
 </script>
 </body>
 </html>
+
 
 
 
