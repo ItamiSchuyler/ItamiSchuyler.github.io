@@ -302,9 +302,29 @@ opacity:0;
 transition:opacity .2s ease;
 }
 
-.profile-popup:hover::before{
-opacity:1;
+.profile-popup::before{
+content:"";
+position:absolute;
+inset:0;
+border-radius:inherit;
+pointer-events:none;
+
+background:
+radial-gradient(
+  220px circle at var(--mouse-x) var(--mouse-y),
+  rgba(255,255,255,.22),
+  transparent 60%
+),
+radial-gradient(
+  500px circle at center,
+  rgba(255,255,255,.03),
+  transparent 70%
+);
+
+opacity:0;
+transition:opacity .2s ease;
 }
+
 /* HEADER CON FONDO */
 .profile-top{
 height:90px;
@@ -1212,6 +1232,7 @@ profilePopup.addEventListener("mousemove", e => {
 </script>
 </body>
 </html>
+
 
 
 
