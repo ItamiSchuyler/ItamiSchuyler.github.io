@@ -986,129 +986,206 @@
     </div>
     <audio id="audio"></audio>
     <script>
-      // ORGANIZAR CARPETAS function ordenarCarpetas(){ const carpetas=[...document.querySelectorAll(".folder")]; let x=30,y=80; const alto=110,ancho=110; const limite=window.innerHeight-150; carpetas.forEach(f=>{ f.style.left=x+"px"; f.style.top=y+"px"; y+=alto; if(y>limite){y=80;x+=ancho;} }); } ordenarCarpetas(); window.addEventListener("resize",ordenarCarpetas); // WINDOWS let z=10; function openWin(id){ document.querySelectorAll(".window").forEach(w=>w.classList.remove("active")); const w=document.getElementById(id); w.style.display='block'; w.style.left=(window.innerWidth-w.offsetWidth)/2+"px"; w.style.top=(window.innerHeight-w.offsetHeight)/2+"px"; w.style.zIndex=++z; w.classList.add("active"); document.getElementById("blur-layer").classList.add("active"); if(id === "chatApp"){ loadChat(Object.keys(chats)[0]); } } function closeWin(id){ document.getElementById(id).style.display='none'; document.getElementById("blur-layer").classList.remove("active"); } // DRAG WINDOWS document.querySelectorAll(".window").forEach(win=>{ const bar=win.querySelector(".titlebar"); let drag=false,ox,oy; bar.onmousedown=e=>{ drag=true; ox=e.clientX-win.offsetLeft; oy=e.clientY-win.offsetTop; }; document.onmousemove=e=>{ if(!drag)return; win.style.left=e.clientX-ox+"px"; win.style.top=e.clientY-oy+"px"; }; document.onmouseup=()=>drag=false; }); // DRAG FOLDERS document.querySelectorAll(".folder").forEach(folder=>{ let drag = false; let ox = 0; let oy = 0; folder.addEventListener("mousedown", e => { drag = true; ox = e.clientX - folder.offsetLeft; oy = e.clientY - folder.offsetTop; }); document.addEventListener("mousemove", e => { if (!drag) return; folder.style.left = (e.clientX - ox) + "px"; folder.style.top = (e.clientY - oy) + "px"; }); document.addEventListener("mouseup", () => { drag = false; }); folder.addEventListener("dblclick", () => { openWin(folder.dataset.open); }); }); // CHAT DATA const chats={ Chris:{ photo:"https://i.ibb.co/CKXkQQnS/dice2.png", bg:"https://i.postimg.cc/pTKxwzsN/giphy.gif", bio:"Gamer pro", status:"online", msgs:["Hola 👋","El space está en mantenimiento","No hago 3D pero hago UI bonita 😼"] }, Taiga:{ photo:"https://i.ibb.co/Kzc35TgL/41-2.png", bg:"https://i.postimg.cc/NfDGG8Bs/giphy-(2).gif", bio:"Mi mejor amiga 
-      < 3 ", status:"
-      away ", msgs:["
-      Eres cotilla😅 "] }, Cesar:{ photo:"
-      https: //i.ibb.co/Q7wWGYsP/kuro7.png", bg:"https://i.postimg.cc/8zsG1qZm/giphy-(1).gif", bio:"El cesarr 
-        < 3 ", status:"
-      busy ", msgs:["
-      Deja de chismear😑 "] } }; const friends=document.getElementById('friends'); const chatBox=document.getElementById('chatBox'); const header=document.getElementById("
-      chatHeader "); Object.keys(chats).forEach(name=>{ const f=document.createElement('div'); f.className='friend'; f.innerHTML= < img src = "${chats[name].photo}" > $ {
-        name
-      };
-      f.onclick = () => loadChat(name);
-      friends.appendChild(f);
-      });
+document.addEventListener("DOMContentLoaded", () => {
 
-      function loadChat(name) {
-        const user = chats[name]; // FIX 🔥 chatBox.innerHTML = ""; header.innerHTML = ""; header.style.backgroundImage = url(${user.bg}); header.innerHTML = 
-        < img src = "${user.photo}"
-        onclick = "openProfile('${name}', event)" > < div > < b > $ {
-          name
-        } < /b> < br > < small > < span class = "status-dot ${user.status}" > < /span> ${user.status.toUpperCase()}  < /small> < /div> ; let i = 0; function next(){ if(i >= user.msgs.length) return; const typing = document.createElement('div'); typing.className = 'typing them'; typing.innerHTML = ' < div class = "dot" > < /div> < div class = "dot" > < /div> < div class = "dot" > < /div>'; chatBox.appendChild(typing); chatBox.scrollTop = chatBox.scrollHeight; setTimeout(() => { typing.remove(); const msg = document.createElement('div'); msg.className = 'msg ' + (i % 2 ? 'me' : 'them'); msg.textContent = user.msgs[i]; chatBox.appendChild(msg); chatBox.scrollTop = chatBox.scrollHeight; i++; setTimeout(next, 500); }, 700); } next(); } / / PROFILE
-        function openProfile(name, e) {
-          const p = chats[name];
-          const box = document.getElementById("profilePopup");
-          box.innerHTML = < img src = "${p.photo}"
-          style = "width:90px;height:90px;border-radius:22px; display:block;margin:0 auto 14px; box-shadow:0 10px 25px rgba(0,0,0,.6);" > < h3 style = "text-align:center;margin:0;" > $ {
-            name
-          } < /h3> < p style = "text-align:center;opacity:.7;font-size:13px;margin:6px 0 10px;" > $ {
-            p.bio
-          } < /p> < div style = " text-align:center; font-size:12px; padding:6px 12px; border-radius:20px; background:rgba(255,255,255,.08); display:inline-block; margin:auto; " > ●$ {
-            p.status.toUpperCase()
-          } < /div> ; box.style.display = "block"; box.style.left = e.clientX + "px"; box.style.top = e.clientY + "px"; } document.addEventListener("click", e => { const popup = document.getElementById("profilePopup"); if(!popup.contains(e.target) && !e.target.closest(".chat-header img")){ popup.style.display = "none"; } }); / / PLAYER
-          const tracks = [{
-            name: 'Justin Bieber - Confidence',
-            src: 'song.mp3'
-          }, {
-            name: 'Yapi - ¿Dónde te escondes?',
-            src: 'song2.mp3'
-          }];
-          const audio = document.getElementById('audio');
-          const play = document.getElementById('play');
-          const bar = document.getElementById('bar');
-          const list = document.getElementById('playlist');
-          let current = 0;
+////////////////////////////
+// FOLDERS
+////////////////////////////
 
-          function loadTrack(i) {
-            current = i;
-            audio.src = tracks[i].src;
-            document.querySelectorAll('.track').forEach(x => x.classList.remove('active'));
-            document.querySelectorAll('.track')[i].classList.add('active');
-            bar.style.width = '0%';
-            const title = document.getElementById("songTitle");
-            title.style.animation = "none";
-            title.textContent = tracks[i].name;
-            void title.offsetWidth;
-            title.style.animation = "scrollTitle 12s linear infinite";
-          }
-          tracks.forEach((t, i) => {
-            const d = document.createElement('div');
-            d.className = 'track';
-            d.textContent = t.name;
-            d.onclick = () => {
-              loadTrack(i);
-              audio.play();
-              play.textContent = '⏸'
-            };
-            list.appendChild(d);
-          });
-          loadTrack(0);
-          play.onclick = () => {
-            if (audio.paused) {
-              audio.play();
-              play.textContent = '⏸';
-              player.classList.add("playing");
-            } else {
-              audio.pause();
-              play.textContent = '▶';
-              player.classList.remove("playing");
-            }
-          };
-          audio.ontimeupdate = () => {
-            if (audio.duration) {
-              bar.style.width = (audio.currentTime / audio.duration * 100) + '%';
-            }
-          };
-          audio.onended = () => {
-            current++;
-            if (current >= tracks.length) current = 0;
-            loadTrack(current);
-            audio.play();
-            play.textContent = '⏸';
-          }; // CLOCK function clock(){ const d=new Date(); document.getElementById('clock').innerHTML= d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})+ '
-          < br > '+d.toLocaleDateString('
-          es - ES '); } clock(); setInterval(clock,1000); // PARTICLES const canvas = document.getElementById("particles"); const ctx = canvas.getContext("2d"); function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; } resizeCanvas(); window.addEventListener("resize", resizeCanvas); const particles = Array.from({length:80},()=>({ x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight, r:Math.random()*2+1, vx:(Math.random()-.5)*0.4, vy:(Math.random()-.5)*0.4 })); function drawParticles(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,255,255,.6)";
-        ctx.fill();
-      });
-      requestAnimationFrame(drawParticles);
-      }
-      drawParticles();
-      const designs = [{
-        title: "UI Discord",
-        img: "https://i.postimg.cc/..."
-      }, {
-        title: "Landing Page",
-        img: "https://i.postimg.cc/..."
-      }, {
-        title: "Brand Concept",
-        img: "https://i.postimg.cc/..."
-      }];
-      const designGrid = document.getElementById("designGrid");
-      designs.forEach(d => {
-            const item = document.createElement("div");
-            item.className = "portfolio-item";
-            item.innerHTML = < img src = "${d.img}" > < span > $ {
-              d.title
-            } < /span> ; designGrid.appendChild(item); }); const codeVideos = [ {title:"Space simulador de Móvil - 1000 xats", src:"video 1.mp4"}, {title:"xxx", src:"video2.mp4"} ]; const codeGrid = document.getElementById("codeGrid"); codeVideos.forEach(v=>{ const card = document.createElement("div"); card.className = "video-card"; card.innerHTML =  < video src = "${v.src}"
-            muted loop > < /video> < p > $ {
-              v.title
-            } < /p> ; card.onmouseenter = () => card.querySelector("video").play(); card.onmouseleave = () => card.querySelector("video").pause(); codeGrid.appendChild(card); }); const profilePopup = document.getElementById("profilePopup"); profilePopup.addEventListener("mousemove", e => { const rect = profilePopup.getBoundingClientRect(); const x = e.clientX - rect.left; const y = e.clientY - rect.top; profilePopup.style.setProperty("--mouse-x", x + "px"); profilePopup.style.setProperty("--mouse-y", y + "px"); }); document.addEventListener("DOMContentLoaded", () => { const wallpapers = [ "https://i.ibb.co/S4wLCz9M/1399771.png", "https://i.ibb.co/Mk7tsD8f/1400584.png", "https://i.ibb.co/HyZHc46/1271005.png", "https://i.ibb.co/xSf0ffVg/1260050.png" ]; const layers = document.querySelectorAll(".wallpaper-layer"); const selector = document.getElementById("wallSelector"); let current = localStorage.getItem("wall") || 0; current = Number(current); let activeLayer = 0; layers[activeLayer].style.backgroundImage = url(${wallpapers[current]}); layers[activeLayer].classList.add("active"); wallpapers.forEach((src, i) => { const thumb = document.createElement("div"); thumb.className = "wall-thumb"; thumb.style.backgroundImage = url(${src}); if(i === current) thumb.classList.add("active"); thumb.onclick = () => { if(i === current) return; localStorage.setItem("wall", i); const nextLayer = activeLayer === 0 ? 1 : 0; layers[nextLayer].style.backgroundImage = url(${src}); layers[nextLayer].classList.add("active"); layers[activeLayer].classList.remove("active"); activeLayer = nextLayer; current = i; document.querySelectorAll(".wall-thumb") .forEach(t => t.classList.remove("active")); thumb.classList.add("active"); }; selector.appendChild(thumb); }); }); 
-    </script>
+function ordenarCarpetas(){
+  const carpetas=[...document.querySelectorAll(".folder")];
+  let x=30,y=80;
+  const alto=110,ancho=110;
+  const limite=window.innerHeight-150;
+
+  carpetas.forEach(f=>{
+    f.style.left=x+"px";
+    f.style.top=y+"px";
+    y+=alto;
+    if(y>limite){y=80;x+=ancho;}
+  });
+}
+ordenarCarpetas();
+window.addEventListener("resize",ordenarCarpetas);
+
+////////////////////////////
+// WINDOWS
+////////////////////////////
+
+let z=10;
+
+window.openWin = function(id){
+  const w=document.getElementById(id);
+  w.style.display="block";
+  w.style.left=(window.innerWidth-w.offsetWidth)/2+"px";
+  w.style.top=(window.innerHeight-w.offsetHeight)/2+"px";
+  w.style.zIndex=++z;
+  document.getElementById("blur-layer").classList.add("active");
+}
+
+window.closeWin = function(id){
+  document.getElementById(id).style.display="none";
+  document.getElementById("blur-layer").classList.remove("active");
+}
+
+////////////////////////////
+// PLAYER
+////////////////////////////
+
+const tracks=[
+  {name:"Justin Bieber - Confidence",src:"song.mp3"},
+  {name:"Yapi - ¿Dónde te escondes?",src:"song2.mp3"}
+];
+
+const audio=document.getElementById("audio");
+const play=document.getElementById("play");
+const bar=document.getElementById("bar");
+const list=document.getElementById("playlist");
+const title=document.getElementById("songTitle");
+
+let current=0;
+
+function loadTrack(i){
+  current=i;
+  audio.src=tracks[i].src;
+  title.textContent=tracks[i].name;
+  bar.style.width="0%";
+  document.querySelectorAll(".track").forEach(t=>t.classList.remove("active"));
+  document.querySelectorAll(".track")[i].classList.add("active");
+}
+
+tracks.forEach((t,i)=>{
+  const d=document.createElement("div");
+  d.className="track";
+  d.textContent=t.name;
+  d.onclick=()=>{
+    loadTrack(i);
+    audio.play();
+    play.textContent="⏸";
+  };
+  list.appendChild(d);
+});
+
+loadTrack(0);
+
+play.onclick=()=>{
+  if(audio.paused){
+    audio.play();
+    play.textContent="⏸";
+  }else{
+    audio.pause();
+    play.textContent="▶";
+  }
+};
+
+audio.ontimeupdate=()=>{
+  if(audio.duration){
+    bar.style.width=(audio.currentTime/audio.duration*100)+"%";
+  }
+};
+
+////////////////////////////
+// CHAT
+////////////////////////////
+
+const chats={
+  Chris:{
+    photo:"https://i.ibb.co/CKXkQQnS/dice2.png",
+    bg:"https://i.postimg.cc/pTKxwzsN/giphy.gif",
+    status:"online",
+    msgs:["Hola 👋","El space está en mantenimiento"]
+  },
+  Taiga:{
+    photo:"https://i.ibb.co/Kzc35TgL/41-2.png",
+    bg:"https://i.postimg.cc/NfDGG8Bs/giphy-(2).gif",
+    status:"away",
+    msgs:["Eres cotilla 😅"]
+  }
+};
+
+const friends=document.getElementById("friends");
+const chatBox=document.getElementById("chatBox");
+const header=document.getElementById("chatHeader");
+
+Object.keys(chats).forEach(name=>{
+  const f=document.createElement("div");
+  f.className="friend";
+  f.innerHTML=`<img src="${chats[name].photo}">${name}`;
+  f.onclick=()=>loadChat(name);
+  friends.appendChild(f);
+});
+
+function loadChat(name){
+  const user=chats[name];
+  chatBox.innerHTML="";
+  header.style.backgroundImage=`url(${user.bg})`;
+  header.innerHTML=`
+    <img src="${user.photo}">
+    <div>
+      <b>${name}</b><br>
+      <small>${user.status}</small>
+    </div>
+  `;
+
+  user.msgs.forEach((m,i)=>{
+    const msg=document.createElement("div");
+    msg.className="msg "+(i%2?"me":"them");
+    msg.textContent=m;
+    chatBox.appendChild(msg);
+  });
+}
+
+////////////////////////////
+// CLOCK
+////////////////////////////
+
+function clock(){
+  const d=new Date();
+  document.getElementById("clock").innerHTML=
+    d.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"});
+}
+clock();
+setInterval(clock,1000);
+
+////////////////////////////
+// WALLPAPERS
+////////////////////////////
+
+const wallpapers=[
+  "https://i.ibb.co/S4wLCz9M/1399771.png",
+  "https://i.ibb.co/Mk7tsD8f/1400584.png",
+  "https://i.ibb.co/HyZHc46/1271005.png"
+];
+
+const layers=document.querySelectorAll(".wallpaper-layer");
+const selector=document.getElementById("wallSelector");
+
+let currentWall=Number(localStorage.getItem("wall"))||0;
+let activeLayer=0;
+
+layers[activeLayer].style.backgroundImage=`url(${wallpapers[currentWall]})`;
+layers[activeLayer].classList.add("active");
+
+wallpapers.forEach((src,i)=>{
+  const thumb=document.createElement("div");
+  thumb.className="wall-thumb";
+  thumb.style.backgroundImage=`url(${src})`;
+
+  thumb.onclick=()=>{
+    localStorage.setItem("wall",i);
+    const next=activeLayer?0:1;
+    layers[next].style.backgroundImage=`url(${src})`;
+    layers[next].classList.add("active");
+    layers[activeLayer].classList.remove("active");
+    activeLayer=next;
+  };
+
+  selector.appendChild(thumb);
+});
+
+});
+</script>
+
   </body>
 </html>
+
