@@ -862,6 +862,13 @@
         opacity: 1;
         border: 2px solid white;
       }
+
+      #systemIcons{
+  display:flex;
+  gap:10px;
+  font-size:16px;
+  opacity:.8;
+}
     </style>
   </head>
   <body>
@@ -966,11 +973,19 @@
       </div>
     </div>
     <!-- TASKBAR -->
-    <div id="taskbar">
-      <div id="notify" onclick="openWin('chatApp')"> 🔔 <span id="notifBadge">3</span>
-      </div>
-      <div id="clock"></div>
-    </div>
+   <div id="taskbar">
+  <div id="notify" onclick="openWin('chatApp')">
+    🔔
+    <span id="notifBadge">3</span>
+  </div>
+
+  <div id="clock"></div>
+
+  <div id="systemIcons">
+    📶
+    🔋
+  </div>
+</div>
     <!-- PLAYER -->
     <div id="player">
       <div id="nowPlaying">
@@ -1168,13 +1183,24 @@ function loadChat(name){
 ////////////////////////////
 
 function clock(){
-  const d=new Date();
-  document.getElementById("clock").innerHTML=
-    d.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"});
-}
-clock();
-setInterval(clock,1000);
+  const d = new Date();
 
+  const hora = d.toLocaleTimeString("es-ES",{
+    hour:"2-digit",
+    minute:"2-digit"
+  });
+
+  const fecha = d.toLocaleDateString("es-ES",{
+    day:"2-digit",
+    month:"2-digit",
+    year:"numeric"
+  });
+
+  document.getElementById("clock").innerHTML = `
+    ${hora}<br>
+    <span style="font-size:11px;opacity:.7">${fecha}</span>
+  `;
+}
   ////////////////////////////
 // PARTICLES MOUSE REACTIVE
 ////////////////////////////
@@ -1283,5 +1309,6 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
