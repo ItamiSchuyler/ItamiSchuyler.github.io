@@ -244,226 +244,146 @@
         text-shadow: 0 0 8px rgba(0, 0, 0, .6), 0 0 12px rgba(0, 0, 0, .4);
       }
 
-      /* CHAT */
-      .chat-wrap {
-        display: flex;
-        height: 360px
-      }
+/* CHAT LAYOUT */
+.chat-wrap{
+  display:flex;
+  height:420px;
+  background:rgba(0,0,0,.25);
+}
 
-      .friends {
-        width: 200px;
-        background: #111;
-        padding: 5px
-      }
+/* FRIEND LIST */
+.friends{
+  width:190px;
+  padding:12px 8px;
+  background:rgba(15,15,15,.6);
+  backdrop-filter:blur(20px);
+  border-right:1px solid rgba(255,255,255,.06);
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
 
-      .friend {
-        padding: 10px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        cursor: pointer;
-        border-radius: 10px;
-      }
+.friend{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:14px;
+  cursor:pointer;
+  transition:.2s ease;
+  font-size:13px;
+  opacity:.7;
+}
 
-      .friend:hover {
-        background: #222
-      }
+.friend:hover{
+  background:rgba(255,255,255,.06);
+  opacity:1;
+}
 
-      .friend img {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%
-      }
+.friend.active{
+  background:rgba(255,255,255,.12);
+  opacity:1;
+}
 
-      .chat-box {
-        flex: 1;
-        padding: 12px;
-        overflow: auto
-      }
+.friend img{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+}
 
-      /* CHAT HEADER */
-      .chat-header {
-        height: 90px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 10px;
-        background-size: cover;
-        background-position: center;
-        border-bottom: 1px solid rgba(255, 255, 255, .15);
-        color: white;
-      }
+/* CHAT AREA */
+.chat-box{
+  flex:1;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  overflow-y:auto;
+}
 
-      .chat-header img {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        border: 2px solid white;
-        cursor: pointer;
-      }
+/* HEADER CLEAN */
+.chat-header{
+  height:70px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 20px;
+  background:rgba(0,0,0,.4);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
 
-      /* MESSAGES */
-      .msg {
-        max-width: 70%;
-        padding: 8px 12px;
-        border-radius: 12px;
-        margin-bottom: 6px;
-        opacity: 0;
-        transform: translateY(8px);
-        animation: msgAppear .35s forwards;
-      }
+.chat-header img{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+}
 
-      .msg.them {
-        background: #333
-      }
+.chat-header b{
+  font-size:14px;
+  font-weight:600;
+}
 
-      .msg.me {
-        background: #0078ff;
-        margin-left: auto
-      }
+.chat-header small{
+  font-size:11px;
+  opacity:.5;
+}
 
-      @keyframes msgAppear {
-        to {
-          opacity: 1;
-          transform: translateY(0)
-        }
-      }
+/* MESSAGES */
+.msg{
+  max-width:65%;
+  padding:10px 14px;
+  border-radius:18px;
+  font-size:13px;
+  line-height:1.4;
+  animation:fadeMsg .25s ease forwards;
+  opacity:0;
+}
 
-      /* STATUS */
-      .status-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        display: inline-block;
-        margin-right: 6px;
-        box-shadow: 0 0 8px currentColor;
-        animation: pulseStatus 1.6s infinite;
-      }
+.msg.them{
+  background:rgba(255,255,255,.08);
+  align-self:flex-start;
+}
 
-      .online {
-        color: #00ff9c
-      }
+.msg.me{
+  background:linear-gradient(135deg,#ffffff,#dcdcdc);
+  color:#000;
+  align-self:flex-end;
+}
 
-      .away {
-        color: #ffaa00
-      }
+@keyframes fadeMsg{
+  to{
+    opacity:1;
+  }
+}
 
-      .busy {
-        color: #ff4444
-      }
+/* TYPING */
+.typing{
+  display:flex;
+  gap:5px;
+  padding:8px 12px;
+  border-radius:18px;
+  background:rgba(255,255,255,.08);
+  width:fit-content;
+}
 
-      @keyframes pulseStatus {
-        50% {
-          opacity: .4;
-          transform: scale(.85)
-        }
-      }
+.dot{
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:white;
+  opacity:.4;
+  animation:blink 1.4s infinite;
+}
 
-      /* TYPING */
-      .typing {
-        width: 60px;
-        padding: 8px 12px;
-        border-radius: 12px;
-        background: #333;
-        display: flex;
-        gap: 4px;
-      }
+.dot:nth-child(2){animation-delay:.2s}
+.dot:nth-child(3){animation-delay:.4s}
 
-      .dot {
-        width: 6px;
-        height: 6px;
-        background: white;
-        border-radius: 50%;
-        animation: blink 1.2s infinite;
-      }
+@keyframes blink{
+  50%{opacity:1}
+}
+     
 
-      .dot:nth-child(2) {
-        animation-delay: .2s
-      }
-
-      .dot:nth-child(3) {
-        animation-delay: .4s
-      }
-
-      @keyframes blink {
-
-        0%,
-        100% {
-          opacity: .2
-        }
-
-        50% {
-          opacity: 1
-        }
-      }
-
-      /* PROFILE POPUP */
-      .profile-popup {
-        position: absolute;
-        width: 260px;
-        border-radius: 22px;
-        padding: 24px 20px;
-        display: none;
-        z-index: 9999;
-        background: rgba(25, 25, 25, .65);
-        backdrop-filter: blur(20px) saturate(140%);
-        border: 1px solid rgba(255, 255, 255, .08);
-        box-shadow: 0 25px 60px rgba(0, 0, 0, .65), inset 0 1px rgba(255, 255, 255, .1);
-        animation: popupFade .25s ease;
-        --mouse-x: 50%;
-        --mouse-y: 50%;
-      }
-
-      /* GLOW */
-      .profile-popup::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        pointer-events: none;
-        background: radial-gradient(220px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, .22), transparent 60%), radial-gradient(500px circle at center, rgba(255, 255, 255, .03), transparent 70%);
-        opacity: 0;
-        transition: .2s ease;
-      }
-
-      .profile-popup:hover::before {
-        opacity: 1;
-      }
-
-      .profile-body h3 {
-        margin: 0;
-        font-size: 18px;
-      }
-
-      .profile-bio {
-        opacity: .7;
-        font-size: 13px;
-        margin-top: 6px;
-      }
-
-      .profile-status {
-        margin-top: 10px;
-        font-size: 12px;
-        padding: 6px 12px;
-        border-radius: 20px;
-        display: inline-block;
-        backdrop-filter: blur(8px);
-      }
-
-      .profile-status.online {
-        background: rgba(0, 255, 156, .15);
-        color: #00ff9c;
-      }
-
-      .profile-status.away {
-        background: rgba(255, 170, 0, .15);
-        color: #ffaa00;
-      }
-
-      .profile-status.busy {
-        background: rgba(255, 70, 70, .15);
-        color: #ff4444;
-      }
 
       /* PLAYER */
       #player {
@@ -938,6 +858,12 @@
   border-radius:2px;
   transition:.3s ease;
 }
+
+      #chatApp{
+  width:780px;
+  border-radius:20px;
+}
+
     </style>
   </head>
   <body>
@@ -1236,6 +1162,12 @@ Object.keys(chats).forEach(name=>{
 });
 
 function loadChat(name){
+  document.querySelectorAll(".friend")
+  .forEach(f=>f.classList.remove("active"));
+
+[...document.querySelectorAll(".friend")]
+  .find(f=>f.textContent.trim()===name)
+  ?.classList.add("active");
   const user=chats[name];
   chatBox.innerHTML="";
   header.style.backgroundImage=`url(${user.bg})`;
@@ -1404,6 +1336,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
