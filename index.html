@@ -1133,7 +1133,7 @@ const chats={
 };
 
 const friends=$("#friends");
-
+const chatBox = $("#chatBox");
 const header=$("#chatHeader");
 
 Object.keys(chats).forEach(name=>{
@@ -1172,8 +1172,7 @@ function loadChat(name){
 
 const chatInput=$("#chatInput");
 const sendBtn=$("#sendMsg");
-const chatBox = $("#chatBox");
-  
+
 function addMessage(text, type = "friend"){
   const msg = document.createElement("div");
   msg.className = "msg " + type;
@@ -1380,6 +1379,7 @@ wallpapers.forEach((src,i)=>{
   
 </body>
 </html>
+
 
 
 
