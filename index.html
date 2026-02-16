@@ -6,37 +6,30 @@
 
 <style>
 
-/* =========================
-   RESET
-========================= */
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:Segoe UI, sans-serif;
+  font-family:Segoe UI,sans-serif;
 }
 
 body{
-  background:#111;
   overflow:hidden;
   color:#EDEDED;
 }
 
-/* =========================
-   DESKTOP
-========================= */
+/* DESKTOP */
 #desktop{
   position:relative;
   width:100vw;
   height:100vh;
   overflow:hidden;
-  isolation:isolate;
-  background:linear-gradient(135deg,#1e1f22,#2b2d31);
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
 }
 
-/* =========================
-   FOLDERS
-========================= */
+/* FOLDERS */
 .folder{
   width:100px;
   position:absolute;
@@ -51,7 +44,7 @@ body{
 }
 
 .folder:hover{
-  background:rgba(255,255,255,.1);
+  background:rgba(255,255,255,.15);
 }
 
 .folder img{
@@ -65,9 +58,7 @@ body{
   font-size:14px;
 }
 
-/* =========================
-   WINDOWS
-========================= */
+/* WINDOWS */
 .window{
   position:absolute;
   width:500px;
@@ -79,7 +70,6 @@ body{
   flex-direction:column;
   overflow:hidden;
   backdrop-filter:blur(15px);
-  will-change:transform;
 }
 
 .window-header{
@@ -93,13 +83,10 @@ body{
   flex:1;
   display:flex;
   flex-direction:column;
-  padding:10px;
   overflow:hidden;
 }
 
-/* =========================
-   CHAT
-========================= */
+/* CHAT */
 .chat-box{
   flex:1;
   display:flex;
@@ -114,7 +101,6 @@ body{
   margin:6px 0;
   border-radius:12px;
   font-size:14px;
-  animation:msgAppear .3s ease forwards;
 }
 
 .msg.friend{
@@ -125,11 +111,6 @@ body{
 .msg.me{
   background:#5865f2;
   align-self:flex-end;
-}
-
-@keyframes msgAppear{
-  from{opacity:0;transform:translateY(8px);}
-  to{opacity:1;transform:translateY(0);}
 }
 
 .chat-input{
@@ -152,17 +133,14 @@ body{
   background:#5865f2;
   color:#fff;
   cursor:pointer;
-  transition:.2s;
 }
 
 .chat-input button:hover{
   background:#4752c4;
 }
 
-/* =========================
-   TASKBAR
-========================= */
-#taskbar{
+/* TASKBAR (tu clase original) */
+.taskbar{
   position:fixed;
   bottom:0;
   left:0;
@@ -177,19 +155,8 @@ body{
   border-top:1px solid #333;
 }
 
-.task-icon{
-  cursor:pointer;
-  transition:.2s;
-}
-
-.task-icon:hover{
-  transform:scale(1.1);
-}
-
-/* =========================
-   MUSIC PLAYER
-========================= */
-#player{
+/* PLAYER (tu ID original) */
+#musicPlayer{
   position:fixed;
   right:20px;
   bottom:70px;
@@ -201,7 +168,7 @@ body{
   z-index:900;
 }
 
-#player button{
+#musicPlayer button{
   margin-top:10px;
   padding:8px 12px;
   border:none;
@@ -209,16 +176,13 @@ body{
   color:#fff;
   cursor:pointer;
   border-radius:6px;
-  transition:.2s;
 }
 
-#player button:hover{
+#musicPlayer button:hover{
   background:#4752c4;
 }
 
-/* =========================
-   SCROLLBAR
-========================= */
+/* SCROLLBAR */
 ::-webkit-scrollbar{
   width:8px;
 }
@@ -811,6 +775,7 @@ wallpapers.forEach((src,i)=>{
   
 </body>
 </html>
+
 
 
 
