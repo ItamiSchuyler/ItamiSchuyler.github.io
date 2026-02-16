@@ -983,7 +983,12 @@ document.querySelectorAll(".window").forEach(win => {
     drag = false;
   });
 });
-
+  
+document.querySelectorAll(".window").forEach(win => {
+  win.addEventListener("mousedown", () => {
+    win.style.zIndex = ++z;
+  });
+});
   // BOTONES CLOSE
 document.querySelectorAll(".window").forEach(win => {
   const closeBtn = win.querySelector(".close");
@@ -1386,6 +1391,7 @@ currentWallpaper = Number(currentWallpaper);
   
 </body>
 </html>
+
 
 
 
