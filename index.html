@@ -920,41 +920,89 @@ fill:white;
 
 <script>
   
-// ORGANIZAR CARPETAS
-function ordenarCarpetas(){
-const carpetas=[...document.querySelectorAll(".folder")];
-let x=30,y=80;
-const alto=110,ancho=110;
-const limite=window.innerHeight-150;
+document.addEventListener("DOMContentLoaded", () => {
 
-carpetas.forEach(f=>{
-f.style.left=x+"px";
-f.style.top=y+"px";
-y+=alto;
-if(y>limite){y=80;x+=ancho;}
-});
+//////////////////////////////
+// STATE
+//////////////////////////////
+
+const state = {
+  zIndex: 10,
+  currentTrack: 0,
+  currentWallpaper: Number(localStorage.getItem("wall")) || 0,
+};
+
+//////////////////////////////
+// UTILITIES
+//////////////////////////////
+
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => document.querySelectorAll(sel);
+
+function centerWindow(win){
+  win.style.left = (window.innerWidth - win.offsetWidth) / 2 + "px";
+  win.style.top = (window.innerHeight - win.offsetHeight) / 2 + "px";
 }
-ordenarCarpetas();
-window.addEventListener("resize",ordenarCarpetas);
 
+function updateBlur(){
+  const anyOpen = [...$$(".window")]
+    .some(w => w.style.display === "block");
+  $("#blur-layer").classList.toggle("active", anyOpen);
+}
+
+function bringToFront(win){
+  state.zIndex++;
+  win.style.zIndex = state.zIndex;
+  $$(".window").forEach(w => w.classList.remove("active"));
+  win.classList.add("active");
+}
+
+//////////////////////////////
+// DRAGGABLE
+//////////////////////////////
+
+function makeDraggable(element, handle){
+  let drag = false, ox = 0, oy = 0;
+
+  handle.addEventListener("mousedown", e => {
+    drag = true;
+    ox = e.clientX - element.offsetLeft;
+    oy = e.clientY - element.offsetTop;
+    bringToFront(element);
+  });
+
+  document.addEventListener("mousemove", e => {
+    if(!drag) return;
+
+    const x = Math.max(0,
+      Math.min(window.innerWidth - element.offsetWidth, e.clientX - ox)
+    );
+    const y = Math.max(0,
+      Math.min(window.innerHeight - element.offsetHeight, e.clientY - oy)
+    );
+
+    element.style.left = x + "px";
+    element.style.top = y + "px";
+  });
+
+  document.addEventListener("mouseup", () => drag = false);
+}
+
+//////////////////////////////
 // WINDOWS
-let z=10;
-
+//////////////////////////////
 
 function openWin(id){
-  document.querySelectorAll(".window").forEach(w=>w.classList.remove("active"));
+  const win = $("#" + id);
+  win.style.display = "block";
 
-  const w=document.getElementById(id);
-  w.style.display='block';
- if (!w.dataset.opened) {
-  w.style.left = (window.innerWidth - w.offsetWidth) / 2 + "px";
-  w.style.top = (window.innerHeight - w.offsetHeight) / 2 + "px";
-  w.dataset.opened = "true";
-}
-  w.style.zIndex=++z;
-  w.classList.add("active");
+  if(!win.dataset.opened){
+    centerWindow(win);
+    win.dataset.opened = "true";
+  }
 
-  document.getElementById("blur-layer").classList.add("active");
+  bringToFront(win);
+  updateBlur();
 
   if(id === "chatApp"){
     loadChat(Object.keys(chats)[0]);
@@ -962,128 +1010,95 @@ function openWin(id){
 }
 
 function closeWin(id){
-document.getElementById(id).style.display='none';
-document.getElementById("blur-layer").classList.remove("active");
+  $("#" + id).style.display = "none";
+  updateBlur();
 }
 
-// DRAG WINDOWS
-document.querySelectorAll(".window").forEach(win => {
-  const bar = win.querySelector(".titlebar");
-  let drag = false;
-  let ox = 0;
-  let oy = 0;
+$$(".window").forEach(win => {
+  makeDraggable(win, win.querySelector(".titlebar"));
 
- bar.addEventListener("mousedown", e => {
-  e.preventDefault();
-  drag = true;
-    ox = e.clientX - win.offsetLeft;
-    oy = e.clientY - win.offsetTop;
-  });
-
-  document.addEventListener("mousemove", e => {
-    if (!drag) return;
-    win.style.left = (e.clientX - ox) + "px";
-    win.style.top = (e.clientY - oy) + "px";
-  });
-
-  document.addEventListener("mouseup", () => {
-    drag = false;
-  });
-});
-  
-document.querySelectorAll(".window").forEach(win => {
-  win.addEventListener("mousedown", () => {
-    win.style.zIndex = ++z;
-  });
-});
-  // BOTONES CLOSE
-document.querySelectorAll(".window").forEach(win => {
   const closeBtn = win.querySelector(".close");
   if(closeBtn){
-    closeBtn.addEventListener("click", () => {
-      closeWin(win.id);
-    });
+    closeBtn.addEventListener("click", () => closeWin(win.id));
   }
+
+  win.addEventListener("mousedown", () => bringToFront(win));
 });
-  document.getElementById("notify")
-  .addEventListener("click", () => {
-    openWin("chatApp");
-  });
 
-// DRAG FOLDERS 
-document.querySelectorAll(".folder").forEach(folder=>{
-  let drag = false;
-  let ox = 0;
-  let oy = 0;
+//////////////////////////////
+// FOLDERS
+//////////////////////////////
 
-  folder.addEventListener("mousedown", e => {
-  e.preventDefault();
-  drag = true;
-    ox = e.clientX - folder.offsetLeft;
-    oy = e.clientY - folder.offsetTop;
-  });
+function organizeFolders(){
+  const folders = $$(".folder");
+  let x = 30, y = 80;
+  const step = 110;
+  const limit = window.innerHeight - 150;
 
-  document.addEventListener("mousemove", e => {
-    if (!drag) return;
-    folder.style.left = (e.clientX - ox) + "px";
-    folder.style.top = (e.clientY - oy) + "px";
+  folders.forEach(f => {
+    f.style.left = x + "px";
+    f.style.top = y + "px";
+    y += step;
+    if(y > limit){ y = 80; x += step; }
   });
-
-  document.addEventListener("mouseup", () => {
-    drag = false;
-  });
-
-  folder.addEventListener("dblclick", () => {
-    openWin(folder.dataset.open);
-  });
-});
-  
-// CHAT DATA
-const chats={
-Chris:{
-photo:"https://i.ibb.co/CKXkQQnS/dice2.png",
-bg:"https://i.postimg.cc/pTKxwzsN/giphy.gif",
-bio:"Gamer pro",
-status:"online",
-msgs:["Hola 👋","El space está en mantenimiento","No hago 3D pero hago UI bonita 😼"]
-},
-Taiga:{
-photo:"https://i.ibb.co/Kzc35TgL/41-2.png",
-bg:"https://i.postimg.cc/NfDGG8Bs/giphy-(2).gif",
-bio:"Mi mejor amiga <3",
-status:"away",
-msgs:["Eres cotilla 😅"]
-},
-Cesar:{
-photo:"https://i.ibb.co/Q7wWGYsP/kuro7.png",
-bg:"https://i.postimg.cc/8zsG1qZm/giphy-(1).gif",
-bio:"El cesarr <3",
-status:"busy",
-msgs:["Deja de chismear 😑"]
 }
+
+organizeFolders();
+window.addEventListener("resize", organizeFolders);
+
+$$(".folder").forEach(folder => {
+  makeDraggable(folder, folder);
+  folder.addEventListener("dblclick",
+    () => openWin(folder.dataset.open));
+});
+
+//////////////////////////////
+// CHAT
+//////////////////////////////
+
+const chats = {
+  Chris:{
+    photo:"https://i.ibb.co/CKXkQQnS/dice2.png",
+    bg:"https://i.postimg.cc/pTKxwzsN/giphy.gif",
+    bio:"Gamer pro",
+    status:"online",
+    msgs:["Hola 👋","El space está en mantenimiento","No hago 3D pero hago UI bonita 😼"]
+  },
+  Taiga:{
+    photo:"https://i.ibb.co/Kzc35TgL/41-2.png",
+    bg:"https://i.postimg.cc/NfDGG8Bs/giphy-(2).gif",
+    bio:"Mi mejor amiga <3",
+    status:"away",
+    msgs:["Eres cotilla 😅"]
+  },
+  Cesar:{
+    photo:"https://i.ibb.co/Q7wWGYsP/kuro7.png",
+    bg:"https://i.postimg.cc/8zsG1qZm/giphy-(1).gif",
+    bio:"El cesarr <3",
+    status:"busy",
+    msgs:["Deja de chismear 😑"]
+  }
 };
 
-const friends=document.getElementById('friends');
-const chatBox=document.getElementById('chatBox');
-const header=document.getElementById("chatHeader");
+const friends = $("#friends");
+const chatBox = $("#chatBox");
+const header = $("#chatHeader");
 
-Object.keys(chats).forEach(name=>{
-const f=document.createElement('div');
-f.className='friend';
-f.innerHTML=`<img src="${chats[name].photo}">${name}`;
-f.onclick=()=>loadChat(name);
-friends.appendChild(f);
+Object.keys(chats).forEach(name => {
+  const f = document.createElement("div");
+  f.className = "friend";
+  f.innerHTML = `<img src="${chats[name].photo}">${name}`;
+  f.addEventListener("click", () => loadChat(name));
+  friends.appendChild(f);
 });
 
 function loadChat(name){
-  const user = chats[name]; // FIX 🔥
- 
+  const user = chats[name];
   chatBox.innerHTML = "";
-  header.innerHTML = "";
   header.style.backgroundImage = `url(${user.bg})`;
 
   header.innerHTML = `
-    <img src="${user.photo}" onclick="openProfile('${name}', event)">
+    <img src="${user.photo}">
     <div>
       <b>${name}</b><br>
       <small>
@@ -1098,298 +1113,185 @@ function loadChat(name){
   function next(){
     if(i >= user.msgs.length) return;
 
-    const typing = document.createElement('div');
-    typing.className = 'typing them';
-    typing.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
-    chatBox.appendChild(typing);
+    const msg = document.createElement("div");
+    msg.className = "msg " + (i % 2 ? "me" : "them");
+    msg.textContent = user.msgs[i];
+    chatBox.appendChild(msg);
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    setTimeout(() => {
-      typing.remove();
-
-      const msg = document.createElement('div');
-      msg.className = 'msg ' + (i % 2 ? 'me' : 'them');
-      msg.textContent = user.msgs[i];
-      chatBox.appendChild(msg);
-      chatBox.scrollTop = chatBox.scrollHeight;
-
-      i++;
-      setTimeout(next, 500);
-    }, 700);
+    i++;
+    setTimeout(next, 500);
   }
 
   next();
-  
- 
-}
-// PROFILE
-function openProfile(name,e){
-  const p = chats[name];
-  const box = document.getElementById("profilePopup");
-
-  box.innerHTML = `
-    <img src="${p.photo}" 
-         style="width:90px;height:90px;border-radius:22px;
-         display:block;margin:0 auto 14px;
-         box-shadow:0 10px 25px rgba(0,0,0,.6);">
-
-    <h3 style="text-align:center;margin:0;">
-      ${name}
-    </h3>
-
-    <p style="text-align:center;opacity:.7;font-size:13px;margin:6px 0 10px;">
-      ${p.bio}
-    </p>
-
-    <div style="
-      text-align:center;
-      font-size:12px;
-      padding:6px 12px;
-      border-radius:20px;
-      background:rgba(255,255,255,.08);
-      display:inline-block;
-      margin:auto;
-    ">
-      ● ${p.status.toUpperCase()}
-    </div>
-  `;
-
-  box.style.display = "block";
-  box.style.left = e.clientX + "px";
-  box.style.top = e.clientY + "px";
 }
 
-  document.addEventListener("click", e => {
-  const popup = document.getElementById("profilePopup");
-  if(!popup.contains(e.target) && !e.target.closest(".chat-header img")){
-    popup.style.display = "none";
-  }
-});
-
-
+//////////////////////////////
 // PLAYER
-const tracks=[
-{name:'Justin Bieber - Confidence',src:'song.mp3'},
-{name:'Yapi - ¿Dónde te escondes?',src:'song2.mp3'}
+//////////////////////////////
+
+const tracks = [
+  {name:'Justin Bieber - Confidence',src:'song.mp3'},
+  {name:'Yapi - ¿Dónde te escondes?',src:'song2.mp3'}
 ];
 
-const audio=document.getElementById('audio');
-const play=document.getElementById('play');
-const bar=document.getElementById('bar');
-const list=document.getElementById('playlist');
-const player = document.getElementById("player");
+const audio = $("#audio");
+const play = $("#play");
+const bar = $("#bar");
+const list = $("#playlist");
+const title = $("#songTitle");
 
-let currentTrack = 0;
-
-
-
-  function loadTrack(i){
-  currentTrack = i;
+function loadTrack(i){
+  state.currentTrack = i;
   audio.src = tracks[i].src;
-
-  document.querySelectorAll('.track')
-    .forEach(x => x.classList.remove('active'));
-
-  document.querySelectorAll('.track')[i]
-    .classList.add('active');
-
-  bar.style.width = '0%';
-
-  const title = document.getElementById("songTitle");
-  title.style.animation = "none";
   title.textContent = tracks[i].name;
-  void title.offsetWidth;
-  title.style.animation = "scrollTitle 12s linear infinite";
+
+  $$(".track").forEach(t => t.classList.remove("active"));
+  $$(".track")[i].classList.add("active");
+  bar.style.width = "0%";
 }
 
 tracks.forEach((t,i)=>{
-const d=document.createElement('div');
-d.className='track';
-d.textContent=t.name;
-d.onclick=()=>{loadTrack(i);audio.play();play.textContent='⏸'};
-list.appendChild(d);
+  const d = document.createElement("div");
+  d.className = "track";
+  d.textContent = t.name;
+  d.addEventListener("click", ()=>{
+    loadTrack(i);
+    audio.play();
+  });
+  list.appendChild(d);
 });
 
 loadTrack(0);
 
-play.onclick=()=>{
-if(audio.paused){
-audio.play();
-play.textContent='⏸';
-player.classList.add("playing");
-}else{
-audio.pause();
-play.textContent='▶';
-player.classList.remove("playing");
-}
-};
-
-  audio.ontimeupdate = () => {
-  if (audio.duration) {
-    bar.style.width = (audio.currentTime / audio.duration * 100) + '%';
+play.addEventListener("click", ()=>{
+  if(audio.paused){
+    audio.play();
+  }else{
+    audio.pause();
   }
-};
-audio.onended = () => {
- currentTrack++;
-if (currentTrack >= tracks.length) currentTrack = 0;
-loadTrack(currentTrack);
+});
+
+audio.addEventListener("timeupdate", ()=>{
+  if(audio.duration){
+    bar.style.width =
+      (audio.currentTime / audio.duration * 100) + "%";
+  }
+});
+
+audio.addEventListener("ended", ()=>{
+  state.currentTrack =
+    (state.currentTrack + 1) % tracks.length;
+  loadTrack(state.currentTrack);
   audio.play();
-  play.textContent = '⏸';
-};
+});
 
-
-
+//////////////////////////////
 // CLOCK
+//////////////////////////////
+
 function clock(){
-const d=new Date();
-document.getElementById('clock').innerHTML=
-d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})+
-'<br>'+d.toLocaleDateString('es-ES');
+  const d = new Date();
+  $("#clock").innerHTML =
+    d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}) +
+    "<br>" +
+    d.toLocaleDateString('es-ES');
 }
+
 clock();
 setInterval(clock,1000);
 
-  // PARTICLES
-const canvas = document.getElementById("particles");
+//////////////////////////////
+// PARTICLES
+//////////////////////////////
+
+const canvas = $("#particles");
 const ctx = canvas.getContext("2d");
 
 function resizeCanvas(){
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 }
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
 const particleCount = window.innerWidth < 768 ? 40 : 80;
 
-const particles = Array.from({ length: particleCount }, () => ({
-  x: Math.random() * window.innerWidth,
-  y: Math.random() * window.innerHeight,
-  r: Math.random() * 2 + 1,
-  vx: (Math.random() - 0.5) * 0.4,
-  vy: (Math.random() - 0.5) * 0.4
+const particles = Array.from({length:particleCount},()=>({
+  x:Math.random()*window.innerWidth,
+  y:Math.random()*window.innerHeight,
+  r:Math.random()*2+1,
+  vx:(Math.random()-.5)*0.4,
+  vy:(Math.random()-.5)*0.4
 }));
 
-function drawParticles(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-particles.forEach(p=>{
-p.x+=p.vx;
-p.y+=p.vy;
+  particles.forEach(p=>{
+    p.x+=p.vx;
+    p.y+=p.vy;
 
-if(p.x<0||p.x>canvas.width) p.vx*=-1;
-if(p.y<0||p.y>canvas.height) p.vy*=-1;
+    if(p.x<0||p.x>canvas.width) p.vx*=-1;
+    if(p.y<0||p.y>canvas.height) p.vy*=-1;
 
-ctx.beginPath();
-ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-ctx.fillStyle="rgba(255,255,255,.6)";
-ctx.fill();
-});
-
-requestAnimationFrame(drawParticles);
-}
-drawParticles();
-
-  const designs = [
-  {title:"UI Discord", img:"https://i.postimg.cc/..."},
-  {title:"Landing Page", img:"https://i.postimg.cc/..."},
-  {title:"Brand Concept", img:"https://i.postimg.cc/..."}
-];
-
-const designGrid = document.getElementById("designGrid");
-
-designs.forEach(d=>{
-  const item = document.createElement("div");
-  item.className = "portfolio-item";
-  item.innerHTML = `
-    <img src="${d.img}">
-    <span>${d.title}</span>
-  `;
-  designGrid.appendChild(item);
-});
-  const codeVideos = [
-  {title:"Space simulador de Móvil - 1000 xats", src:"video 1.mp4"},
-  {title:"xxx", src:"video2.mp4"}
-];
-
-const codeGrid = document.getElementById("codeGrid");
-
-codeVideos.forEach(v=>{
-  const card = document.createElement("div");
-  card.className = "video-card";
-  card.innerHTML = `
-    <video src="${v.src}" muted loop></video>
-    <p>${v.title}</p>
-  `;
-
-  card.onmouseenter = () => card.querySelector("video").play();
-  card.onmouseleave = () => card.querySelector("video").pause();
-
-  codeGrid.appendChild(card);
-});
-
-  const profilePopup = document.getElementById("profilePopup");
-
-profilePopup.addEventListener("mousemove", e => {
-  const rect = profilePopup.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-
-  profilePopup.style.setProperty("--mouse-x", x + "px");
-  profilePopup.style.setProperty("--mouse-y", y + "px");
-});
-
- document.addEventListener("DOMContentLoaded", () => {
-
-  const wallpapers = [
-    "https://i.ibb.co/S4wLCz9M/1399771.png",
-    "https://i.ibb.co/Mk7tsD8f/1400584.png",
-    "https://i.ibb.co/HyZHc46/1271005.png",
-    "https://i.ibb.co/xSf0ffVg/1260050.png"
-  ];
-
-  const layers = document.querySelectorAll(".wallpaper-layer");
-  const selector = document.getElementById("wallSelector");
-
- let currentWallpaper = localStorage.getItem("wall") || 0;
-currentWallpaper = Number(currentWallpaper);
-
-  let activeLayer = 0;
-
-  layers[activeLayer].style.backgroundImage = `url(${wallpapers[currentWallpaper]})`;
-  layers[activeLayer].classList.add("active");
-
-  wallpapers.forEach((src, i) => {
-
-    const thumb = document.createElement("div");
-    thumb.className = "wall-thumb";
-    thumb.style.backgroundImage = `url(${src})`;
-
-   if(i === currentWallpaper) thumb.classList.add("active");
-    thumb.onclick = () => {
-
-      if(i === currentWallpaper) return;
-
-      localStorage.setItem("wall", i);
-
-      const nextLayer = activeLayer === 0 ? 1 : 0;
-
-      layers[nextLayer].style.backgroundImage = `url(${src})`;
-      layers[nextLayer].classList.add("active");
-      layers[activeLayer].classList.remove("active");
-
-      activeLayer = nextLayer;
-      currentWallpaper = i;
-
-      document.querySelectorAll(".wall-thumb")
-        .forEach(t => t.classList.remove("active"));
-
-      thumb.classList.add("active");
-    };
-
-    selector.appendChild(thumb);
-
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle="rgba(255,255,255,.6)";
+    ctx.fill();
   });
+
+  requestAnimationFrame(draw);
+}
+
+draw();
+
+//////////////////////////////
+// WALLPAPERS
+//////////////////////////////
+
+const wallpapers = [
+  "https://i.ibb.co/S4wLCz9M/1399771.png",
+  "https://i.ibb.co/Mk7tsD8f/1400584.png",
+  "https://i.ibb.co/HyZHc46/1271005.png",
+  "https://i.ibb.co/xSf0ffVg/1260050.png"
+];
+
+const layers = $$(".wallpaper-layer");
+const selector = $("#wallSelector");
+let activeLayer = 0;
+
+layers[0].style.backgroundImage =
+  `url(${wallpapers[state.currentWallpaper]})`;
+layers[0].classList.add("active");
+
+wallpapers.forEach((src,i)=>{
+  const thumb = document.createElement("div");
+  thumb.className = "wall-thumb";
+  thumb.style.backgroundImage = `url(${src})`;
+  if(i===state.currentWallpaper)
+    thumb.classList.add("active");
+
+  thumb.addEventListener("click", ()=>{
+    if(i===state.currentWallpaper) return;
+
+    localStorage.setItem("wall", i);
+    const next = activeLayer ? 0 : 1;
+
+    layers[next].style.backgroundImage = `url(${src})`;
+    layers[next].classList.add("active");
+    layers[activeLayer].classList.remove("active");
+
+    activeLayer = next;
+    state.currentWallpaper = i;
+
+    $$(".wall-thumb")
+      .forEach(t=>t.classList.remove("active"));
+    thumb.classList.add("active");
+  });
+
+  selector.appendChild(thumb);
+});
 
 });
 
@@ -1398,6 +1300,7 @@ currentWallpaper = Number(currentWallpaper);
   
 </body>
 </html>
+
 
 
 
