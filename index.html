@@ -923,7 +923,10 @@ fill:white;
 <script>
   
 document.addEventListener("DOMContentLoaded", () => {
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => document.querySelectorAll(sel);
 const notifyBtn = $("#notify");
+  
 
 notifyBtn.addEventListener("click", () => {
   openWin("chatApp");
@@ -946,8 +949,7 @@ const state = {
 // UTILITIES
 //////////////////////////////
 
-const $ = (sel) => document.querySelector(sel);
-const $$ = (sel) => document.querySelectorAll(sel);
+
 
 function centerWindow(win){
   win.style.left = (window.innerWidth - win.offsetWidth) / 2 + "px";
@@ -1316,6 +1318,7 @@ wallpapers.forEach((src,i)=>{
   
 </body>
 </html>
+
 
 
 
