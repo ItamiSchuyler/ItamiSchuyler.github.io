@@ -958,21 +958,27 @@ document.getElementById("blur-layer").classList.remove("active");
 }
 
 // DRAG WINDOWS
-document.querySelectorAll(".window").forEach(win=>{
-const bar=win.querySelector(".titlebar");
-let drag=false,ox,oy;
+document.querySelectorAll(".window").forEach(win => {
+  const bar = win.querySelector(".titlebar");
+  let drag = false;
+  let ox = 0;
+  let oy = 0;
 
-bar.onmousedown=e=>{
-drag=true;
-ox=e.clientX-win.offsetLeft;
-oy=e.clientY-win.offsetTop;
-};
-document.addEventListener("mousemove", e => {
-if(!drag)return;
-win.style.left=e.clientX-ox+"px";
-win.style.top=e.clientY-oy+"px";
-};
-document.onmouseup=()=>drag=false;
+  bar.addEventListener("mousedown", e => {
+    drag = true;
+    ox = e.clientX - win.offsetLeft;
+    oy = e.clientY - win.offsetTop;
+  });
+
+  document.addEventListener("mousemove", e => {
+    if (!drag) return;
+    win.style.left = (e.clientX - ox) + "px";
+    win.style.top = (e.clientY - oy) + "px";
+  });
+
+  document.addEventListener("mouseup", () => {
+    drag = false;
+  });
 });
 
 
@@ -1360,6 +1366,7 @@ currentWallpaper = Number(currentWallpaper);
   
 </body>
 </html>
+
 
 
 
