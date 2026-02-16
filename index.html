@@ -28,6 +28,10 @@ body{
   background-position:center;
   background-repeat:no-repeat;
 }
+  #desktop{
+  position:relative;
+  z-index:10;
+}
   /* =========================
    WALLPAPER SYSTEM
 ========================= */
@@ -74,7 +78,7 @@ body{
   background:rgba(0,0,0,0);
   transition:.4s;
   pointer-events:none;
-  z-index:5;
+  z-index:15; /* menor que ventanas, mayor que fondo */
 }
 
 #blur-layer.active{
@@ -146,7 +150,8 @@ body{
 
 /* WINDOWS */
 .window{
-position:absolute;
+  position:absolute;
+  z-index:20;
   left:0;
   top:0;
   width:500px;
@@ -164,7 +169,7 @@ position:absolute;
   flex-direction:column;
 }
   
-.window-header{
+.titlebar{
   background:#2b2d31;
   padding:10px;
   cursor:move;
@@ -862,6 +867,7 @@ wallpapers.forEach((src,i)=>{
   
 </body>
 </html>
+
 
 
 
