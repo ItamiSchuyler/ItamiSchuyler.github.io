@@ -1143,12 +1143,12 @@ const play=document.getElementById('play');
 const bar=document.getElementById('bar');
 const list=document.getElementById('playlist');
 
-let current=0;
+let currentTrack = 0;
 
 
 
   function loadTrack(i){
-  current = i;
+  currentTrack = i;
   audio.src = tracks[i].src;
 
   document.querySelectorAll('.track')
@@ -1194,9 +1194,9 @@ player.classList.remove("playing");
   }
 };
 audio.onended = () => {
-  current++;
-  if (current >= tracks.length) current = 0;
-  loadTrack(current);
+ currentTrack++;
+if (currentTrack >= tracks.length) currentTrack = 0;
+loadTrack(currentTrack);
   audio.play();
   play.textContent = '⏸';
 };
@@ -1313,12 +1313,12 @@ profilePopup.addEventListener("mousemove", e => {
   const layers = document.querySelectorAll(".wallpaper-layer");
   const selector = document.getElementById("wallSelector");
 
-  let current = localStorage.getItem("wall") || 0;
-  current = Number(current);
+ let currentWallpaper = localStorage.getItem("wall") || 0;
+currentWallpaper = Number(currentWallpaper);
 
   let activeLayer = 0;
 
-  layers[activeLayer].style.backgroundImage = `url(${wallpapers[current]})`;
+  layers[activeLayer].style.backgroundImage = `url(${wallpapers[currentWallpaper]})`;
   layers[activeLayer].classList.add("active");
 
   wallpapers.forEach((src, i) => {
@@ -1327,11 +1327,10 @@ profilePopup.addEventListener("mousemove", e => {
     thumb.className = "wall-thumb";
     thumb.style.backgroundImage = `url(${src})`;
 
-    if(i === current) thumb.classList.add("active");
-
+   if(i === currentWallpaper) thumb.classList.add("active");
     thumb.onclick = () => {
 
-      if(i === current) return;
+      if(i === currentWallpaper) return;
 
       localStorage.setItem("wall", i);
 
@@ -1342,7 +1341,7 @@ profilePopup.addEventListener("mousemove", e => {
       layers[activeLayer].classList.remove("active");
 
       activeLayer = nextLayer;
-      current = i;
+      currentWallpaper = i;
 
       document.querySelectorAll(".wall-thumb")
         .forEach(t => t.classList.remove("active"));
@@ -1361,6 +1360,7 @@ profilePopup.addEventListener("mousemove", e => {
   
 </body>
 </html>
+
 
 
 
