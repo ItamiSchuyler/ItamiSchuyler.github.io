@@ -972,20 +972,15 @@ overflow-y:auto"></div>
 <audio id="audio"></audio>
 
 <script>
-  
 document.addEventListener("DOMContentLoaded", () => {
+
+//////////////////////////////
+// HELPERS
+//////////////////////////////
+
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
-const notifyBtn = $("#notify");
-  
 
-notifyBtn.addEventListener("click", () => {
-  openWin("chatApp");
-
-  // opcional: quitar badge al abrir
-  const badge = $("#notifBadge");
-  if(badge) badge.style.display = "none";
-});
 //////////////////////////////
 // STATE
 //////////////////////////////
@@ -994,104 +989,97 @@ const state = {
   zIndex: 10,
   currentTrack: 0,
   currentWallpaper: Number(localStorage.getItem("wall")) || 0,
+  activeChat: null
 };
 
 //////////////////////////////
-// UTILITIES
+// NOTIFICATION BUTTON
 //////////////////////////////
 
+$("#notify").addEventListener("click", () => {
+  openWin("chatApp");
+  const badge = $("#notifBadge");
+  if(badge) badge.style.display = "none";
+});
 
+//////////////////////////////
+// WINDOW SYSTEM
+//////////////////////////////
 
 function centerWindow(win){
-  win.style.left = (window.innerWidth - win.offsetWidth) / 2 + "px";
-  win.style.top = (window.innerHeight - win.offsetHeight) / 2 + "px";
-}
-
-function updateBlur(){
-  const anyOpen = [...$$(".window")]
-    .some(w => w.style.display === "block");
-  $("#blur-layer").classList.toggle("active", anyOpen);
+  win.style.left = (window.innerWidth - win.offsetWidth)/2 + "px";
+  win.style.top  = (window.innerHeight - win.offsetHeight)/2 + "px";
 }
 
 function bringToFront(win){
   state.zIndex++;
   win.style.zIndex = state.zIndex;
-  $$(".window").forEach(w => w.classList.remove("active"));
+  $$(".window").forEach(w=>w.classList.remove("active"));
   win.classList.add("active");
 }
 
-//////////////////////////////
-// DRAGGABLE
-//////////////////////////////
-
-function makeDraggable(element, handle){
-
-  let isDragging = false;
-  let startX = 0;
-  let startY = 0;
-  let currentX = 0;
-  let currentY = 0;
-
-  element.style.transform = "translate3d(0,0,0)";
-  element.style.willChange = "transform";
-
-  handle.addEventListener("mousedown", e => {
-    isDragging = true;
-    startX = e.clientX - currentX;
-    startY = e.clientY - currentY;
-    bringToFront(element);
-  });
-
-  document.addEventListener("mousemove", e => {
-    if(!isDragging) return;
-
-    currentX = e.clientX - startX;
-    currentY = e.clientY - startY;
-
-    element.style.transform =
-      `translate3d(${currentX}px, ${currentY}px, 0)`;
-  });
-
-  document.addEventListener("mouseup", () => {
-    isDragging = false;
-  });
+function updateBlur(){
+  const open = [...$$(".window")]
+    .some(w=>w.style.display==="block");
+  $("#blur-layer").classList.toggle("active", open);
 }
 
-//////////////////////////////
-// WINDOWS
-//////////////////////////////
-
 function openWin(id){
-  const win = $("#" + id);
-  win.style.display = "block";
+  const win = $("#"+id);
+  win.style.display="block";
 
   if(!win.dataset.opened){
     centerWindow(win);
-    win.dataset.opened = "true";
+    win.dataset.opened="true";
   }
 
   bringToFront(win);
   updateBlur();
 
-  if(id === "chatApp"){
+  if(id==="chatApp"){
     loadChat(Object.keys(chats)[0]);
   }
 }
 
 function closeWin(id){
-  $("#" + id).style.display = "none";
+  $("#"+id).style.display="none";
   updateBlur();
 }
 
-$$(".window").forEach(win => {
+//////////////////////////////
+// DRAG GPU
+//////////////////////////////
+
+function makeDraggable(el, handle){
+  let isDragging=false;
+  let startX=0,startY=0;
+  let x=0,y=0;
+
+  el.style.transform="translate3d(0,0,0)";
+  el.style.willChange="transform";
+
+  handle.addEventListener("mousedown",e=>{
+    isDragging=true;
+    startX=e.clientX-x;
+    startY=e.clientY-y;
+    bringToFront(el);
+  });
+
+  document.addEventListener("mousemove",e=>{
+    if(!isDragging) return;
+    x=e.clientX-startX;
+    y=e.clientY-startY;
+    el.style.transform=`translate3d(${x}px,${y}px,0)`;
+  });
+
+  document.addEventListener("mouseup",()=>isDragging=false);
+}
+
+$$(".window").forEach(win=>{
   makeDraggable(win, win.querySelector(".titlebar"));
-
-  const closeBtn = win.querySelector(".close");
-  if(closeBtn){
-    closeBtn.addEventListener("click", () => closeWin(win.id));
-  }
-
-  win.addEventListener("mousedown", () => bringToFront(win));
+  win.addEventListener("mousedown",()=>bringToFront(win));
+  const c=win.querySelector(".close");
+  if(c) c.addEventListener("click",()=>closeWin(win.id));
 });
 
 //////////////////////////////
@@ -1099,74 +1087,70 @@ $$(".window").forEach(win => {
 //////////////////////////////
 
 function organizeFolders(){
-  const folders = $$(".folder");
-  let x = 30, y = 80;
-  const step = 110;
-  const limit = window.innerHeight - 150;
+  let x=30,y=80;
+  const step=110;
+  const limit=window.innerHeight-150;
 
-  folders.forEach(f => {
-    f.style.left = x + "px";
-    f.style.top = y + "px";
-    y += step;
-    if(y > limit){ y = 80; x += step; }
+  $$(".folder").forEach(f=>{
+    f.style.transform=`translate3d(${x}px,${y}px,0)`;
+    y+=step;
+    if(y>limit){y=80;x+=step;}
   });
 }
 
 organizeFolders();
-window.addEventListener("resize", organizeFolders);
+window.addEventListener("resize",organizeFolders);
 
-$$(".folder").forEach(folder => {
-  makeDraggable(folder, folder);
-  folder.addEventListener("dblclick",
-    () => openWin(folder.dataset.open));
+$$(".folder").forEach(f=>{
+  makeDraggable(f,f);
+  f.addEventListener("dblclick",
+    ()=>openWin(f.dataset.open));
 });
 
 //////////////////////////////
-// CHAT
+// CHAT DATA
 //////////////////////////////
 
-const chats = {
+const chats={
   Chris:{
     photo:"https://i.ibb.co/CKXkQQnS/dice2.png",
     bg:"https://i.postimg.cc/pTKxwzsN/giphy.gif",
-    bio:"Gamer pro",
     status:"online",
-    msgs:["Hola 👋","El space está en mantenimiento","No hago 3D pero hago UI bonita 😼"]
+    msgs:["Hola 👋","El space está en mantenimiento"]
   },
   Taiga:{
     photo:"https://i.ibb.co/Kzc35TgL/41-2.png",
     bg:"https://i.postimg.cc/NfDGG8Bs/giphy-(2).gif",
-    bio:"Mi mejor amiga <3",
     status:"away",
     msgs:["Eres cotilla 😅"]
   },
   Cesar:{
     photo:"https://i.ibb.co/Q7wWGYsP/kuro7.png",
     bg:"https://i.postimg.cc/8zsG1qZm/giphy-(1).gif",
-    bio:"El cesarr <3",
     status:"busy",
     msgs:["Deja de chismear 😑"]
   }
 };
 
-const friends = $("#friends");
-const chatBox = $("#chatBox");
-const header = $("#chatHeader");
+const friends=$("#friends");
+const chatBox=$("#chatBox");
+const header=$("#chatHeader");
 
-Object.keys(chats).forEach(name => {
-  const f = document.createElement("div");
-  f.className = "friend";
-  f.innerHTML = `<img src="${chats[name].photo}">${name}`;
-  f.addEventListener("click", () => loadChat(name));
+Object.keys(chats).forEach(name=>{
+  const f=document.createElement("div");
+  f.className="friend";
+  f.innerHTML=`<img src="${chats[name].photo}">${name}`;
+  f.onclick=()=>loadChat(name);
   friends.appendChild(f);
 });
 
 function loadChat(name){
-  const user = chats[name];
-  chatBox.innerHTML = "";
-  header.style.backgroundImage = `url(${user.bg})`;
+  state.activeChat=name;
+  const user=chats[name];
 
-  header.innerHTML = `
+  chatBox.innerHTML="";
+  header.style.backgroundImage=`url(${user.bg})`;
+  header.innerHTML=`
     <img src="${user.photo}">
     <div>
       <b>${name}</b><br>
@@ -1177,82 +1161,60 @@ function loadChat(name){
     </div>
   `;
 
-  let i = 0;
-
-  function next(){
-    if(i >= user.msgs.length) return;
-
-    const msg = document.createElement("div");
-    msg.className = "msg " + (i % 2 ? "me" : "them");
-    msg.textContent = user.msgs[i];
-    chatBox.appendChild(msg);
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    i++;
-    setTimeout(next, 500);
-  }
-
-  next();
-}
-
-//////////////////////////////
-// PLAYER
-//////////////////////////////
-
-const tracks = [
-  {name:'Justin Bieber - Confidence',src:'song.mp3'},
-  {name:'Yapi - ¿Dónde te escondes?',src:'song2.mp3'}
-];
-
-const audio = $("#audio");
-const play = $("#play");
-const bar = $("#bar");
-const list = $("#playlist");
-const title = $("#songTitle");
-
-function loadTrack(i){
-  state.currentTrack = i;
-  audio.src = tracks[i].src;
-  title.textContent = tracks[i].name;
-
-  $$(".track").forEach(t => t.classList.remove("active"));
-  $$(".track")[i].classList.add("active");
-  bar.style.width = "0%";
-}
-
-tracks.forEach((t,i)=>{
-  const d = document.createElement("div");
-  d.className = "track";
-  d.textContent = t.name;
-  d.addEventListener("click", ()=>{
-    loadTrack(i);
-    audio.play();
+  user.msgs.forEach((m,i)=>{
+    addMessage(m,i%2?"me":"friend");
   });
-  list.appendChild(d);
-});
+}
 
-loadTrack(0);
+//////////////////////////////
+// CHAT SIMULATOR
+//////////////////////////////
 
-play.addEventListener("click", ()=>{
-  if(audio.paused){
-    audio.play();
-  }else{
-    audio.pause();
-  }
-});
+const chatInput=$("#chatInput");
+const sendBtn=$("#sendMsg");
 
-audio.addEventListener("timeupdate", ()=>{
-  if(audio.duration){
-    bar.style.width =
-      (audio.currentTime / audio.duration * 100) + "%";
-  }
-});
+function addMessage(text,type="friend"){
+  const msg=document.createElement("div");
+  msg.className="msg "+type;
+  msg.textContent=text;
+  chatBox.appendChild(msg);
+  chatBox.scrollTop=chatBox.scrollHeight;
+}
 
-audio.addEventListener("ended", ()=>{
-  state.currentTrack =
-    (state.currentTrack + 1) % tracks.length;
-  loadTrack(state.currentTrack);
-  audio.play();
+function fakeReply(){
+  const replies=[
+    "JAJA real 😂",
+    "No puede ser",
+    "Eso está loco",
+    "Confirmo",
+    "Bro 💀"
+  ];
+
+  const typing=document.createElement("div");
+  typing.className="typing";
+  typing.innerHTML="<div class='dot'></div><div class='dot'></div><div class='dot'></div>";
+  chatBox.appendChild(typing);
+  chatBox.scrollTop=chatBox.scrollHeight;
+
+  setTimeout(()=>{
+    typing.remove();
+    const r=replies[Math.floor(Math.random()*replies.length)];
+    addMessage(r,"friend");
+  },1000+Math.random()*1000);
+}
+
+function sendMessage(){
+  const text=chatInput.value.trim();
+  if(!text) return;
+
+  addMessage(text,"me");
+  chatInput.value="";
+  fakeReply();
+}
+
+sendBtn.addEventListener("click",sendMessage);
+chatInput.addEventListener("keydown",e=>{
+  if(e.key==="Enter") sendMessage();
 });
 
 //////////////////////////////
@@ -1260,164 +1222,164 @@ audio.addEventListener("ended", ()=>{
 //////////////////////////////
 
 function clock(){
-  const d = new Date();
-  $("#clock").innerHTML =
-    d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}) +
-    "<br>" +
-    d.toLocaleDateString('es-ES');
+  const d=new Date();
+  $("#clock").innerHTML=
+    d.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})+
+    "<br>"+d.toLocaleDateString("es-ES");
 }
-
 clock();
 setInterval(clock,1000);
+
+//////////////////////////////
+// PLAYER
+//////////////////////////////
+
+const tracks=[
+  {name:"Justin Bieber - Confidence",src:"song.mp3"},
+  {name:"Yapi - ¿Dónde te escondes?",src:"song2.mp3"}
+];
+
+const audio=$("#audio");
+const play=$("#play");
+const bar=$("#bar");
+const list=$("#playlist");
+const title=$("#songTitle");
+
+function loadTrack(i){
+  state.currentTrack=i;
+  audio.src=tracks[i].src;
+  title.textContent=tracks[i].name;
+  $$(".track").forEach(t=>t.classList.remove("active"));
+  $$(".track")[i].classList.add("active");
+  bar.style.width="0%";
+}
+
+tracks.forEach((t,i)=>{
+  const d=document.createElement("div");
+  d.className="track";
+  d.textContent=t.name;
+  d.onclick=()=>{
+    loadTrack(i);
+    audio.play();
+  };
+  list.appendChild(d);
+});
+
+loadTrack(0);
+
+play.onclick=()=>{
+  audio.paused?audio.play():audio.pause();
+};
+
+audio.ontimeupdate=()=>{
+  if(audio.duration)
+    bar.style.width=
+    (audio.currentTime/audio.duration*100)+"%";
+};
+
+audio.onended=()=>{
+  state.currentTrack=
+    (state.currentTrack+1)%tracks.length;
+  loadTrack(state.currentTrack);
+  audio.play();
+};
 
 //////////////////////////////
 // PARTICLES
 //////////////////////////////
 
-const canvas = $("#particles");
-const ctx = canvas.getContext("2d");
+const canvas=$("#particles");
+const ctx=canvas.getContext("2d");
 
 function resizeCanvas(){
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
 }
 resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+window.addEventListener("resize",resizeCanvas);
 
-const particleCount = window.innerWidth < 768 ? 40 : 80;
-
-const particles = Array.from({length:particleCount},()=>({
-  x:Math.random()*window.innerWidth,
-  y:Math.random()*window.innerHeight,
+const particles=Array.from({length:70},()=>({
+  x:Math.random()*canvas.width,
+  y:Math.random()*canvas.height,
   r:Math.random()*2+1,
   vx:(Math.random()-.5)*0.4,
   vy:(Math.random()-.5)*0.4
 }));
 
-function draw(){
+function animate(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
+  ctx.beginPath();
   particles.forEach(p=>{
     p.x+=p.vx;
     p.y+=p.vy;
-
     if(p.x<0||p.x>canvas.width) p.vx*=-1;
     if(p.y<0||p.y>canvas.height) p.vy*=-1;
-
-    ctx.beginPath();
+    ctx.moveTo(p.x,p.y);
     ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fillStyle="rgba(255,255,255,.6)";
-    ctx.fill();
   });
 
-  requestAnimationFrame(draw);
-}
+  ctx.fillStyle="rgba(255,255,255,.6)";
+  ctx.fill();
 
-draw();
+  requestAnimationFrame(animate);
+}
+animate();
 
 //////////////////////////////
 // WALLPAPERS
 //////////////////////////////
 
-const wallpapers = [
-  "https://i.ibb.co/S4wLCz9M/1399771.png",
-  "https://i.ibb.co/Mk7tsD8f/1400584.png",
-  "https://i.ibb.co/HyZHc46/1271005.png",
-  "https://i.ibb.co/xSf0ffVg/1260050.png"
+const wallpapers=[
+"https://i.ibb.co/S4wLCz9M/1399771.png",
+"https://i.ibb.co/Mk7tsD8f/1400584.png",
+"https://i.ibb.co/HyZHc46/1271005.png",
+"https://i.ibb.co/xSf0ffVg/1260050.png"
 ];
 
-const layers = $$(".wallpaper-layer");
-const selector = $("#wallSelector");
-let activeLayer = 0;
+const layers=$$(".wallpaper-layer");
+const selector=$("#wallSelector");
+let activeLayer=0;
 
-layers[0].style.backgroundImage =
-  `url(${wallpapers[state.currentWallpaper]})`;
+layers[0].style.backgroundImage=
+`url(${wallpapers[state.currentWallpaper]})`;
 layers[0].classList.add("active");
 
 wallpapers.forEach((src,i)=>{
-  const thumb = document.createElement("div");
-  thumb.className = "wall-thumb";
-  thumb.style.backgroundImage = `url(${src})`;
+  const thumb=document.createElement("div");
+  thumb.className="wall-thumb";
+  thumb.style.backgroundImage=`url(${src})`;
   if(i===state.currentWallpaper)
     thumb.classList.add("active");
 
-  thumb.addEventListener("click", ()=>{
+  thumb.onclick=()=>{
     if(i===state.currentWallpaper) return;
 
-    localStorage.setItem("wall", i);
-    const next = activeLayer ? 0 : 1;
+    localStorage.setItem("wall",i);
+    const next=activeLayer?0:1;
 
-    layers[next].style.backgroundImage = `url(${src})`;
+    layers[next].style.backgroundImage=`url(${src})`;
     layers[next].classList.add("active");
     layers[activeLayer].classList.remove("active");
 
-    activeLayer = next;
-    state.currentWallpaper = i;
+    activeLayer=next;
+    state.currentWallpaper=i;
 
     $$(".wall-thumb")
       .forEach(t=>t.classList.remove("active"));
     thumb.classList.add("active");
-  });
+  };
 
   selector.appendChild(thumb);
 });
-  //////////////////////////////
-// CHAT SIMULADOR
-//////////////////////////////
 
-const chatInput = $("#chatInput");
-const sendBtn = $("#sendMsg");
-const chatBox = $("#chatBox");
-
-function addMessage(text, type="friend"){
-  const msg = document.createElement("div");
-  msg.className = "msg " + type;
-  msg.textContent = text;
-  chatBox.appendChild(msg);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-function fakeReply(){
-  const replies = [
-    "JAJA real 😂",
-    "No puede ser",
-    "Eso está loco",
-    "Literalmente tú",
-    "Confirmo",
-    "Me sirve",
-    "Bro 💀"
-  ];
-
-  const randomReply = replies[Math.floor(Math.random()*replies.length)];
-
-  setTimeout(()=>{
-    addMessage(randomReply, "friend");
-  }, 800 + Math.random()*1200);
-}
-
-function sendMessage(){
-  const text = chatInput.value.trim();
-  if(!text) return;
-
-  addMessage(text, "me");
-  chatInput.value = "";
-
-  fakeReply();
-}
-
-sendBtn.addEventListener("click", sendMessage);
-
-chatInput.addEventListener("keypress", e=>{
-  if(e.key === "Enter") sendMessage();
 });
-  
-});
-
-
 </script>
+
   
 </body>
 </html>
+
 
 
 
