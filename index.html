@@ -800,7 +800,7 @@ fill:white;
   <span>
     <button class="min"></button>
     <button class="max"></button>
-    <button class="close" onclick="closeWin('itami')"></button>
+    <button class="close"></button>
   </span>
 </div>
 <div class="window-content">
@@ -851,7 +851,7 @@ fill:white;
     <span>
       <button class="min"></button>
       <button class="max"></button>
-      <button class="close" onclick="closeWin('trabajos')"></button>
+     <button class="close"></button>
     </span>
   </div>
 
@@ -866,7 +866,7 @@ fill:white;
     <span>
       <button class="min"></button>
       <button class="max"></button>
-      <button class="close" onclick="closeWin('codigos')"></button>
+     <button class="close"></button>
     </span>
   </div>
 
@@ -877,7 +877,7 @@ fill:white;
 
 <!-- CHAT -->
 <div class="window" id="chatApp">
-<div class="titlebar">Amigos <span onclick="closeWin('chatApp')">✕</span></div>
+<div class="titlebar">Amigos <button class="close"></button> </div>
 
 <div class="chat-header" id="chatHeader"></div>
 
@@ -981,6 +981,19 @@ document.querySelectorAll(".window").forEach(win => {
   });
 });
 
+  // BOTONES CLOSE
+document.querySelectorAll(".window").forEach(win => {
+  const closeBtn = win.querySelector(".close");
+  if(closeBtn){
+    closeBtn.addEventListener("click", () => {
+      closeWin(win.id);
+    });
+  }
+});
+  document.getElementById("notify")
+  .addEventListener("click", () => {
+    openWin("chatApp");
+  });
 
 // DRAG FOLDERS 
 document.querySelectorAll(".folder").forEach(folder=>{
@@ -1148,6 +1161,7 @@ const audio=document.getElementById('audio');
 const play=document.getElementById('play');
 const bar=document.getElementById('bar');
 const list=document.getElementById('playlist');
+const player = document.getElementById("player");
 
 let currentTrack = 0;
 
@@ -1366,6 +1380,7 @@ currentWallpaper = Number(currentWallpaper);
   
 </body>
 </html>
+
 
 
 
