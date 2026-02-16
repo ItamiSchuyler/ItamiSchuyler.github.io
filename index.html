@@ -879,14 +879,21 @@ fill:white;
 
 <!-- CHAT -->
 <div class="window" id="chatApp">
-<div class="titlebar">Amigos <button class="close"></button> </div>
+  <div class="titlebar">
+    Amigos
+    <button class="close"></button>
+  </div>
 
-<div class="chat-header" id="chatHeader"></div>
+  <div class="chat-wrap">
 
-<div class="chat-wrap">
-<div class="friends" id="friends"></div>
-<div class="chat-box" id="chatBox"></div>
-</div>
+    <div class="friends" id="friends"></div>
+
+    <div style="flex:1; display:flex; flex-direction:column;">
+      <div class="chat-header" id="chatHeader"></div>
+      <div class="chat-box" id="chatBox" style="flex:1;"></div>
+    </div>
+
+  </div>
 </div>
 
 <!-- TASKBAR -->
@@ -1391,6 +1398,7 @@ currentWallpaper = Number(currentWallpaper);
   
 </body>
 </html>
+
 
 
 
