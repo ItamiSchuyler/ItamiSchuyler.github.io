@@ -1172,13 +1172,14 @@ function loadChat(name){
 
 const chatInput=$("#chatInput");
 const sendBtn=$("#sendMsg");
-
-function addMessage(text,type="friend"){
-  const msg=document.createElement("div");
- msg.className = "msg " + (i % 2 ? "me" : "friend");
-  msg.textContent=text;
+const chatBox = $("#chatBox");
+  
+function addMessage(text, type = "friend"){
+  const msg = document.createElement("div");
+  msg.className = "msg " + type;
+  msg.textContent = text;
   chatBox.appendChild(msg);
-  chatBox.scrollTop=chatBox.scrollHeight;
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 function fakeReply(){
@@ -1379,6 +1380,7 @@ wallpapers.forEach((src,i)=>{
   
 </body>
 </html>
+
 
 
 
