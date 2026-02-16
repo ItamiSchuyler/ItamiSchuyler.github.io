@@ -964,8 +964,9 @@ document.querySelectorAll(".window").forEach(win => {
   let ox = 0;
   let oy = 0;
 
-  bar.addEventListener("mousedown", e => {
-    drag = true;
+ bar.addEventListener("mousedown", e => {
+  e.preventDefault();
+  drag = true;
     ox = e.clientX - win.offsetLeft;
     oy = e.clientY - win.offsetTop;
   });
@@ -1002,7 +1003,8 @@ document.querySelectorAll(".folder").forEach(folder=>{
   let oy = 0;
 
   folder.addEventListener("mousedown", e => {
-    drag = true;
+  e.preventDefault();
+  drag = true;
     ox = e.clientX - folder.offsetLeft;
     oy = e.clientY - folder.offsetTop;
   });
@@ -1380,6 +1382,7 @@ currentWallpaper = Number(currentWallpaper);
   
 </body>
 </html>
+
 
 
 
