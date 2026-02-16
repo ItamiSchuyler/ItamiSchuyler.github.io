@@ -993,6 +993,7 @@ document.addEventListener("DOMContentLoaded", () => {
 ////////////////////////////
 
 function ordenarCarpetas(){
+ 
   const carpetas=[...document.querySelectorAll(".folder")];
   let x=30,y=80;
   const alto=110,ancho=110;
@@ -1006,6 +1007,12 @@ function ordenarCarpetas(){
   });
 }
 ordenarCarpetas();
+   document.querySelectorAll(".folder").forEach(f=>{
+  f.addEventListener("dblclick", ()=>{
+    const id = f.dataset.open;
+    if(id) openWin(id);
+  });
+});
 window.addEventListener("resize",ordenarCarpetas);
 
 ////////////////////////////
@@ -1028,6 +1035,27 @@ window.closeWin = function(id){
   document.getElementById("blur-layer").classList.remove("active");
 }
 
+  function makeDraggable(win){
+  const bar = win.querySelector(".titlebar");
+  let offsetX=0, offsetY=0, dragging=false;
+
+  bar.addEventListener("mousedown", e=>{
+    dragging=true;
+    offsetX = e.clientX - win.offsetLeft;
+    offsetY = e.clientY - win.offsetTop;
+    win.style.zIndex = ++z;
+  });
+
+  document.addEventListener("mousemove", e=>{
+    if(!dragging) return;
+    win.style.left = (e.clientX - offsetX) + "px";
+    win.style.top  = (e.clientY - offsetY) + "px";
+  });
+
+  document.addEventListener("mouseup", ()=>dragging=false);
+}
+
+document.querySelectorAll(".window").forEach(makeDraggable);
 ////////////////////////////
 // PLAYER
 ////////////////////////////
@@ -1147,6 +1175,73 @@ function clock(){
 clock();
 setInterval(clock,1000);
 
+  ////////////////////////////
+// PARTICLES MOUSE REACTIVE
+////////////////////////////
+
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+const mouse = { x:null, y:null };
+
+window.addEventListener("mousemove", e=>{
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+
+const particles = [];
+
+for(let i=0;i<90;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    vx:(Math.random()-0.5)*0.6,
+    vy:(Math.random()-0.5)*0.6,
+    r:Math.random()*2+1
+  });
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  particles.forEach(p=>{
+    p.x+=p.vx;
+    p.y+=p.vy;
+
+    // rebote
+    if(p.x<0||p.x>canvas.width) p.vx*=-1;
+    if(p.y<0||p.y>canvas.height) p.vy*=-1;
+
+    // reacción al mouse
+    if(mouse.x){
+      const dx = p.x - mouse.x;
+      const dy = p.y - mouse.y;
+      const dist = Math.sqrt(dx*dx+dy*dy);
+
+      if(dist < 120){
+        const force = (120-dist)/120;
+        p.x += dx * force * 0.02;
+        p.y += dy * force * 0.02;
+      }
+    }
+
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle="rgba(255,255,255,.6)";
+    ctx.fill();
+  });
+
+  requestAnimationFrame(animate);
+}
+animate();
+
 ////////////////////////////
 // WALLPAPERS
 ////////////////////////////
@@ -1188,4 +1283,5 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
