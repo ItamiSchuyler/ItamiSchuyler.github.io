@@ -758,7 +758,49 @@ fill:white;
   }
 }
 
+  .chat-input{
+  display:flex;
+  padding:8px;
+  gap:8px;
+  background:#111;
+}
 
+.chat-input input{
+  flex:1;
+  background:#222;
+  border:none;
+  padding:8px;
+  border-radius:6px;
+  color:white;
+  outline:none;
+}
+
+.chat-input button{
+  background:#5865f2;
+  border:none;
+  padding:8px 12px;
+  border-radius:6px;
+  color:white;
+  cursor:pointer;
+}
+
+  .msg{
+  padding:6px 10px;
+  margin:6px;
+  border-radius:10px;
+  max-width:70%;
+  font-size:14px;
+}
+
+.msg.friend{
+  background:#2b2d31;
+  align-self:flex-start;
+}
+
+.msg.me{
+  background:#5865f2;
+  align-self:flex-end;
+}
 </style>
 </head>
 
@@ -888,14 +930,23 @@ fill:white;
 
   <div class="chat-wrap">
 
-    <div class="friends" id="friends"></div>
+  <div class="friends" id="friends"></div>
 
-    <div style="flex:1; display:flex; flex-direction:column;">
-      <div class="chat-header" id="chatHeader"></div>
-      <div class="chat-box" id="chatBox" style="flex:1;"></div>
+  <div style="flex:1; display:flex; flex-direction:column;">
+
+    <div class="chat-header" id="chatHeader"></div>
+
+    <div class="chat-box" id="chatBox" style="flex:1;display:flex;
+flex-direction:column;
+overflow-y:auto"></div>
+
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Escribe un mensaje...">
+      <button id="sendMsg">Enviar</button>
     </div>
 
   </div>
+
 </div>
 
 <!-- TASKBAR -->
@@ -1313,11 +1364,61 @@ wallpapers.forEach((src,i)=>{
 
 });
 
+  //////////////////////////////
+// CHAT SIMULADOR
+//////////////////////////////
+
+const chatInput = $("#chatInput");
+const sendBtn = $("#sendMsg");
+const chatBox = $("#chatBox");
+
+function addMessage(text, type="friend"){
+  const msg = document.createElement("div");
+  msg.className = "msg " + type;
+  msg.textContent = text;
+  chatBox.appendChild(msg);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function fakeReply(){
+  const replies = [
+    "JAJA real 😂",
+    "No puede ser",
+    "Eso está loco",
+    "Literalmente tú",
+    "Confirmo",
+    "Me sirve",
+    "Bro 💀"
+  ];
+
+  const randomReply = replies[Math.floor(Math.random()*replies.length)];
+
+  setTimeout(()=>{
+    addMessage(randomReply, "friend");
+  }, 800 + Math.random()*1200);
+}
+
+function sendMessage(){
+  const text = chatInput.value.trim();
+  if(!text) return;
+
+  addMessage(text, "me");
+  chatInput.value = "";
+
+  fakeReply();
+}
+
+sendBtn.addEventListener("click", sendMessage);
+
+chatInput.addEventListener("keypress", e=>{
+  if(e.key === "Enter") sendMessage();
+});
   
 </script>
   
 </body>
 </html>
+
 
 
 
