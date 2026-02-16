@@ -575,17 +575,12 @@ fill:white;
   gap:10px;
 }
 
-.mini-grid {
-  width:80px;
-  height:80px;
-  display:grid;
-  place-items:center;
+.mini-grid img {
   border-radius:12px;
-  border:1px solid rgba(255,255,255,.12); /* borde fino */
+  border:1px solid rgba(255,255,255,.12);
   backdrop-filter:blur(6px);
   transition:.2s ease;
 }
-
 
   .mini-grid img:hover{
   box-shadow:0 0 12px rgba(255,255,255,.15);
@@ -1246,7 +1241,9 @@ canvas.height = window.innerHeight;
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
-const particles = Array.from({length:80},()=>({
+const particleCount = window.innerWidth < 768 ? 40 : 80;
+
+const particles = Array.from({length:particleCount},()=>(...)
 x:Math.random()*window.innerWidth,
 y:Math.random()*window.innerHeight,
 r:Math.random()*2+1,
@@ -1382,6 +1379,7 @@ currentWallpaper = Number(currentWallpaper);
   
 </body>
 </html>
+
 
 
 
