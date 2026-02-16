@@ -1036,7 +1036,7 @@ function openWin(id){
   bringToFront(win);
   updateBlur();
 
-  if(id==="chatApp"){
+  if(id==="chatApp" && !state.activeChat){
     loadChat(Object.keys(chats)[0]);
   }
 }
@@ -1379,6 +1379,7 @@ wallpapers.forEach((src,i)=>{
   
 </body>
 </html>
+
 
 
 
