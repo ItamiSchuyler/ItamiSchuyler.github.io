@@ -869,6 +869,75 @@
   font-size:16px;
   opacity:.8;
 }
+
+      #rightPanel{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:22px;
+  color:white;
+}
+
+/* WEATHER */
+#weather{
+  font-size:13px;
+  font-weight:500;
+  opacity:.85;
+  letter-spacing:.3px;
+  transition:.2s ease;
+}
+
+#weather:hover{
+  opacity:1;
+  text-shadow:0 0 8px rgba(255,255,255,.4);
+}
+
+/* CLOCK */
+#clockWrap{
+  text-align:right;
+  line-height:1.1;
+}
+
+#clock{
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:.5px;
+}
+
+#date{
+  font-size:11px;
+  opacity:.6;
+  margin-top:2px;
+}
+
+/* BATTERY AESTHETIC */
+.battery{
+  width:26px;
+  height:12px;
+  border:1.5px solid rgba(255,255,255,.7);
+  border-radius:3px;
+  position:relative;
+  padding:1px;
+}
+
+.battery::after{
+  content:"";
+  position:absolute;
+  right:-4px;
+  top:3px;
+  width:3px;
+  height:6px;
+  background:rgba(255,255,255,.7);
+  border-radius:1px;
+}
+
+.battery-level{
+  height:100%;
+  width:70%;
+  background:linear-gradient(90deg,#ffffff,#cccccc);
+  border-radius:2px;
+  transition:.3s ease;
+}
     </style>
   </head>
   <body>
@@ -973,17 +1042,25 @@
       </div>
     </div>
     <!-- TASKBAR -->
-   <div id="taskbar">
+  <div id="taskbar">
   <div id="notify" onclick="openWin('chatApp')">
     🔔
     <span id="notifBadge">3</span>
   </div>
 
-  <div id="clock"></div>
+  <div id="rightPanel">
+    <div id="weather"></div>
 
-  <div id="systemIcons">
-    📶
-    🔋
+    <div id="clockWrap">
+      <div id="clock"></div>
+      <div id="date"></div>
+    </div>
+
+    <div id="systemIcons">
+      <div class="battery">
+        <div class="battery-level"></div>
+      </div>
+    </div>
   </div>
 </div>
     <!-- PLAYER -->
@@ -1185,22 +1262,40 @@ function loadChat(name){
 function clock(){
   const d = new Date();
 
-  const hora = d.toLocaleTimeString("es-ES",{
+  const hora = d.toLocaleTimeString("de-DE",{
     hour:"2-digit",
     minute:"2-digit"
   });
 
-  const fecha = d.toLocaleDateString("es-ES",{
+  const fecha = d.toLocaleDateString("de-DE",{
     day:"2-digit",
     month:"2-digit",
     year:"numeric"
   });
 
-  document.getElementById("clock").innerHTML = `
-    ${hora}<br>
-    <span style="font-size:11px;opacity:.7">${fecha}</span>
-  `;
+  document.getElementById("clock").textContent = hora;
+  document.getElementById("date").textContent = fecha;
 }
+clock();
+setInterval(clock,1000);
+
+
+  async function loadWeather(){
+  try{
+    const res = await fetch(
+      "https://api.open-meteo.com/v1/forecast?latitude=52.37&longitude=9.72&current_weather=true"
+    );
+    const data = await res.json();
+    const temp = Math.round(data.current_weather.temperature);
+
+    document.getElementById("weather").textContent =
+      `Hannover ${temp}°`;
+  }catch(e){
+    document.getElementById("weather").textContent = "Hannover --°";
+  }
+}
+loadWeather();
+setInterval(loadWeather,600000);
   ////////////////////////////
 // PARTICLES MOUSE REACTIVE
 ////////////////////////////
@@ -1309,6 +1404,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
