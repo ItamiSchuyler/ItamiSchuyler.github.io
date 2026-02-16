@@ -1255,12 +1255,12 @@ window.addEventListener("resize", resizeCanvas);
 
 const particleCount = window.innerWidth < 768 ? 40 : 80;
 
-const particles = Array.from({length:particleCount},()=>(...)
-x:Math.random()*window.innerWidth,
-y:Math.random()*window.innerHeight,
-r:Math.random()*2+1,
-vx:(Math.random()-.5)*0.4,
-vy:(Math.random()-.5)*0.4
+const particles = Array.from({ length: particleCount }, () => ({
+  x: Math.random() * window.innerWidth,
+  y: Math.random() * window.innerHeight,
+  r: Math.random() * 2 + 1,
+  vx: (Math.random() - 0.5) * 0.4,
+  vy: (Math.random() - 0.5) * 0.4
 }));
 
 function drawParticles(){
@@ -1391,6 +1391,7 @@ currentWallpaper = Number(currentWallpaper);
   
 </body>
 </html>
+
 
 
 
