@@ -937,8 +937,11 @@ function openWin(id){
 
   const w=document.getElementById(id);
   w.style.display='block';
-  w.style.left=(window.innerWidth-w.offsetWidth)/2+"px";
-  w.style.top=(window.innerHeight-w.offsetHeight)/2+"px";
+ if (!w.dataset.opened) {
+  w.style.left = (window.innerWidth - w.offsetWidth) / 2 + "px";
+  w.style.top = (window.innerHeight - w.offsetHeight) / 2 + "px";
+  w.dataset.opened = "true";
+}
   w.style.zIndex=++z;
   w.classList.add("active");
 
@@ -964,7 +967,7 @@ drag=true;
 ox=e.clientX-win.offsetLeft;
 oy=e.clientY-win.offsetTop;
 };
-document.onmousemove=e=>{
+document.addEventListener("mousemove", e => {
 if(!drag)return;
 win.style.left=e.clientX-ox+"px";
 win.style.top=e.clientY-oy+"px";
@@ -1358,6 +1361,7 @@ profilePopup.addEventListener("mousemove", e => {
   
 </body>
 </html>
+
 
 
 
