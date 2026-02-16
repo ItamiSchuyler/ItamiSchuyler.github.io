@@ -776,6 +776,8 @@ fill:white;
 
 <div id="desktop">
 
+ 
+  
 <div class="folder" data-open="itami">
 <img src="https://cdn-icons-png.flaticon.com/128/456/456793.png">
 <span>xxx</span>
@@ -898,7 +900,7 @@ fill:white;
 
 <!-- TASKBAR -->
 <div id="taskbar">
-<div id="notify" onclick="openWin('chatApp')">
+<div id="notify">
 🔔
 <span id="notifBadge">3</span>
 </div>
@@ -921,7 +923,15 @@ fill:white;
 <script>
   
 document.addEventListener("DOMContentLoaded", () => {
+const notifyBtn = $("#notify");
 
+notifyBtn.addEventListener("click", () => {
+  openWin("chatApp");
+
+  // opcional: quitar badge al abrir
+  const badge = $("#notifBadge");
+  if(badge) badge.style.display = "none";
+});
 //////////////////////////////
 // STATE
 //////////////////////////////
@@ -962,30 +972,36 @@ function bringToFront(win){
 //////////////////////////////
 
 function makeDraggable(element, handle){
-  let drag = false, ox = 0, oy = 0;
+
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+  let currentX = 0;
+  let currentY = 0;
+
+  element.style.transform = "translate3d(0,0,0)";
+  element.style.willChange = "transform";
 
   handle.addEventListener("mousedown", e => {
-    drag = true;
-    ox = e.clientX - element.offsetLeft;
-    oy = e.clientY - element.offsetTop;
+    isDragging = true;
+    startX = e.clientX - currentX;
+    startY = e.clientY - currentY;
     bringToFront(element);
   });
 
   document.addEventListener("mousemove", e => {
-    if(!drag) return;
+    if(!isDragging) return;
 
-    const x = Math.max(0,
-      Math.min(window.innerWidth - element.offsetWidth, e.clientX - ox)
-    );
-    const y = Math.max(0,
-      Math.min(window.innerHeight - element.offsetHeight, e.clientY - oy)
-    );
+    currentX = e.clientX - startX;
+    currentY = e.clientY - startY;
 
-    element.style.left = x + "px";
-    element.style.top = y + "px";
+    element.style.transform =
+      `translate3d(${currentX}px, ${currentY}px, 0)`;
   });
 
-  document.addEventListener("mouseup", () => drag = false);
+  document.addEventListener("mouseup", () => {
+    isDragging = false;
+  });
 }
 
 //////////////////////////////
@@ -1300,6 +1316,7 @@ wallpapers.forEach((src,i)=>{
   
 </body>
 </html>
+
 
 
 
