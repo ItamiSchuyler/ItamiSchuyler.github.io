@@ -251,7 +251,7 @@ opacity:0;
 transform:translateY(8px);
 animation:msgAppear .35s forwards;
 }
-.msg.them{background:#333}
+
 .msg.me{background:#0078ff;margin-left:auto}
 
 @keyframes msgAppear{
@@ -1133,7 +1133,7 @@ const chats={
 };
 
 const friends=$("#friends");
-const chatBox=$("#chatBox");
+
 const header=$("#chatHeader");
 
 Object.keys(chats).forEach(name=>{
@@ -1175,7 +1175,7 @@ const sendBtn=$("#sendMsg");
 
 function addMessage(text,type="friend"){
   const msg=document.createElement("div");
-  msg.className="msg "+type;
+ msg.className = "msg " + (i % 2 ? "me" : "friend");
   msg.textContent=text;
   chatBox.appendChild(msg);
   chatBox.scrollTop=chatBox.scrollHeight;
@@ -1213,7 +1213,7 @@ function sendMessage(){
 }
 
 sendBtn.addEventListener("click",sendMessage);
-chatInput.addEventListener("keydown",e=>{
+chatInput.addEventListener("keydown", e=>{
   if(e.key==="Enter") sendMessage();
 });
 
@@ -1379,6 +1379,7 @@ wallpapers.forEach((src,i)=>{
   
 </body>
 </html>
+
 
 
 
