@@ -251,6 +251,21 @@
   background:rgba(0,0,0,.25);
 }
 
+      .chat-main{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.chat-box{
+  flex:1;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  overflow-y:auto;
+}
+
 /* FRIEND LIST */
 .friends{
   width:190px;
@@ -1011,20 +1026,29 @@
       </div>
     </div>
     <!-- CHAT -->
-    <div class="window" id="chatApp">
-      <div class="titlebar">Amigos <span onclick="closeWin('chatApp')">✕</span>
-      </div>
-      <div class="chat-header" id="chatHeader"></div>
-      <div class="chat-wrap">
-        <div class="friends" id="friends"></div>
-        <div class="chat-box" id="chatBox">
-          <div class="chat-input-wrap">
-  <input id="chatInput" placeholder="Escribe un mensaje..." />
-  <button id="sendBtn">➤</button>
-</div>
-        </div>
+   <div class="window" id="chatApp">
+  <div class="titlebar">
+    Amigos
+    <span onclick="closeWin('chatApp')">✕</span>
+  </div>
+
+  <div class="chat-header" id="chatHeader"></div>
+
+  <div class="chat-wrap">
+
+    <div class="friends" id="friends"></div>
+
+    <div class="chat-main">
+      <div class="chat-box" id="chatBox"></div>
+
+      <div class="chat-input-wrap">
+        <input id="chatInput" placeholder="Escribe un mensaje..." />
+        <button id="sendBtn">➤</button>
       </div>
     </div>
+
+  </div>
+</div>
     <!-- TASKBAR -->
   <div id="taskbar">
   <div id="notify" onclick="openWin('chatApp')">
@@ -1245,6 +1269,30 @@ function loadChat(name){
   });
 }
 
+    const input = document.getElementById("chatInput");
+const btn = document.getElementById("sendBtn");
+const chatBox = document.querySelector(".chat-box");
+
+function sendMessage(){
+  const text = input.value.trim();
+  if(!text) return;
+
+  const msg = document.createElement("div");
+  msg.className = "msg me";
+  msg.style.animationDuration = ".22s";
+  msg.textContent = text;
+
+  chatBox.appendChild(msg);
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  input.value = "";
+}
+
+btn.onclick = sendMessage;
+
+input.addEventListener("keydown",e=>{
+  if(e.key==="Enter") sendMessage();
+});
 ////////////////////////////
 // CLOCK
 ////////////////////////////
@@ -1391,35 +1439,13 @@ wallpapers.forEach((src,i)=>{
 
 });
 
-      const input = document.getElementById("chatInput");
-const btn = document.getElementById("sendBtn");
-const chatBox = document.querySelector(".chat-box");
-
-function sendMessage(){
-  const text = input.value.trim();
-  if(!text) return;
-
-  const msg = document.createElement("div");
-  msg.className = "msg me";
-  msg.style.animationDuration = ".22s";
-  msg.textContent = text;
-
-  chatBox.appendChild(msg);
-  chatBox.scrollTop = chatBox.scrollHeight;
-
-  input.value = "";
-}
-
-btn.onclick = sendMessage;
-
-input.addEventListener("keydown",e=>{
-  if(e.key==="Enter") sendMessage();
-});
+    
 
 </script>
 
   </body>
 </html>
+
 
 
 
