@@ -1085,7 +1085,7 @@
       <div id="playlist"></div>
     </div>
     <audio id="audio"></audio>
-    <script>
+  <script>
 document.addEventListener("DOMContentLoaded", () => {
 
 ////////////////////////////
@@ -1093,7 +1093,6 @@ document.addEventListener("DOMContentLoaded", () => {
 ////////////////////////////
 
 function ordenarCarpetas(){
- 
   const carpetas=[...document.querySelectorAll(".folder")];
   let x=30,y=80;
   const alto=110,ancho=110;
@@ -1107,13 +1106,14 @@ function ordenarCarpetas(){
   });
 }
 ordenarCarpetas();
-   document.querySelectorAll(".folder").forEach(f=>{
+window.addEventListener("resize",ordenarCarpetas);
+
+document.querySelectorAll(".folder").forEach(f=>{
   f.addEventListener("dblclick", ()=>{
     const id = f.dataset.open;
     if(id) openWin(id);
   });
 });
-window.addEventListener("resize",ordenarCarpetas);
 
 ////////////////////////////
 // WINDOWS
@@ -1121,49 +1121,47 @@ window.addEventListener("resize",ordenarCarpetas);
 
 let z=10;
 
-window.closeWin = function(id){
-
-  document.getElementById(id).style.display="none";
-
-  const algunaAbierta = [...document.querySelectorAll(".window")]
-    .some(w => w.style.display === "block");
-
-  document.getElementById("blur-layer")
-    .classList.toggle("active", algunaAbierta);
-}
-
 window.openWin = function(id){
   const win = document.getElementById(id);
   if(!win) return;
 
-  win.style.display = "block";
-  win.style.zIndex = ++z;
+  win.style.display="block";
+  win.style.zIndex=++z;
+  document.getElementById("blur-layer").classList.add("active");
+}
+
+window.closeWin = function(id){
+  document.getElementById(id).style.display="none";
+
+  const algunaAbierta=[...document.querySelectorAll(".window")]
+    .some(w=>w.style.display==="block");
 
   document.getElementById("blur-layer")
-    .classList.add("active");
+    .classList.toggle("active",algunaAbierta);
 }
-  
-  function makeDraggable(win){
-  const bar = win.querySelector(".titlebar");
-  let offsetX=0, offsetY=0, dragging=false;
 
-  bar.addEventListener("mousedown", e=>{
+function makeDraggable(win){
+  const bar=win.querySelector(".titlebar");
+  let offsetX=0,offsetY=0,dragging=false;
+
+  bar.addEventListener("mousedown",e=>{
     dragging=true;
-    offsetX = e.clientX - win.offsetLeft;
-    offsetY = e.clientY - win.offsetTop;
-    win.style.zIndex = ++z;
+    offsetX=e.clientX-win.offsetLeft;
+    offsetY=e.clientY-win.offsetTop;
+    win.style.zIndex=++z;
   });
 
-  document.addEventListener("mousemove", e=>{
+  document.addEventListener("mousemove",e=>{
     if(!dragging) return;
-    win.style.left = (e.clientX - offsetX) + "px";
-    win.style.top  = (e.clientY - offsetY) + "px";
+    win.style.left=(e.clientX-offsetX)+"px";
+    win.style.top=(e.clientY-offsetY)+"px";
   });
 
-  document.addEventListener("mouseup", ()=>dragging=false);
+  document.addEventListener("mouseup",()=>dragging=false);
 }
 
 document.querySelectorAll(".window").forEach(makeDraggable);
+
 ////////////////////////////
 // PLAYER
 ////////////////////////////
@@ -1251,26 +1249,21 @@ Object.keys(chats).forEach(name=>{
   friends.appendChild(f);
 });
 
-// 👇 Cargar primer chat SOLO UNA VEZ
+// cargar primer chat
 loadChat(Object.keys(chats)[0]);
-  const f=document.createElement("div");
-  f.className="friend";
-  f.innerHTML=`<img src="${chats[name].photo}">${name}`;
-  f.onclick=()=>loadChat(name);
-  friends.appendChild(f);
-});
 
 function loadChat(name){
   document.querySelectorAll(".friend")
-  .forEach(f=>f.classList.remove("active"));
+    .forEach(f=>f.classList.remove("active"));
 
-[...document.querySelectorAll(".friend")]
-  .find(f=>f.textContent.trim()===name)
-  ?.classList.add("active");
+  [...document.querySelectorAll(".friend")]
+    .find(f=>f.textContent.trim()===name)
+    ?.classList.add("active");
+
   const user=chats[name];
   chatBox.innerHTML="";
-chatBox.scrollTop = 0;
-  header.style.backgroundImage=`url(${user.bg})`;
+  chatBox.scrollTop=0;
+
   header.innerHTML=`
     <img src="${user.photo}">
     <div>
@@ -1287,98 +1280,88 @@ chatBox.scrollTop = 0;
   });
 }
 
-    const input = document.getElementById("chatInput");
-const btn = document.getElementById("sendBtn");
-
+const input=document.getElementById("chatInput");
+const btn=document.getElementById("sendBtn");
 
 function sendMessage(){
-  const text = input.value.trim();
+  const text=input.value.trim();
   if(!text) return;
 
-  const msg = document.createElement("div");
-  msg.className = "msg me";
-  msg.textContent = text;
+  const msg=document.createElement("div");
+  msg.className="msg me";
+  msg.textContent=text;
 
   chatBox.appendChild(msg);
 
-  // 👇 AQUÍ VA EL SCROLL SUAVE
   chatBox.scrollTo({
-    top: chatBox.scrollHeight,
-    behavior: "smooth"
+    top:chatBox.scrollHeight,
+    behavior:"smooth"
   });
 
-  input.value = "";
+  input.value="";
 }
 
-btn.onclick = sendMessage;
-
+btn.onclick=sendMessage;
 input.addEventListener("keydown",e=>{
   if(e.key==="Enter") sendMessage();
 });
+
 ////////////////////////////
 // CLOCK
 ////////////////////////////
 
 function clock(){
-  const d = new Date();
+  const d=new Date();
 
-  const hora = d.toLocaleTimeString("de-DE",{
-    hour:"2-digit",
-    minute:"2-digit"
-  });
+  document.getElementById("clock").textContent=
+    d.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
 
-  const fecha = d.toLocaleDateString("de-DE",{
-    day:"2-digit",
-    month:"2-digit",
-    year:"numeric"
-  });
-
-  document.getElementById("clock").textContent = hora;
-  document.getElementById("date").textContent = fecha;
+  document.getElementById("date").textContent=
+    d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});
 }
 clock();
 setInterval(clock,1000);
 
+////////////////////////////
+// WEATHER
+////////////////////////////
 
-  async function loadWeather(){
+async function loadWeather(){
   try{
-    const res = await fetch(
+    const res=await fetch(
       "https://api.open-meteo.com/v1/forecast?latitude=52.37&longitude=9.72&current_weather=true"
     );
-    const data = await res.json();
-    const temp = Math.round(data.current_weather.temperature);
-
-    document.getElementById("weather").textContent =
-      `Hannover ${temp}°`;
-  }catch(e){
-    document.getElementById("weather").textContent = "Hannover --°";
+    const data=await res.json();
+    const temp=Math.round(data.current_weather.temperature);
+    document.getElementById("weather").textContent=`Hannover ${temp}°`;
+  }catch{
+    document.getElementById("weather").textContent="Hannover --°";
   }
 }
 loadWeather();
 setInterval(loadWeather,600000);
-  ////////////////////////////
-// PARTICLES MOUSE REACTIVE
+
+////////////////////////////
+// PARTICLES
 ////////////////////////////
 
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
+const canvas=document.getElementById("particles");
+const ctx=canvas.getContext("2d");
 
 function resizeCanvas(){
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
 }
 resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+window.addEventListener("resize",resizeCanvas);
 
-const mouse = { x:null, y:null };
-
-window.addEventListener("mousemove", e=>{
-  mouse.x = e.clientX;
-  mouse.y = e.clientY;
+const mouse={x:null,y:null};
+window.addEventListener("mousemove",e=>{
+  mouse.x=e.clientX;
+  mouse.y=e.clientY;
 });
 
-const particles = [];
-
+const particles=[];
 for(let i=0;i<90;i++){
   particles.push({
     x:Math.random()*canvas.width,
@@ -1396,20 +1379,17 @@ function animate(){
     p.x+=p.vx;
     p.y+=p.vy;
 
-    // rebote
     if(p.x<0||p.x>canvas.width) p.vx*=-1;
     if(p.y<0||p.y>canvas.height) p.vy*=-1;
 
-    // reacción al mouse
     if(mouse.x){
-      const dx = p.x - mouse.x;
-      const dy = p.y - mouse.y;
-      const dist = Math.sqrt(dx*dx+dy*dy);
-
-      if(dist < 120){
-        const force = (120-dist)/120;
-        p.x += dx * force * 0.02;
-        p.y += dy * force * 0.02;
+      const dx=p.x-mouse.x;
+      const dy=p.y-mouse.y;
+      const dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<120){
+        const force=(120-dist)/120;
+        p.x+=dx*force*0.02;
+        p.y+=dy*force*0.02;
       }
     }
 
@@ -1460,13 +1440,12 @@ wallpapers.forEach((src,i)=>{
 });
 
 });
-
-    
-
 </script>
+
 
   </body>
 </html>
+
 
 
 
