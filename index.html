@@ -1122,6 +1122,7 @@ window.addEventListener("resize",ordenarCarpetas);
 let z=10;
 
 window.closeWin = function(id){
+
   document.getElementById(id).style.display="none";
 
   const algunaAbierta = [...document.querySelectorAll(".window")]
@@ -1131,6 +1132,17 @@ window.closeWin = function(id){
     .classList.toggle("active", algunaAbierta);
 }
 
+window.openWin = function(id){
+  const win = document.getElementById(id);
+  if(!win) return;
+
+  win.style.display = "block";
+  win.style.zIndex = ++z;
+
+  document.getElementById("blur-layer")
+    .classList.add("active");
+}
+  
   function makeDraggable(win){
   const bar = win.querySelector(".titlebar");
   let offsetX=0, offsetY=0, dragging=false;
@@ -1232,7 +1244,15 @@ const chatBox=document.getElementById("chatBox");
 const header=document.getElementById("chatHeader");
 
 Object.keys(chats).forEach(name=>{
-  loadChat(Object.keys(chats)[0]);
+  const f=document.createElement("div");
+  f.className="friend";
+  f.innerHTML=`<img src="${chats[name].photo}">${name}`;
+  f.onclick=()=>loadChat(name);
+  friends.appendChild(f);
+});
+
+// 👇 Cargar primer chat SOLO UNA VEZ
+loadChat(Object.keys(chats)[0]);
   const f=document.createElement("div");
   f.className="friend";
   f.innerHTML=`<img src="${chats[name].photo}">${name}`;
@@ -1447,6 +1467,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
