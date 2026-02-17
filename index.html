@@ -52,7 +52,7 @@
         background: rgba(0, 0, 0, .25);
         opacity: 0;
         transition: .3s;
-        z-index: -1;
+        z-index: 5;
         pointer-events: none;
       }
 
@@ -107,7 +107,12 @@
         border: 1px solid rgba(255, 255, 255, .08);
         display: none;
         overflow: hidden;
-        animation: open .22s ease;
+        animation: open .22s ease; z-index: 10;
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
       }
 
       .window .window-content {
@@ -118,6 +123,7 @@
         padding: 18px 20px;
       }
 
+      
       /* OPEN ANIMATION */
       @keyframes open {
         from {
@@ -1445,6 +1451,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
