@@ -511,6 +511,66 @@
         text-shadow: 0 0 0 rgba(255, 255, 255, 0);
       }
 
+      .glitch {
+  position: relative;
+  font-size: 40px;
+  font-weight: 900;
+  letter-spacing: .5px;
+  color: white;
+  animation: glitchBase 4s infinite;
+}
+
+/* Capas glitch */
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  overflow: hidden;
+  opacity: .6;
+}
+
+/* Rojo */
+.glitch::before {
+  color: #ff4d4d;
+  z-index: -1;
+  animation: glitchTop 4s infinite;
+}
+
+/* Azul */
+.glitch::after {
+  color: #4da6ff;
+  z-index: -2;
+  animation: glitchBottom 4s infinite;
+}
+
+/* Movimiento leve base */
+@keyframes glitchBase {
+  0%, 94%, 100% { transform: none; }
+  95% { transform: translate(1px, -1px); }
+  96% { transform: translate(-1px, 1px); }
+  97% { transform: translate(1px, 0px); }
+  98% { transform: translate(-1px, 0px); }
+  99% { transform: none; }
+}
+
+/* Desfase rojo */
+@keyframes glitchTop {
+  0%, 94%, 100% { transform: none; }
+  96% { transform: translate(-2px, -1px); }
+  98% { transform: translate(2px, 1px); }
+}
+
+/* Desfase azul */
+@keyframes glitchBottom {
+  0%, 94%, 100% { transform: none; }
+  95% { transform: translate(2px, 1px); }
+  97% { transform: translate(-2px, -1px); }
+}
+
+
       .itami-top h1:hover {
         color: #ffffff;
         text-shadow: 0 0 8px rgba(255, 255, 255, .35), 0 0 20px rgba(255, 255, 255, .2), 0 0 35px rgba(255, 255, 255, .15);
@@ -973,7 +1033,7 @@
       <div class="window-content">
         <div class="itami-card">
           <div class="itami-top">
-            <h1>I T A M I</h1>
+            <h1 class="glitch" data-text="I T A M I">I T A M I</h1>
             <p>27 - 📍Germany - Designer & Programmer</p>
             <div class="mini-grid">
               <img src="https://i.postimg.cc/bYg6NdDx/gif-anime.gif">
@@ -1450,6 +1510,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
