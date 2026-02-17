@@ -1252,6 +1252,7 @@ function loadChat(name){
   ?.classList.add("active");
   const user=chats[name];
   chatBox.innerHTML="";
+chatBox.scrollTop = 0;
   header.style.backgroundImage=`url(${user.bg})`;
   header.innerHTML=`
     <img src="${user.photo}">
@@ -1445,6 +1446,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
