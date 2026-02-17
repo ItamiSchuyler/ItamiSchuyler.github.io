@@ -1121,18 +1121,14 @@ window.addEventListener("resize",ordenarCarpetas);
 
 let z=10;
 
-window.openWin = function(id){
-  const w=document.getElementById(id);
-  w.style.display="block";
-  w.style.left=(window.innerWidth-w.offsetWidth)/2+"px";
-  w.style.top=(window.innerHeight-w.offsetHeight)/2+"px";
-  w.style.zIndex=++z;
-  document.getElementById("blur-layer").classList.add("active");
-}
-
 window.closeWin = function(id){
   document.getElementById(id).style.display="none";
-  document.getElementById("blur-layer").classList.remove("active");
+
+  const algunaAbierta = [...document.querySelectorAll(".window")]
+    .some(w => w.style.display === "block");
+
+  document.getElementById("blur-layer")
+    .classList.toggle("active", algunaAbierta);
 }
 
   function makeDraggable(win){
@@ -1236,6 +1232,7 @@ const chatBox=document.getElementById("chatBox");
 const header=document.getElementById("chatHeader");
 
 Object.keys(chats).forEach(name=>{
+  loadChat(Object.keys(chats)[0]);
   const f=document.createElement("div");
   f.className="friend";
   f.innerHTML=`<img src="${chats[name].photo}">${name}`;
@@ -1272,7 +1269,7 @@ chatBox.scrollTop = 0;
 
     const input = document.getElementById("chatInput");
 const btn = document.getElementById("sendBtn");
-const chatBox = document.querySelector(".chat-box");
+
 
 function sendMessage(){
   const text = input.value.trim();
@@ -1280,11 +1277,15 @@ function sendMessage(){
 
   const msg = document.createElement("div");
   msg.className = "msg me";
-  msg.style.animationDuration = ".22s";
   msg.textContent = text;
 
   chatBox.appendChild(msg);
-  chatBox.scrollTop = chatBox.scrollHeight;
+
+  // 👇 AQUÍ VA EL SCROLL SUAVE
+  chatBox.scrollTo({
+    top: chatBox.scrollHeight,
+    behavior: "smooth"
+  });
 
   input.value = "";
 }
@@ -1446,6 +1447,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
