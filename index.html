@@ -89,11 +89,22 @@
         width: 64px
       }
 
-      .folder span {
-        font-size: 13px;
-        margin-top: 4px;
-        display: block
-      }
+   .folder span {
+  font-size: 12px;
+  margin-top: 8px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(255,255,255,.15), rgba(255,255,255,.05));
+  backdrop-filter: blur(8px);
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: .25s ease;
+}
+
+.folder:hover span {
+  transform: scale(1.05);
+}
 
       /* WINDOWS — WINDOWS STYLE */
       .window {
@@ -1510,6 +1521,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
