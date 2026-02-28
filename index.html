@@ -1015,25 +1015,32 @@
 }
 /* HEADER */
 .todo-header{
-  text-align:center;
-  font-size:13px;
-  font-weight:500;
-  letter-spacing:3px;
-  margin-bottom:18px;
-
-  color:rgba(255,255,255,.85);
-  text-transform:uppercase;
-
-  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  margin-bottom:20px;
 }
 
-      .todo-header::after{
+.todo-icon{
+  font-size:18px;
+  opacity:.8;
+}
+
+.todo-title{
+  font-size:12px;
+  font-weight:500;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.85);
+}
+
+.todo-title::after{
   content:"";
   display:block;
   width:40px;
   height:1px;
-  margin:10px auto 0;
-
+  margin:8px auto 0;
   background:rgba(255,255,255,.4);
   border-radius:10px;
 }
@@ -1265,10 +1272,10 @@
 </div>
    <!-- TODO WIDGET -->
 <div id="todoWidget">
-  <div class="todo-header">
-    📝 ENCARGOS
-  </div>
-
+ <div class="todo-header">
+  <span class="todo-icon">📝</span>
+  <span class="todo-title">ENCARGOS</span>
+</div>
   <div class="todo-list">
 
     <div class="todo-item">
@@ -1680,6 +1687,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
