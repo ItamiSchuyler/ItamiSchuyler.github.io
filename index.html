@@ -985,13 +985,14 @@
    TODO WIDGET — GLASS PREMIUM
 ========================= */
 
-#todoWidget{
-  position:fixed;
-  right:50px;
-  top:120px;
 
-  width:280px;
-  max-height:420px;
+ #todoWidget{
+  position:fixed;
+  right:20px;
+  top:50%;
+  transform:translateY(-50%);
+  animation: floatTodo 6s ease-in-out infinite;
+
 
   display:flex;
   flex-direction:column;
@@ -1011,8 +1012,11 @@
  z-index:4;
 }
 
-  animation: floatTodo 6s ease-in-out infinite;
+ @keyframes floatTodo{
+  0%,100%{ transform: translateY(-50%) translateY(0px); }
+  50%{ transform: translateY(-50%) translateY(-8px); }
 }
+
 /* HEADER */
 .todo-header{
   display:flex;
@@ -1035,16 +1039,8 @@
   color:rgba(255,255,255,.85);
 }
 
-.todo-title::after{
-  content:"";
-  display:block;
-  width:40px;
-  height:1px;
-  margin:8px auto 0;
-  background:rgba(255,255,255,.4);
-  border-radius:10px;
-}
-      
+
+  
 /* LISTA */
 .todo-list{
   display:flex;
@@ -1687,6 +1683,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
