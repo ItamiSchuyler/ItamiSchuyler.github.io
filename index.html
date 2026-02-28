@@ -981,191 +981,98 @@
   letter-spacing: .4px;
 }
 
-      /* TODO WIDGET */
-
-/* flotación suave */
-@keyframes floatWidget{
-  0%,100%{ transform:translateY(0); }
-  50%{ transform:translateY(-8px); }
-}
-
-.todo-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  font-size:14px;
-  font-weight:600;
-  margin-bottom:10px;
-}
-
-#addTaskBtn{
-  border:none;
-  background:rgba(255,255,255,.1);
-  color:white;
-  width:26px;
-  height:26px;/* TODO ESTÁTICO */
+ /* =========================
+   TODO WIDGET — GLASS PREMIUM
+========================= */
 
 #todoWidget{
   position:fixed;
   right:20px;
-  top:120px;
-  width:260px;
+  top:20px; /* ARRIBA */
+
+  width:280px;
   max-height:420px;
 
   display:flex;
   flex-direction:column;
 
-  background:rgba(20,20,20,.55);
-  backdrop-filter:blur(20px) saturate(130%);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:20px;
-  padding:16px;
+  background:rgba(255,255,255,.06);
+  backdrop-filter:blur(25px) saturate(160%);
+  -webkit-backdrop-filter:blur(25px) saturate(160%);
 
-  box-shadow:0 20px 60px rgba(0,0,0,.5);
-  z-index:60;
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:22px;
+  padding:18px;
 
-  animation: floatWidget 6s ease-in-out infinite;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.6),
+    inset 0 1px rgba(255,255,255,.25);
+
+  z-index:200; /* encima de todo */
 }
 
-/* flotación */
-@keyframes floatWidget{
-  0%,100%{ transform:translateY(0); }
-  50%{ transform:translateY(-8px); }
-}
-
+/* HEADER */
 .todo-header{
-  font-size:14px;
+  font-size:15px;
   font-weight:600;
-  margin-bottom:12px;
-  letter-spacing:.5px;
-  opacity:.85;
+  letter-spacing:.6px;
+  margin-bottom:14px;
+  color:white;
+  text-shadow:0 0 10px rgba(255,255,255,.2);
 }
 
+/* LISTA */
 .todo-list{
-  overflow-y:auto;
   display:flex;
   flex-direction:column;
-  gap:10px;
-  padding-right:4px;
+  gap:12px;
+  overflow-y:auto;
 }
 
-/* scroll fino */
+/* SCROLL FINO */
 .todo-list::-webkit-scrollbar{
   width:4px;
 }
 .todo-list::-webkit-scrollbar-thumb{
-  background:rgba(255,255,255,.2);
+  background:rgba(255,255,255,.3);
   border-radius:10px;
 }
 
-/* tarea */
+/* ITEM */
 .todo-item{
   display:flex;
   align-items:center;
-  gap:10px;
-  font-size:13px;
-  padding:8px 10px;
-  border-radius:14px;
-  background:rgba(255,255,255,.05);
-  transition:.2s ease;
-}
-
-.todo-item:hover{
-  background:rgba(255,255,255,.1);
-}
-
-/* cuadrado */
-.box{
-  width:14px;
-  height:14px;
-  border-radius:4px;
-  border:1.5px solid rgba(255,255,255,.6);
-  transition:.2s ease;
-}
-
-/* cuando está hecha */
-.todo-item.done .box{
-  background:white;
-  border-color:white;
-}
-
-.todo-item.done span{
-  text-decoration:line-through;
-  opacity:.4;
-}
-  border-radius:50%;
-  cursor:pointer;
-  transition:.2s;
-}
-
-#addTaskBtn:hover{
-  background:white;
-  color:black;
-  transform:scale(1.1);
-}
-
-#todoList{
-  flex:1;
-  overflow-y:auto;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  padding-right:4px;
-}
-
-/* scroll bonito */
-#todoList::-webkit-scrollbar{
-  width:4px;
-}
-#todoList::-webkit-scrollbar-thumb{
-  background:rgba(255,255,255,.2);
-  border-radius:10px;
-}
-
-/* tarea */
-.todo-item{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:13px;
-  padding:6px 8px;
-  border-radius:12px;
-  background:rgba(255,255,255,.05);
-  transition:.2s ease;
-}
-
-.todo-item:hover{
-  background:rgba(255,255,255,.1);
-}
-
-.todo-item input{
-  width:14px;
-  height:14px;
-  cursor:pointer;
-}
-
-.todo-item.done span{
-  text-decoration:line-through;
-  opacity:.4;
-}
-
-.todo-input-wrap{
-  margin-top:10px;
-}
-
-#todoInput{
-  width:100%;
-  padding:8px 12px;
-  border-radius:14px;
-  border:none;
-  outline:none;
-  font-size:12px;
+  gap:12px;
+  padding:10px 12px;
+  border-radius:16px;
   background:rgba(255,255,255,.08);
+  transition:.25s ease;
+  font-size:13px;
   color:white;
 }
 
-#todoInput::placeholder{
-  opacity:.4;
+.todo-item:hover{
+  background:rgba(255,255,255,.15);
+  transform:scale(1.02);
+}
+
+/* CUADRADO */
+.box{
+  width:16px;
+  height:16px;
+  border-radius:5px;
+  border:2px solid rgba(255,255,255,.8);
+  transition:.2s ease;
+}
+
+/* COMPLETADA */
+.todo-item.done .box{
+  background:white;
+}
+
+.todo-item.done span{
+  text-decoration:line-through;
+  opacity:.45;
 }
       
     </style>
@@ -1331,10 +1238,12 @@
 
 <audio id="audio"></audio>
 
-     <!-- TODO WIDGET -->
+  
+</div>
+   <!-- TODO WIDGET -->
 <div id="todoWidget">
   <div class="todo-header">
-    🗒 Encargos
+    🗒 ENCARGOS
   </div>
 
   <div class="todo-list">
@@ -1351,12 +1260,12 @@
 
     <div class="todo-item">
       <div class="box"></div>
-      <span> Pcback - xxxx</span>
+      <span>Pcback - xxxx</span>
     </div>
 
   </div>
 </div>
-
+  </div>
 
   <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -1741,64 +1650,14 @@ wallpapers.forEach((src,i)=>{
 
   selector.appendChild(thumb);
 });
-////////////////////////////
-// TODO WIDGET
-////////////////////////////
 
-const todoInput = document.getElementById("todoInput");
-const todoList = document.getElementById("todoList");
-const addTaskBtn = document.getElementById("addTaskBtn");
-
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-function saveTasks(){
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
-function renderTasks(){
-  todoList.innerHTML = "";
-  tasks.forEach((task, index)=>{
-    const item = document.createElement("div");
-    item.className = "todo-item" + (task.done ? " done" : "");
-
-    item.innerHTML = `
-      <input type="checkbox" ${task.done ? "checked":""}>
-      <span>${task.text}</span>
-    `;
-
-    const checkbox = item.querySelector("input");
-    checkbox.onchange = ()=>{
-      tasks[index].done = checkbox.checked;
-      saveTasks();
-      renderTasks();
-    };
-
-    todoList.appendChild(item);
-  });
-}
-
-function addTask(){
-  const text = todoInput.value.trim();
-  if(!text) return;
-
-  tasks.push({text, done:false});
-  todoInput.value = "";
-  saveTasks();
-  renderTasks();
-}
-
-addTaskBtn.onclick = addTask;
-todoInput.addEventListener("keydown", e=>{
-  if(e.key === "Enter") addTask();
-});
-
-renderTasks();
 });
 </script>
 
 
   </body>
 </html>
+
 
 
 
