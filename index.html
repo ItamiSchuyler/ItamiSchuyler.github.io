@@ -988,7 +988,7 @@
 #todoWidget{
   position:fixed;
   right:20px;
-  top:20px; /* ARRIBA */
+  top:20px;
 
   width:280px;
   max-height:420px;
@@ -1008,9 +1008,10 @@
     0 20px 60px rgba(0,0,0,.6),
     inset 0 1px rgba(255,255,255,.25);
 
-  z-index:200; /* encima de todo */
-}
+  z-index:200;
 
+  animation: floatTodo 6s ease-in-out infinite;
+}
 /* HEADER */
 .todo-header{
   font-size:15px;
@@ -1053,7 +1054,6 @@
 
 .todo-item:hover{
   background:rgba(255,255,255,.15);
-  transform:scale(1.02);
 }
 
 /* CUADRADO */
@@ -1074,7 +1074,14 @@
   text-decoration:line-through;
   opacity:.45;
 }
-      
+      @keyframes floatTodo {
+  0%,100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
     </style>
   </head>
   <body>
@@ -1657,6 +1664,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
