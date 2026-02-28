@@ -980,6 +980,127 @@
   line-height: 1.6;
   letter-spacing: .4px;
 }
+
+      /* TODO WIDGET */
+#todoWidget{
+  position:fixed;
+  right:20px;
+  top:120px;
+  width:260px;
+  max-height:420px;
+
+  display:flex;
+  flex-direction:column;
+
+  background:rgba(20,20,20,.55);
+  backdrop-filter:blur(20px) saturate(130%);
+  -webkit-backdrop-filter:blur(20px) saturate(130%);
+
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;
+  padding:14px;
+
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+  z-index:60;
+
+  animation: floatWidget 6s ease-in-out infinite;
+}
+
+/* flotación suave */
+@keyframes floatWidget{
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(-8px); }
+}
+
+.todo-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:14px;
+  font-weight:600;
+  margin-bottom:10px;
+}
+
+#addTaskBtn{
+  border:none;
+  background:rgba(255,255,255,.1);
+  color:white;
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  cursor:pointer;
+  transition:.2s;
+}
+
+#addTaskBtn:hover{
+  background:white;
+  color:black;
+  transform:scale(1.1);
+}
+
+#todoList{
+  flex:1;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding-right:4px;
+}
+
+/* scroll bonito */
+#todoList::-webkit-scrollbar{
+  width:4px;
+}
+#todoList::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.2);
+  border-radius:10px;
+}
+
+/* tarea */
+.todo-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+  padding:6px 8px;
+  border-radius:12px;
+  background:rgba(255,255,255,.05);
+  transition:.2s ease;
+}
+
+.todo-item:hover{
+  background:rgba(255,255,255,.1);
+}
+
+.todo-item input{
+  width:14px;
+  height:14px;
+  cursor:pointer;
+}
+
+.todo-item.done span{
+  text-decoration:line-through;
+  opacity:.4;
+}
+
+.todo-input-wrap{
+  margin-top:10px;
+}
+
+#todoInput{
+  width:100%;
+  padding:8px 12px;
+  border-radius:14px;
+  border:none;
+  outline:none;
+  font-size:12px;
+  background:rgba(255,255,255,.08);
+  color:white;
+}
+
+#todoInput::placeholder{
+  opacity:.4;
+}
       
     </style>
   </head>
@@ -1143,6 +1264,20 @@
 </div>
 
 <audio id="audio"></audio>
+
+     <!-- TODO WIDGET -->
+<div id="todoWidget">
+  <div class="todo-header">
+    <span>🗒 Encargos</span>
+    <button id="addTaskBtn">＋</button>
+  </div>
+
+  <div id="todoList"></div>
+
+  <div class="todo-input-wrap">
+    <input id="todoInput" placeholder="Nueva tarea..." />
+  </div>
+</div>
   <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -1526,13 +1661,65 @@ wallpapers.forEach((src,i)=>{
 
   selector.appendChild(thumb);
 });
+////////////////////////////
+// TODO WIDGET
+////////////////////////////
 
+const todoInput = document.getElementById("todoInput");
+const todoList = document.getElementById("todoList");
+const addTaskBtn = document.getElementById("addTaskBtn");
+
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+function saveTasks(){
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function renderTasks(){
+  todoList.innerHTML = "";
+  tasks.forEach((task, index)=>{
+    const item = document.createElement("div");
+    item.className = "todo-item" + (task.done ? " done" : "");
+
+    item.innerHTML = `
+      <input type="checkbox" ${task.done ? "checked":""}>
+      <span>${task.text}</span>
+    `;
+
+    const checkbox = item.querySelector("input");
+    checkbox.onchange = ()=>{
+      tasks[index].done = checkbox.checked;
+      saveTasks();
+      renderTasks();
+    };
+
+    todoList.appendChild(item);
+  });
+}
+
+function addTask(){
+  const text = todoInput.value.trim();
+  if(!text) return;
+
+  tasks.push({text, done:false});
+  todoInput.value = "";
+  saveTasks();
+  renderTasks();
+}
+
+addTaskBtn.onclick = addTask;
+todoInput.addEventListener("keydown", e=>{
+  if(e.key === "Enter") addTask();
+});
+
+renderTasks();
 });
 </script>
 
 
   </body>
 </html>
+
 
 
 
