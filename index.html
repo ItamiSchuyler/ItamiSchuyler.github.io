@@ -212,6 +212,33 @@
         box-shadow: 0 -5px 25px rgba(0, 0, 0, .35);
       }
 
+      #taskApps{
+  display:flex;
+  gap:10px;
+}
+
+.task-item{
+  padding:6px 14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(10px);
+  font-size:12px;
+  cursor:pointer;
+  transition:.2s ease;
+  color:white;
+  opacity:.8;
+}
+
+.task-item:hover{
+  background:rgba(255,255,255,.18);
+  opacity:1;
+  transform:scale(1.05);
+}
+
+.task-item.active{
+  background:rgba(255,255,255,.25);
+}
+
       #notify {
         font-size: 22px;
         cursor: pointer
@@ -1039,6 +1066,32 @@
   color:rgba(255,255,255,.85);
 }
 
+      .todo-header{
+  position:relative;
+}
+
+.todo-close{
+  position:absolute;
+  right:-6px;
+  top:-6px;
+  width:22px;
+  height:22px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:rgba(255,255,255,.2);
+  color:#ddd;
+  font-size:12px;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.todo-close:hover{
+  background:#ff5f57;
+  color:white;
+  transform:scale(1.1);
+}
+
 .todo-header{
   position:relative;
 }
@@ -1245,7 +1298,7 @@
     🔔
     <span id="notifBadge">3</span>
   </div>
-
+<div id="taskApps"></div>
   <div id="rightPanel">
     <div id="weather"></div>
 
@@ -1317,6 +1370,9 @@ document.addEventListener("DOMContentLoaded", () => {
   window.closeTodo = function(){
   document.getElementById("todoWidget").style.display = "none";
 }
+  window.closeTodo = function(){
+  document.getElementById("todoWidget").style.display="none";
+}
 
 ////////////////////////////
 // FOLDERS
@@ -1357,17 +1413,52 @@ window.openWin = function(id){
 
   win.style.display="block";
   win.style.zIndex=++z;
+
+  addToTaskbar(id);
+
   document.getElementById("blur-layer").classList.add("active");
 }
 
 window.closeWin = function(id){
   document.getElementById(id).style.display="none";
+  removeFromTaskbar(id);
 
   const algunaAbierta=[...document.querySelectorAll(".window")]
     .some(w=>w.style.display==="block");
 
   document.getElementById("blur-layer")
     .classList.toggle("active",algunaAbierta);
+}
+
+  function addToTaskbar(id){
+  if(document.querySelector(`.task-item[data-id="${id}"]`)) return;
+
+  const task=document.createElement("div");
+  task.className="task-item active";
+  task.dataset.id=id;
+
+  const title=document.querySelector(`#${id} .titlebar`).childNodes[0].textContent.trim();
+  task.textContent=title;
+
+  task.onclick=()=>{
+    const win=document.getElementById(id);
+
+    if(win.style.display==="block"){
+      win.style.display="none";
+      task.classList.remove("active");
+    }else{
+      win.style.display="block";
+      win.style.zIndex=++z;
+      task.classList.add("active");
+    }
+  };
+
+  document.getElementById("taskApps").appendChild(task);
+}
+
+function removeFromTaskbar(id){
+  const task=document.querySelector(`.task-item[data-id="${id}"]`);
+  if(task) task.remove();
 }
 
 function makeDraggable(win){
@@ -1705,6 +1796,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
