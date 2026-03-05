@@ -121,7 +121,7 @@
         z-index: 10;
   top: 120px;
   left: 50%;
-  transform: translateX(-50%); transform-origin: center center;
+   transform-origin: center center;transform:translate(-50%,0)
 }
 
       .window .window-content {
@@ -1462,16 +1462,33 @@ function removeFromTaskbar(id){
 }
 
 function makeDraggable(win){
-  const bar=win.querySelector(".titlebar");
-  let offsetX=0,offsetY=0,dragging=false;
+  const bar = win.querySelector(".titlebar");
+  let offsetX = 0;
+  let offsetY = 0;
+  let dragging = false;
 
-  bar.addEventListener("mousedown",e=>{
-    dragging=true;
-    offsetX=e.clientX-win.offsetLeft;
-    offsetY=e.clientY-win.offsetTop;
-    win.style.zIndex=++z;
+  bar.addEventListener("mousedown", e => {
+    dragging = true;
+
+    offsetX = e.clientX - win.offsetLeft;
+    offsetY = e.clientY - win.offsetTop;
+
+    win.style.zIndex = ++z;
   });
 
+  document.addEventListener("mousemove", e => {
+    if(!dragging) return;
+
+    win.style.left = (e.clientX - offsetX) + "px";
+    win.style.top  = (e.clientY - offsetY) + "px";
+  });
+
+  document.addEventListener("mouseup", () => {
+    dragging = false;
+  });
+}
+
+document.querySelectorAll(".window").forEach(makeDraggable);
   document.addEventListener("mousemove",e=>{
     if(!dragging) return;
     win.style.left=(e.clientX-offsetX)+"px";
@@ -1796,6 +1813,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
