@@ -1488,20 +1488,9 @@ function makeDraggable(win){
   });
 }
 
+// activar drag en todas las ventanas
 document.querySelectorAll(".window").forEach(makeDraggable);
-  document.addEventListener("mousemove",e=>{
-    if(!dragging) return;
-    win.style.left=(e.clientX-offsetX)+"px";
-    win.style.top=(e.clientY-offsetY)+"px";
-  });
-  document.addEventListener("mouseup",()=>dragging=false);
-}
-
-document.querySelectorAll(".window").forEach(makeDraggable);
-
-////////////////////////////
-// PLAYER MINIMAL
-////////////////////////////
+ 
 ////////////////////////////
 // PLAYER PRO VISUALIZER
 ////////////////////////////
@@ -1813,6 +1802,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
