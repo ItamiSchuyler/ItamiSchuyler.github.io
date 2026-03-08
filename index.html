@@ -751,36 +751,59 @@
         gap: 16px;
       }
 
-      .portfolio-item {
-        position: relative;
-        border-radius: 14px;
-        overflow: hidden;
-        cursor: pointer;
-        background: #111;
-        transition: .25s ease;
-      }
+    .portfolio-item{
+  position:relative;
+  border-radius:14px;
+  overflow:hidden;
+  cursor:pointer;
+  background:#111;
+  transition:.3s ease;
+}
 
-      .portfolio-item img {
-        width: 100%;
-        height: 140px;
-        object-fit: cover;
-        transition: .3s ease;
-      }
+.portfolio-item img{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  transition:.4s ease;
+}
 
-      .portfolio-item:hover img {
-        transform: scale(1.08);
-        filter: brightness(.8);
-      }
+/* overlay */
+.work-info{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.9));
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:14px;
+  opacity:0;
+  transition:.3s ease;
+}
 
-      .portfolio-item span {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        padding: 8px 10px;
-        background: linear-gradient(transparent, rgba(0, 0, 0, .85));
-        font-size: 13px;
-      }
+.work-info b{
+  font-size:14px;
+}
 
+.work-info span{
+  font-size:12px;
+  opacity:.7;
+}
+
+.work-info .price{
+  margin-top:6px;
+  font-size:13px;
+  font-weight:600;
+}
+
+/* hover */
+.portfolio-item:hover img{
+  transform:scale(1.1);
+  filter:brightness(.6);
+}
+
+.portfolio-item:hover .work-info{
+  opacity:1;
+}
       .video-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -1760,6 +1783,52 @@ function animate(){
 }
 animate();
 
+  ////////////////////////////
+// TRABAJOS GRID
+////////////////////////////
+
+const trabajos = [
+  {
+    title:"Banner Anime",
+    desc:"Banner animado para perfil o redes",
+    price:"25€",
+    img:"https://media.giphy.com/media/LmNwrBhejkK9EFP504/giphy.gif"
+  },
+
+  {
+    title:"Space Wallpaper",
+    desc:"Wallpaper personalizado estilo space",
+    price:"35€",
+    img:"https://i.ibb.co/HyZHc46/1271005.png"
+  },
+
+  {
+    title:"Animated Avatar",
+    desc:"Avatar animado para Twitch/Discord",
+    price:"20€",
+    img:"https://media.giphy.com/media/ICOgUNjpvO0PC/giphy.gif"
+  }
+
+];
+
+const designGrid = document.getElementById("designGrid");
+
+trabajos.forEach(work=>{
+  const card=document.createElement("div");
+  card.className="portfolio-item";
+
+  card.innerHTML=`
+    <img src="${work.img}">
+    <div class="work-info">
+      <b>${work.title}</b>
+      <span>${work.desc}</span>
+      <div class="price">${work.price}</div>
+    </div>
+  `;
+
+  designGrid.appendChild(card);
+});
+
 ////////////////////////////
 // WALLPAPERS
 ////////////////////////////
@@ -1802,6 +1871,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
