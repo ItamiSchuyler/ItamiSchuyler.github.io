@@ -1031,6 +1031,25 @@
   letter-spacing: .4px;
 }
 
+#galleryGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:16px;
+}
+
+.gallery-img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+  border-radius:14px;
+  cursor:pointer;
+  transition:.25s ease;
+}
+
+.gallery-img:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 25px rgba(255,255,255,.15);
+}
  /* =========================
    TODO WIDGET — GLASS PREMIUM
 ========================= */
@@ -1221,6 +1240,7 @@
     </div>
     <div id="profilePopup" class="profile-popup"></div>
     <!-- WINDOWS -->
+    
     <div class="window" id="itami">
       <div class="titlebar"> Sobre mí <span>
           <button class="min"></button>
@@ -1228,6 +1248,18 @@
           <button class="close" onclick="closeWin('itami')"></button>
         </span>
       </div>
+      <div class="window" id="galleryWin">
+  <div class="titlebar">
+    Galería
+    <span>
+      <button class="close" onclick="closeWin('galleryWin')"></button>
+    </span>
+  </div>
+
+  <div class="window-content">
+    <div id="galleryGrid"></div>
+  </div>
+</div>
       <div class="window-content">
         <div class="itami-card">
           <div class="itami-top">
@@ -1721,6 +1753,26 @@ async function loadWeather(){
 loadWeather();
 setInterval(loadWeather,600000);
 
+  function openGallery(type){
+
+  const gallery = document.getElementById("galleryGrid");
+  gallery.innerHTML = "";
+
+  const images = galerias[type];
+
+  if(!images) return;
+
+  images.forEach(src=>{
+    const img=document.createElement("img");
+    img.src=src;
+    img.className="gallery-img";
+    gallery.appendChild(img);
+  });
+
+  openWin("galleryWin");
+
+}
+
 ////////////////////////////
 // PARTICLES
 ////////////////////////////
@@ -1808,12 +1860,33 @@ const trabajos = [
     price:"Háblame por privado",
     img:"https://i.ibb.co/9mW2jhVm/banneeer.png"
   }
+const galerias = {
 
+  "Pcbacks":[
+    "https://i.ibb.co/bjXCrNWr/fondo-molonisimo-hermosisismo-copia.gif",
+    "https://i.ibb.co/d0C9p3G/pcback2.gif",
+    "https://i.ibb.co/7jvXnsh/pcback3.gif"
+  ],
+
+  "Banner de perfil":[
+    "https://i.ibb.co/C3JXWwJF/perfilllll-copia.gif",
+    "https://i.ibb.co/vmQkV7Q/banner2.gif",
+    "https://i.ibb.co/mz6kn8r/banner3.gif"
+  ],
+
+  "Otro tipo de diseño":[
+    "https://i.ibb.co/9mW2jhVm/banneeer.png",
+    "https://i.ibb.co/xyz/design2.png",
+    "https://i.ibb.co/xyz/design3.png"
+  ]
+
+};
 ];
 
 const designGrid = document.getElementById("designGrid");
 
 trabajos.forEach(work=>{
+
   const card=document.createElement("div");
   card.className="portfolio-item";
 
@@ -1826,8 +1899,12 @@ trabajos.forEach(work=>{
     </div>
   `;
 
+  card.onclick = () => openGallery(work.title);
+
   designGrid.appendChild(card);
+
 });
+
 
 ////////////////////////////
 // WALLPAPERS
@@ -1871,6 +1948,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
