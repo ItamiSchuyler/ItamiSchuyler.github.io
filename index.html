@@ -1906,7 +1906,7 @@ const galerias = {
   ]
 
 };
-];
+
 
 const designGrid = document.getElementById("designGrid");
 
@@ -1930,25 +1930,6 @@ trabajos.forEach(work=>{
 
 });
   
-function openGallery(type){
-
-  const gallery = document.getElementById("galleryGrid");
-  gallery.innerHTML = "";
-
-  const images = galerias[type];
-
-  if(!images) return;
-
-  images.forEach(src=>{
-    const img=document.createElement("img");
-    img.src=src;
-    img.className="gallery-img";
-    gallery.appendChild(img);
-  });
-
-  openWin("galleryWin");
-
-}
 
 ////////////////////////////
 // WALLPAPERS
@@ -1992,6 +1973,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
