@@ -1101,6 +1101,23 @@
     opacity:1;
   }
 }
+
+      .viewer-close{
+  position:absolute;
+  top:25px;
+  right:35px;
+  font-size:26px;
+  color:white;
+  cursor:pointer;
+  z-index:10000;
+  opacity:.7;
+  transition:.2s;
+}
+
+.viewer-close:hover{
+  opacity:1;
+  transform:scale(1.15);
+}
  /* =========================
    TODO WIDGET — GLASS PREMIUM
 ========================= */
@@ -1460,8 +1477,12 @@
   
 </div>
 
-    <div id="imageViewer" class="viewer" onclick="closeViewer()">
+    <div id="imageViewer" class="viewer">
+
+  <div class="viewer-close" onclick="closeViewer()">✕</div>
+
   <img id="viewerImg">
+
 </div>
    <!-- TODO WIDGET -->
 <div id="todoWidget">
@@ -1534,15 +1555,24 @@ document.querySelectorAll(".folder").forEach(f=>{
 let z=10;
 
 window.openWin = function(id){
+
   const win = document.getElementById(id);
   if(!win) return;
 
-  win.style.display="block";
-  win.style.zIndex=++z;
+  win.style.display = "block";
+  win.style.zIndex = ++z;
+
+  // centrar ventana
+  const w = win.offsetWidth;
+  const h = win.offsetHeight;
+
+  win.style.left = (window.innerWidth/2 - w/2) + "px";
+  win.style.top  = (window.innerHeight/2 - h/2) + "px";
 
   addToTaskbar(id);
 
   document.getElementById("blur-layer").classList.add("active");
+
 }
 
 window.closeWin = function(id){
@@ -1701,12 +1731,17 @@ function animateWave(){
   });
 }
 
-  function openViewer(src){
+ let zoomLevel = 1;
+
+function openViewer(src){
 
   const viewer = document.getElementById("imageViewer");
   const img = document.getElementById("viewerImg");
 
+  zoomLevel = 1;
+  img.style.transform = "scale(1)";
   img.src = src;
+
   viewer.style.display = "flex";
 
 }
@@ -1714,6 +1749,23 @@ function animateWave(){
 function closeViewer(){
   document.getElementById("imageViewer").style.display = "none";
 }
+  const viewerImg = document.getElementById("viewerImg");
+
+viewerImg.addEventListener("wheel", function(e){
+
+  e.preventDefault();
+
+  if(e.deltaY < 0){
+    zoomLevel += 0.1;
+  }else{
+    zoomLevel -= 0.1;
+  }
+
+  zoomLevel = Math.max(0.5, Math.min(3, zoomLevel));
+
+  viewerImg.style.transform = "scale(" + zoomLevel + ")";
+
+});
 
 ////////////////////////////
 // CHAT
@@ -2041,6 +2093,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
