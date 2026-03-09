@@ -1037,6 +1037,26 @@
   gap:16px;
 }
 
+      #galleryGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:16px;
+}
+
+.gallery-img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+  border-radius:14px;
+  cursor:pointer;
+  transition:.25s ease;
+}
+
+.gallery-img:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 25px rgba(255,255,255,.15);
+}
+
 .gallery-img{
   width:100%;
   height:200px;
@@ -1240,7 +1260,18 @@
     </div>
     <div id="profilePopup" class="profile-popup"></div>
     <!-- WINDOWS -->
-    
+    <div class="window" id="galleryWin">
+  <div class="titlebar">
+    Galería
+    <span>
+      <button class="close" onclick="closeWin('galleryWin')"></button>
+    </span>
+  </div>
+
+  <div class="window-content">
+    <div id="galleryGrid"></div>
+  </div>
+</div>
     <div class="window" id="itami">
       <div class="titlebar"> Sobre mí <span>
           <button class="min"></button>
@@ -1248,12 +1279,6 @@
           <button class="close" onclick="closeWin('itami')"></button>
         </span>
       </div>
-      <div class="window" id="galleryWin">
-  <div class="titlebar">
-    Galería
-    <span>
-      <button class="close" onclick="closeWin('galleryWin')"></button>
-    </span>
   </div>
 
   <div class="window-content">
@@ -1843,7 +1868,7 @@ const trabajos = [
   {
     title:"Pcbacks",
     desc:"Dale un estilo único a tu privado",
-    price:"Animado (sencillo): 500 xats // estático: 300 xats ",
+    price:"Animado (sencillo): 500 xats // estático: 300 xats",
     img:"https://i.ibb.co/bjXCrNWr/fondo-molonisimo-hermosisismo-copia.gif"
   },
 
@@ -1860,6 +1885,8 @@ const trabajos = [
     price:"Háblame por privado",
     img:"https://i.ibb.co/9mW2jhVm/banneeer.png"
   }
+];
+
 const galerias = {
 
   "Pcbacks":[
@@ -1875,9 +1902,7 @@ const galerias = {
   ],
 
   "Otro tipo de diseño":[
-    "https://i.ibb.co/9mW2jhVm/banneeer.png",
-    "https://i.ibb.co/xyz/design2.png",
-    "https://i.ibb.co/xyz/design3.png"
+    "https://i.ibb.co/9mW2jhVm/banneeer.png"
   ]
 
 };
@@ -1904,7 +1929,26 @@ trabajos.forEach(work=>{
   designGrid.appendChild(card);
 
 });
+  
+function openGallery(type){
 
+  const gallery = document.getElementById("galleryGrid");
+  gallery.innerHTML = "";
+
+  const images = galerias[type];
+
+  if(!images) return;
+
+  images.forEach(src=>{
+    const img=document.createElement("img");
+    img.src=src;
+    img.className="gallery-img";
+    gallery.appendChild(img);
+  });
+
+  openWin("galleryWin");
+
+}
 
 ////////////////////////////
 // WALLPAPERS
@@ -1948,6 +1992,7 @@ wallpapers.forEach((src,i)=>{
 
   </body>
 </html>
+
 
 
 
