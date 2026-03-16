@@ -4,10 +4,6 @@ window.closeTodo = function(){
   document.getElementById("todoWidget").style.display="none";
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  window.closeTodo = function(){
-  document.getElementById("todoWidget").style.display = "none";
-}
   window.closeTodo = function(){
   document.getElementById("todoWidget").style.display="none";
 }
