@@ -581,5 +581,3 @@ wallpapers.forEach((src,i)=>{
   selector.appendChild(thumb);
 });
 
-});
-});
