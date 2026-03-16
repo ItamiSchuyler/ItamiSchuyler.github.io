@@ -1,0 +1,2109 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <title>Escritorio Itami</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: Arial, sans-serif
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      /* WALLPAPER */
+      #wallpaper-container {
+        position: fixed;
+        inset: 0;
+        z-index: -3;
+      }
+
+      .wallpaper-layer {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        opacity: 0;
+        transition: opacity .8s ease;
+      }
+
+      .wallpaper-layer.active {
+        opacity: 1;
+      }
+
+      #particles {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -2;
+      }
+
+      /* BLUR */
+      #blur-layer {
+        position: fixed;
+        inset: 0;
+        backdrop-filter: blur(12px);
+        background: rgba(0, 0, 0, .25);
+        opacity: 0;
+        transition: .3s;
+        z-index: 5;
+        pointer-events: none;
+      }
+
+      #blur-layer.active {
+        opacity: 1
+      }
+
+      /* DESKTOP */
+      #desktop {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 20px
+      }
+
+      /* FOLDERS */
+      .folder {
+        width: 100px;
+        color: #EDEDED;
+        text-align: center;
+        position: absolute;
+        cursor: pointer;
+        user-select: none;
+        padding: 10px;
+        border-radius: 10px;
+        transition: .2s ease;
+      }
+
+      .folder:hover {
+        transform: scale(1.04)
+      }
+
+      .folder img {
+        width: 64px
+      }
+
+   .folder span {
+  font-size: 12px;
+  margin-top: 8px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(255,255,255,.15), rgba(255,255,255,.05));
+  backdrop-filter: blur(8px);
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: .25s ease;
+}
+
+.folder:hover span {
+  transform: scale(1.05);
+}
+
+      /* WINDOWS — WINDOWS STYLE */
+      .window {
+        position: absolute;
+        width: 640px;
+        background: rgba(20, 20, 20, .92);
+        backdrop-filter: blur(18px) saturate(120%);
+        color: #eee;
+        border-radius: 14px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, .65), inset 0 1px rgba(255, 255, 255, .08);
+        border: 1px solid rgba(255, 255, 255, .08);
+        display: none;
+        overflow: hidden;
+        z-index: 10;
+ top:120px;
+left:120px;
+transform:none;
+}
+
+      .window .window-content {
+        padding: 18px 20px;
+      }
+
+      .window>div:not(.titlebar) {
+        padding: 18px 20px;
+      }
+
+      
+      /* OPEN ANIMATION */
+      
+@keyframes open {
+  from {
+    opacity: 0;
+    transform: scale(.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+      /* TITLE BAR */
+      .titlebar {
+        height: 46px;
+        background: linear-gradient(180deg, #101010, #0b0b0b);
+        padding: 0 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: grab;
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: .3px;
+        border-bottom: 1px solid rgba(255, 255, 255, .08);
+      }
+
+      /* WINDOW CONTROLS */
+      .titlebar span {
+        display: flex;
+        gap: 6px;
+        font-size: 14px;
+      }
+
+      /* BUTTONS */
+      .titlebar span button {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        transition: .15s ease;
+      }
+
+      /* CLOSE */
+      .titlebar span button.close {
+        background: #ff5f57;
+      }
+
+      .titlebar span button.min {
+        background: #ffbd2e;
+      }
+
+      .titlebar span button.max {
+        background: #28c840;
+      }
+
+      .titlebar span button:hover {
+        transform: scale(1.15);
+      }
+
+      /* TASKBAR */
+      #taskbar {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 55px;
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        gap: 15px;
+        background: rgba(20, 20, 20, .45);
+        /* menos opaco */
+        backdrop-filter: blur(18px) saturate(130%);
+        -webkit-backdrop-filter: blur(18px) saturate(130%);
+        border-top: 1px solid rgba(255, 255, 255, .08);
+        box-shadow: 0 -5px 25px rgba(0, 0, 0, .35);
+      }
+
+      #taskApps{
+  display:flex;
+  gap:10px;
+}
+
+.task-item{
+  padding:6px 14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(10px);
+  font-size:12px;
+  cursor:pointer;
+  transition:.2s ease;
+  color:white;
+  opacity:.8;
+}
+
+.task-item:hover{
+  background:rgba(255,255,255,.18);
+  opacity:1;
+  transform:scale(1.05);
+}
+
+.task-item.active{
+  background:rgba(255,255,255,.25);
+}
+
+      #notify {
+        font-size: 22px;
+        cursor: pointer
+      }
+
+      #notify {
+        font-size: 22px;
+        cursor: pointer;
+        position: relative;
+        transition: .2s;
+      }
+
+      #notify:hover {
+        transform: scale(1.15)
+      }
+
+      #notifBadge {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        background: red;
+        color: white;
+        font-size: 11px;
+        padding: 2px 6px;
+        border-radius: 12px;
+        font-weight: bold;
+        box-shadow: 0 0 8px red;
+        animation: pulseNotif 1.2s infinite;
+      }
+
+      @keyframes pulseNotif {
+        50% {
+          transform: scale(1.15)
+        }
+      }
+
+      #clock {
+        margin-left: auto;
+        color: #fff;
+        font-size: 13px;
+        text-align: right;
+        font-weight: 600;
+        letter-spacing: .3px;
+        text-shadow: 0 0 8px rgba(0, 0, 0, .6), 0 0 12px rgba(0, 0, 0, .4);
+      }
+
+/* CHAT LAYOUT */
+.chat-wrap{
+  display:flex;
+  height:420px;
+  background:rgba(0,0,0,.25);
+}
+
+      .chat-main{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.chat-box{
+  flex:1;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  overflow-y:auto;
+}
+
+/* FRIEND LIST */
+.friends{
+  width:190px;
+  padding:12px 8px;
+  background:rgba(15,15,15,.6);
+  backdrop-filter:blur(20px);
+  border-right:1px solid rgba(255,255,255,.06);
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.friend{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:14px;
+  cursor:pointer;
+  transition:.2s ease;
+  font-size:13px;
+  opacity:.7;
+}
+
+.friend:hover{
+  background:rgba(255,255,255,.06);
+  opacity:1;
+}
+
+.friend.active{
+  background:rgba(255,255,255,.12);
+  opacity:1;
+}
+
+.friend img{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+}
+
+/* CHAT AREA */
+.chat-box{
+  flex:1;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  overflow-y:auto;
+}
+
+/* HEADER CLEAN */
+.chat-header{
+  height:70px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 20px;
+  background:rgba(0,0,0,.4);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.chat-header img{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+}
+
+.chat-header b{
+  font-size:14px;
+  font-weight:600;
+}
+
+.chat-header small{
+  font-size:11px;
+  opacity:.5;
+}
+
+/* MESSAGES */
+.msg{
+  max-width:65%;
+  padding:10px 14px;
+  border-radius:18px;
+  font-size:13px;
+  line-height:1.4;
+  animation:msgIn .28s cubic-bezier(.2,.8,.2,1) forwards;
+  transform:translateY(8px) scale(.96);
+  opacity:0;
+  filter:blur(4px);
+}
+
+.msg.them{
+  background:rgba(255,255,255,.08);
+  align-self:flex-start;
+}
+
+.msg.me{
+  background:linear-gradient(135deg,#ffffff,#e8e8e8);
+  color:#000;
+  align-self:flex-end;
+}
+
+@keyframes msgIn{
+  to{
+    transform:translateY(0) scale(1);
+    opacity:1;
+    filter:blur(0);
+  }
+}
+
+/* TYPING */
+.typing{
+  display:flex;
+  gap:5px;
+  padding:8px 12px;
+  border-radius:18px;
+  background:rgba(255,255,255,.08);
+  width:fit-content;
+}
+
+.dot{
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:white;
+  opacity:.4;
+  animation:blink 1.4s infinite;
+}
+
+.dot:nth-child(2){animation-delay:.2s}
+.dot:nth-child(3){animation-delay:.4s}
+
+@keyframes blink{
+  50%{opacity:1}
+}
+
+    
+     /* MINIMAL PLAYER */
+#player {
+  position: fixed;
+  right: 20px;
+  bottom: 75px; /* encima de la taskbar */
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  z-index: 50; /* debajo de overlays grandes */
+}
+/* Play button */
+#play{
+  font-size:14px;
+  cursor:pointer;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(14px) saturate(140%);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);
+
+  border:1px solid rgba(255,255,255,.15);
+  color:white;
+
+  transition:.25s cubic-bezier(.2,.8,.2,1);
+}
+
+#play:hover{
+  background:rgba(255,255,255,.18);
+  transform:scale(1.1);
+}
+
+#play:active{
+  transform:scale(.92);
+}
+/* Progress bar */
+#progress {
+  width: 280px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.2);
+  overflow: hidden;
+  position: relative;
+}
+
+#bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg,#ffffff,#cccccc);
+  border-radius: 999px;
+  transition: width .2s linear;
+}
+
+/* Wave visualizer */
+#wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 20px;
+}
+
+.wave-bar{
+  width:3px;
+  height:8px;            /* altura base */
+  background:rgba(255,255,255,.9);
+  border-radius:3px;
+  transition:.08s linear;
+  opacity:.6;
+}
+      
+      .itami-card {
+        width: 100%;
+        height: 420px;
+        background: linear-gradient(180deg, #141414, #0f0f0f);
+        color: white;
+        position: relative;
+        overflow: hidden;
+        font-family: 'Inter', 'Poppins', system-ui, sans-serif;
+      }
+
+      /* TEXT */
+      .itami-top {
+        padding: 22px 24px;
+        z-index: 2;
+        position: relative;
+      }
+
+      .itami-top h1 {
+        font-size: 40px;
+        margin: 0;
+        font-weight: 900;
+        letter-spacing: .5px;
+        transition: .25s ease;
+        text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+      }
+
+    .glitch {
+  position: relative;
+  font-size: 46px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: white;
+  animation: glitchBase 4s infinite;
+}
+
+/* Capas glitch */
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  overflow: hidden;
+  opacity: .6;
+}
+
+/* Rojo */
+.glitch::before {
+  color: #ff4d4d;
+  z-index: -1;
+  animation: glitchTop 4s infinite;
+}
+
+/* Azul */
+.glitch::after {
+  color: #4da6ff;
+  z-index: -2;
+  animation: glitchBottom 4s infinite;
+}
+
+/* Movimiento leve base */
+@keyframes glitchBase {
+  0%, 94%, 100% { transform: none; }
+  95% { transform: translate(1px, -1px); }
+  96% { transform: translate(-1px, 1px); }
+  97% { transform: translate(1px, 0px); }
+  98% { transform: translate(-1px, 0px); }
+  99% { transform: none; }
+}
+
+/* Desfase rojo */
+@keyframes glitchTop {
+  0%, 94%, 100% { transform: none; }
+  96% { transform: translate(-2px, -1px); }
+  98% { transform: translate(2px, 1px); }
+}
+
+/* Desfase azul */
+@keyframes glitchBottom {
+  0%, 94%, 100% { transform: none; }
+  95% { transform: translate(2px, 1px); }
+  97% { transform: translate(-2px, -1px); }
+}
+
+
+      .itami-top h1:hover {
+        color: #ffffff;
+        text-shadow: 0 0 8px rgba(255, 255, 255, .35), 0 0 20px rgba(255, 255, 255, .2), 0 0 35px rgba(255, 255, 255, .15);
+        transform: scale(1.03);
+      }
+
+      .itami-top p {
+        margin-top: 6px;
+        opacity: .75;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      /* FLOAT IMAGE */
+      .itami-img {
+        position: absolute;
+        right: 18px;
+        top: 80px;
+        width: 190px;
+        filter: drop-shadow(0 15px 35px rgba(0, 0, 0, .6));
+        transition: .35s ease;
+        animation: floatImg 4.5s ease-in-out infinite;
+      }
+
+      .itami-img:hover {
+        filter: drop-shadow(0 15px 35px rgba(0, 0, 0, .6)) grayscale(1) brightness(1.2);
+        transform: scale(1.03);
+      }
+
+      @keyframes floatImg {
+
+        0%,
+        100% {
+          transform: translateY(0)
+        }
+
+        50% {
+          transform: translateY(-10px)
+        }
+      }
+
+      .wave-container {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 160px;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      .wave-container svg {
+        width: 220%;
+        height: 100%;
+        animation: waveMove 10s linear infinite;
+      }
+
+      .wave-container path {
+        fill: #2b2b2b;
+        /* gris oscuro */
+      }
+
+      @keyframes waveMove {
+        from {
+          transform: translateX(0);
+        }
+
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* SOCIALS MODERN */
+      .socials {
+        position: absolute;
+        bottom: 22px;
+        left: 24px;
+        display: flex;
+        gap: 18px;
+        z-index: 3;
+      }
+
+      .socials a {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, .12);
+        backdrop-filter: blur(8px);
+        transition: .25s ease;
+        text-decoration: none;
+      }
+
+      .socials a:hover {
+        transform: scale(1.15);
+        background: rgba(255, 255, 255, .22);
+      }
+
+      .socials svg {
+        width: 20px;
+        height: 20px;
+        fill: white;
+      }
+
+      .mini-grid {
+        margin-top: 16px;
+        width: 180px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .mini-grid {
+        width: 80px;
+        height: 80px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, .12);
+        /* borde fino */
+        backdrop-filter: blur(6px);
+        transition: .2s ease;
+      }
+
+      .mini-grid img:hover {
+        box-shadow: 0 0 12px rgba(255, 255, 255, .15);
+      }
+
+      .mini-grid img {
+        width: 75px;
+        /* ICONOS MÁS GRANDES */
+        height: 75px;
+        object-fit: contain;
+        opacity: 1;
+        border-radius: 12px;
+      }
+
+   
+      .window.active {
+        box-shadow: 0 25px 70px rgba(0, 0, 0, .75), 0 0 0 1px rgba(255, 255, 255, .12), inset 0 1px rgba(255, 255, 255, .1);
+      }
+
+      .portfolio-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 16px;
+      }
+
+    .portfolio-item{
+  position:relative;
+  border-radius:14px;
+  overflow:hidden;
+  cursor:pointer;
+  background:#111;
+  transition:.3s ease;
+}
+
+.portfolio-item img{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  transition:.4s ease;
+}
+
+/* overlay */
+.work-info{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.9));
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:14px;
+  opacity:0;
+  transition:.3s ease;
+}
+
+.work-info b{
+  font-size:14px;
+}
+
+.work-info span{
+  font-size:12px;
+  opacity:.7;
+}
+
+.work-info .price{
+  margin-top:6px;
+  font-size:13px;
+  font-weight:600;
+}
+
+/* hover */
+.portfolio-item:hover img{
+  transform:scale(1.1);
+  filter:brightness(.6);
+}
+
+.portfolio-item:hover .work-info{
+  opacity:1;
+}
+      .video-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 16px;
+      }
+
+      .video-card {
+        background: #111;
+        border-radius: 14px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: .2s ease;
+      }
+
+      .video-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 0 25px rgba(255, 255, 255, .12);
+      }
+
+      .video-card video {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+      }
+
+      .video-card p {
+        padding: 10px;
+        font-size: 13px;
+        opacity: .85;
+      }
+
+      #changeBg {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, .12);
+        backdrop-filter: blur(10px);
+        color: white;
+        cursor: pointer;
+        transition: .25s ease;
+        z-index: 9999;
+      }
+
+      #changeBg:hover {
+        background: white;
+        color: black;
+        transform: scale(1.08);
+      }
+
+      #wallSelector {
+        position: fixed;
+        bottom: 70px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: 20px;
+        background: rgba(20, 20, 20, .7);
+        backdrop-filter: blur(20px);
+        z-index: 9999;
+      }
+
+      .wall-thumb {
+        width: 70px;
+        height: 45px;
+        border-radius: 10px;
+        background-size: cover;
+        background-position: center;
+        cursor: pointer;
+        opacity: .6;
+        transition: .25s ease;
+        border: 2px solid transparent;
+      }
+
+      .wall-thumb:hover {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+
+      .wall-thumb.active {
+        opacity: 1;
+        border: 2px solid white;
+      }
+
+      #systemIcons{
+  display:flex;
+  gap:10px;
+  font-size:16px;
+  opacity:.8;
+}
+
+      #rightPanel{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:22px;
+  color:white;
+}
+
+/* WEATHER */
+#weather{
+  font-size:13px;
+  font-weight:500;
+  opacity:.85;
+  letter-spacing:.3px;
+  transition:.2s ease;
+}
+
+#weather:hover{
+  opacity:1;
+  text-shadow:0 0 8px rgba(255,255,255,.4);
+}
+
+/* CLOCK */
+#clockWrap{
+  text-align:right;
+  line-height:1.1;
+}
+
+#clock{
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:.5px;
+}
+
+#date{
+  font-size:11px;
+  opacity:.6;
+  margin-top:2px;
+}
+
+/* BATTERY AESTHETIC */
+.battery{
+  width:26px;
+  height:12px;
+  border:1.5px solid rgba(255,255,255,.7);
+  border-radius:3px;
+  position:relative;
+  padding:1px;
+}
+
+.battery::after{
+  content:"";
+  position:absolute;
+  right:-4px;
+  top:3px;
+  width:3px;
+  height:6px;
+  background:rgba(255,255,255,.7);
+  border-radius:1px;
+}
+
+.battery-level{
+  height:100%;
+  width:70%;
+  background:linear-gradient(90deg,#ffffff,#cccccc);
+  border-radius:2px;
+  transition:.3s ease;
+}
+
+      #chatApp{
+  width:780px;
+  border-radius:20px;
+}
+
+.chat-input-wrap{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:14px 18px;
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,.06);
+}
+
+#chatInput{
+  flex:1;
+  background:rgba(255,255,255,.08);
+  border:none;
+  outline:none;
+  padding:12px 16px;
+  border-radius:20px;
+  font-size:13px;
+  color:white;
+  transition:.2s ease;
+}
+
+#chatInput::placeholder{
+  opacity:.4;
+}
+
+#chatInput:focus{
+  background:rgba(255,255,255,.12);
+}
+
+#sendBtn{
+  width:38px;
+  height:38px;
+  border:none;
+  border-radius:50%;
+  background:linear-gradient(135deg,#ffffff,#dcdcdc);
+  cursor:pointer;
+  font-size:14px;
+  transition:.2s ease;
+}
+
+#sendBtn:hover{
+  transform:scale(1.08);
+}
+
+#sendBtn:active{
+  transform:scale(.95);
+}
+
+.about-sub {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: .75;
+  line-height: 1.6;
+  letter-spacing: .4px;
+}
+
+#galleryGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:16px;
+}
+
+      #galleryGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:16px;
+}
+
+.gallery-img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+  border-radius:14px;
+  cursor:pointer;
+  transition:.25s ease;
+}
+
+.gallery-img:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 25px rgba(255,255,255,.15);
+}
+
+.window{
+  animation:windowOpen .25s ease;
+}
+
+@keyframes windowOpen{
+  from{
+    transform:scale(.9);
+    opacity:0;
+  }
+  to{
+    transform:scale(1);
+    opacity:1;
+  }
+}
+
+      .viewer{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.92);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  cursor:zoom-out;
+}
+
+.viewer img{
+  max-width:90%;
+  max-height:90%;
+  border-radius:10px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.7);
+  animation:viewerZoom .25s ease;
+}
+
+@keyframes viewerZoom{
+  from{
+    transform:scale(.8);
+    opacity:0;
+  }
+  to{
+    transform:scale(1);
+    opacity:1;
+  }
+}
+
+      .viewer-close{
+  position:absolute;
+  top:25px;
+  right:35px;
+  font-size:26px;
+  color:white;
+  cursor:pointer;
+  z-index:10000;
+  opacity:.7;
+  transition:.2s;
+}
+
+.viewer-close:hover{
+  opacity:1;
+  transform:scale(1.15);
+}
+ /* =========================
+   TODO WIDGET — GLASS PREMIUM
+========================= */
+
+
+ #todoWidget{
+  position:fixed;
+  right:50px;
+  top:30%;
+  transform:translateY(-50%);
+  animation: floatTodo 6s ease-in-out infinite;
+
+
+  display:flex;
+  flex-direction:column;
+
+  background:rgba(255,255,255,.06);
+  backdrop-filter:blur(25px) saturate(160%);
+  -webkit-backdrop-filter:blur(25px) saturate(160%);
+
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:22px;
+  padding:18px;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.6),
+    inset 0 1px rgba(255,255,255,.25);
+
+ z-index:4;
+}
+
+ @keyframes floatTodo{
+  0%,100%{ transform: translateY(-50%) translateY(0px); }
+  50%{ transform: translateY(-50%) translateY(-8px); }
+}
+
+/* HEADER */
+.todo-header{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  margin-bottom:20px;
+}
+
+.todo-icon{
+  font-size:18px;
+  opacity:.8;
+}
+
+.todo-title{
+  font-size:12px;
+  font-weight:500;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.85);
+}
+
+      .todo-header{
+  position:relative;
+}
+
+.todo-close{
+  position:absolute;
+  right:-6px;
+  top:-6px;
+  width:22px;
+  height:22px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:rgba(255,255,255,.2);
+  color:#ddd;
+  font-size:12px;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.todo-close:hover{
+  background:#ff5f57;
+  color:white;
+  transform:scale(1.1);
+}
+
+.todo-header{
+  position:relative;
+}
+
+.todo-close{
+  position:absolute;
+  right:0;
+  top:0;
+  font-size:12px;
+  cursor:pointer;
+  opacity:.6;
+  transition:.2s ease;
+}
+
+.todo-close:hover{
+  opacity:1;
+  transform:scale(1.2);
+}
+
+  
+/* LISTA */
+.todo-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  overflow-y:auto;
+}
+
+/* SCROLL FINO */
+.todo-list::-webkit-scrollbar{
+  width:4px;
+}
+.todo-list::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.3);
+  border-radius:10px;
+}
+
+/* ITEM */
+.todo-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 12px;
+  border-radius:16px;
+  background:rgba(255,255,255,.08);
+  transition:.25s ease;
+  font-size:13px;
+  color:white;
+}
+
+.todo-item:hover{
+  background:rgba(255,255,255,.15);
+}
+
+/* CUADRADO */
+.box{
+  width:16px;
+  height:16px;
+  border-radius:5px;
+  border:2px solid rgba(255,255,255,.8);
+  transition:.2s ease;
+}
+
+/* COMPLETADA */
+.todo-item.done .box{
+  background:white;
+}
+
+.todo-item.done span{
+  text-decoration:line-through;
+  opacity:.45;
+}
+      @keyframes floatTodo {
+  0%,100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+    </style>
+  </head>
+  <body>
+    <div id="wallSelector"></div>
+    <div id="wallpaper-container">
+      <div class="wallpaper-layer active"></div>
+      <div class="wallpaper-layer"></div>
+    </div>
+    <canvas id="particles"></canvas>
+    <div id="blur-layer"></div>
+    <div id="desktop">
+      <div class="folder" data-open="itami">
+        <img src="https://cdn-icons-png.flaticon.com/128/456/456793.png">
+        <span>xxx</span>
+      </div>
+      <div class="folder" data-open="trabajos">
+        <img src="https://cdn-icons-png.flaticon.com/128/456/456793.png">
+        <span>Diseños</span>
+      </div>
+      <div class="folder" data-open="codigos">
+        <img src="https://cdn-icons-png.flaticon.com/128/456/456793.png">
+        <span>Spaces</span>
+      </div>
+    </div>
+    <div id="profilePopup" class="profile-popup"></div>
+    <!-- WINDOWS -->
+    <div class="window" id="galleryWin">
+  <div class="titlebar">
+    Galería
+    <span>
+      <button class="close" onclick="closeWin('galleryWin')"></button>
+    </span>
+  </div>
+
+  <div class="window-content">
+    <div id="galleryGrid"></div>
+  </div>
+</div>
+   <div class="window" id="itami">
+  <div class="titlebar">
+    Sobre mí
+    <span>
+      <button class="min"></button>
+      <button class="max"></button>
+      <button class="close" onclick="closeWin('itami')"></button>
+    </span>
+  </div>
+
+  <div class="window-content">
+
+    <div class="itami-card">
+
+      <div class="itami-top">
+
+        <h1 class="glitch" data-text="ITAMI">ITAMI</h1>
+
+        <p class="about-sub">
+          28 · Designer · Germany
+        </p>
+
+        <div class="mini-grid">
+          <img src="https://i.postimg.cc/bYg6NdDx/gif-anime.gif">
+          <img src="https://i.ibb.co/RG3tF8gN/tumblr-466aadaf37e97bf451653edece07081c-cd3061d2-400.jpg">
+          <img src="https://i.ibb.co/SX4TJJCN/tumblr-b987ccd63f93a2bbcde158dce80a0776-6a42963f-400.jpg">
+          <img src="https://i.postimg.cc/43vkxsRL/tumblr-4c0c3496920d6a251b1438d5d607acc4-75311bd2-500.webp">
+        </div>
+
+      </div>
+
+      <img class="itami-img" src="https://i.ibb.co/WWHTzk6s/uwvglqx0si1b1.png">
+
+      <div class="socials">
+
+        <a href="https://instagram.com/itamich_" target="_blank">
+          <svg viewBox="0 0 24 24">
+            <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.9a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2z"/>
+          </svg>
+        </a>
+
+        <a href="https://twitch.tv/itamich" target="_blank">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 3h16v12l-4 4h-5l-3 3H6v-3H4z"/>
+          </svg>
+        </a>
+
+        <a href="https://x.com/needsushi" target="_blank">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 4l7.5 8.5L4 20h4.5l4.7-5.3L17.5 20H20l-7.8-8.9L19.3 4h-4.5l-4.1 4.7L8.2 4z"/>
+          </svg>
+        </a>
+
+      </div>
+
+      <div class="wave-container">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M0,60 C200,120 400,0 600,60 800,120 1000,0 1200,60 V120 H0 Z"></path>
+        </svg>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+    <div class="window" id="trabajos">
+      <div class="titlebar"> Trabajos <span>
+          <button class="min"></button>
+          <button class="max"></button>
+          <button class="close" onclick="closeWin('trabajos')"></button>
+        </span>
+      </div>
+      <div class="window-content">
+        <div class="portfolio-grid" id="designGrid"></div>
+      </div>
+    </div>
+    <div class="window" id="codigos">
+      <div class="titlebar"> Mis códigos <span>
+          <button class="min"></button>
+          <button class="max"></button>
+          <button class="close" onclick="closeWin('codigos')"></button>
+        </span>
+      </div>
+      <div class="window-content">
+        <div class="video-grid" id="codeGrid"></div>
+      </div>
+    </div>
+    <!-- CHAT -->
+   <div class="window" id="chatApp">
+  <div class="titlebar">
+    Amigos
+    <span onclick="closeWin('chatApp')">✕</span>
+  </div>
+
+  <div class="chat-header" id="chatHeader"></div>
+
+  <div class="chat-wrap">
+
+    <div class="friends" id="friends"></div>
+
+    <div class="chat-main">
+      <div class="chat-box" id="chatBox"></div>
+
+      <div class="chat-input-wrap">
+        <input id="chatInput" placeholder="Escribe un mensaje..." />
+        <button id="sendBtn">➤</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+    <!-- TASKBAR -->
+  <div id="taskbar">
+  <div id="notify" onclick="openWin('chatApp')">
+    🔔
+    <span id="notifBadge">3</span>
+  </div>
+<div id="taskApps"></div>
+  <div id="rightPanel">
+    <div id="weather"></div>
+
+    <div id="clockWrap">
+      <div id="clock"></div>
+      <div id="date"></div>
+    </div>
+
+    <div id="systemIcons">
+      <div class="battery">
+        <div class="battery-level"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- PLAYER -->
+   <div id="player">
+  <div id="play">▶</div>
+
+  <div id="progress">
+    <div id="bar"></div>
+  </div>
+
+ <div id="wave">
+  <div class="wave-bar"></div>
+  <div class="wave-bar"></div>
+  <div class="wave-bar"></div>
+  <div class="wave-bar"></div>
+  <div class="wave-bar"></div>
+  <div class="wave-bar"></div>
+  <div class="wave-bar"></div>
+  <div class="wave-bar"></div>
+</div>
+
+<audio id="audio"></audio>
+
+  
+</div>
+
+  <div id="imageViewer" class="viewer" onclick="closeViewer(event)">
+
+  <div class="viewer-close" onclick="closeViewer(event)">✕</div>
+
+  <img id="viewerImg">
+
+</div>
+   <!-- TODO WIDGET -->
+<div id="todoWidget">
+<div class="todo-header">
+  <span class="todo-icon">📝</span>
+  <span class="todo-title">ENCARGOS</span>
+  <span class="todo-close" onclick="closeTodo()">✕</span>
+</div>
+  <div class="todo-list">
+
+    <div class="todo-item">
+      <div class="box"></div>
+      <span>Space - Nashe</span>
+    </div>
+
+    <div class="todo-item">
+      <div class="box"></div>
+      <span>Space - Nece</span>
+    </div>
+
+    <div class="todo-item">
+      <div class="box"></div>
+      <span>Space - Keigo</span>
+    </div>
+
+    <div class="todo-item done">
+      <div class="box"></div>
+      <span>Pcback - Yuff</span>
+    </div>
+
+  </div>
+</div>
+  </div>
+
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  window.closeTodo = function(){
+  document.getElementById("todoWidget").style.display = "none";
+}
+  window.closeTodo = function(){
+  document.getElementById("todoWidget").style.display="none";
+}
+
+////////////////////////////
+// FOLDERS
+////////////////////////////
+
+function ordenarCarpetas(){
+  const carpetas=[...document.querySelectorAll(".folder")];
+  let x=30,y=80;
+  const alto=110,ancho=110;
+  const limite=window.innerHeight-150;
+
+  carpetas.forEach(f=>{
+    f.style.left=x+"px";
+    f.style.top=y+"px";
+    y+=alto;
+    if(y>limite){y=80;x+=ancho;}
+  });
+}
+ordenarCarpetas();
+window.addEventListener("resize",ordenarCarpetas);
+
+document.querySelectorAll(".folder").forEach(f=>{
+  f.addEventListener("dblclick", ()=>{
+    const id = f.dataset.open;
+    if(id) openWin(id);
+  });
+});
+
+////////////////////////////
+// WINDOWS
+////////////////////////////
+
+let z=10;
+
+window.openWin = function(id){
+
+  const win = document.getElementById(id);
+  if(!win) return;
+
+  win.style.display = "block";
+  win.style.zIndex = ++z;
+
+  requestAnimationFrame(()=>{
+
+    const w = win.offsetWidth;
+    const h = win.offsetHeight;
+
+    win.style.left = (window.innerWidth/2 - w/2) + "px";
+    win.style.top  = (window.innerHeight/2 - h/2) + "px";
+
+  });
+
+  addToTaskbar(id);
+
+  document.getElementById("blur-layer").classList.add("active");
+
+}
+
+window.closeWin = function(id){
+  document.getElementById(id).style.display="none";
+  removeFromTaskbar(id);
+
+  const algunaAbierta=[...document.querySelectorAll(".window")]
+    .some(w=>w.style.display==="block");
+
+  document.getElementById("blur-layer")
+    .classList.toggle("active",algunaAbierta);
+}
+
+  function addToTaskbar(id){
+  if(document.querySelector(`.task-item[data-id="${id}"]`)) return;
+
+  const task=document.createElement("div");
+  task.className="task-item active";
+  task.dataset.id=id;
+
+  const title=document.querySelector(`#${id} .titlebar`).childNodes[0].textContent.trim();
+  task.textContent=title;
+
+  task.onclick=()=>{
+    const win=document.getElementById(id);
+
+    if(win.style.display==="block"){
+      win.style.display="none";
+      task.classList.remove("active");
+    }else{
+      win.style.display="block";
+      win.style.zIndex=++z;
+      task.classList.add("active");
+    }
+  };
+
+  document.getElementById("taskApps").appendChild(task);
+}
+
+function removeFromTaskbar(id){
+  const task=document.querySelector(`.task-item[data-id="${id}"]`);
+  if(task) task.remove();
+}
+
+function makeDraggable(win){
+  const bar = win.querySelector(".titlebar");
+  let offsetX = 0;
+  let offsetY = 0;
+  let dragging = false;
+
+  bar.addEventListener("mousedown", e => {
+    dragging = true;
+
+    offsetX = e.clientX - win.offsetLeft;
+    offsetY = e.clientY - win.offsetTop;
+
+    win.style.zIndex = ++z;
+  });
+
+  document.addEventListener("mousemove", e => {
+    if(!dragging) return;
+
+    win.style.left = (e.clientX - offsetX) + "px";
+    win.style.top  = (e.clientY - offsetY) + "px";
+  });
+
+  document.addEventListener("mouseup", () => {
+    dragging = false;
+  });
+}
+
+// activar drag en todas las ventanas
+document.querySelectorAll(".window").forEach(makeDraggable);
+ 
+////////////////////////////
+// PLAYER PRO VISUALIZER
+////////////////////////////
+
+const tracks = [
+  {name:"Justin Bieber - Confidence",src:"song.mp3"},
+  {name:"Yapi - ¿Dónde te escondes?",src:"song2.mp3"}
+];
+
+const audio = document.getElementById("audio");
+const play = document.getElementById("play");
+const bar = document.getElementById("bar");
+const waveBars = document.querySelectorAll(".wave-bar");
+
+let current = 0;
+let audioContext, analyser, source, dataArray;
+
+function loadTrack(i){
+  current = i;
+  audio.src = tracks[i].src;
+  bar.style.width = "0%";
+}
+
+loadTrack(0);
+
+// 🔊 Setup audio analyser
+function setupAudio(){
+  audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = audioContext.createAnalyser();
+  source = audioContext.createMediaElementSource(audio);
+
+  source.connect(analyser);
+  analyser.connect(audioContext.destination);
+
+  analyser.fftSize = 64;
+  const bufferLength = analyser.frequencyBinCount;
+  dataArray = new Uint8Array(bufferLength);
+
+  animateWave();
+}
+
+play.onclick = async () => {
+
+  if(!audioContext) setupAudio();
+
+  if(audioContext.state === "suspended"){
+    await audioContext.resume();
+  }
+
+  if(audio.paused){
+    audio.play();
+    play.textContent = "⏸";
+  }else{
+    audio.pause();
+    play.textContent = "▶";
+  }
+};
+
+audio.ontimeupdate = () => {
+  if(audio.duration){
+    bar.style.width = (audio.currentTime / audio.duration * 100) + "%";
+  }
+};
+
+audio.onended = () => {
+  current = (current + 1) % tracks.length;
+  loadTrack(current);
+  audio.play();
+};
+
+// 🎵 Real visualizer
+function animateWave(){
+  requestAnimationFrame(animateWave);
+
+  analyser.getByteFrequencyData(dataArray);
+
+  waveBars.forEach((barEl, i) => {
+    const value = dataArray[i * 2];
+    const height = Math.max(4, value / 6);
+    barEl.style.height = height + "px";
+    barEl.style.opacity = value > 40 ? 1 : 0.4;
+  });
+}
+
+ let zoomLevel = 1;
+
+function openViewer(src){
+
+  const viewer = document.getElementById("imageViewer");
+  const img = document.getElementById("viewerImg");
+
+  zoomLevel = 1;
+  img.style.transform = "scale(1)";
+  img.src = src;
+
+  viewer.style.display = "flex";
+
+}
+
+function closeViewer(e){
+
+  if(e && e.target.id !== "imageViewer" && !e.target.classList.contains("viewer-close")) return;
+
+  document.getElementById("imageViewer").style.display = "none";
+
+}
+  const viewerImg = document.getElementById("viewerImg");
+
+viewerImg.addEventListener("wheel", function(e){
+
+  e.preventDefault();
+
+  if(e.deltaY < 0){
+    zoomLevel += 0.1;
+  }else{
+    zoomLevel -= 0.1;
+  }
+
+  zoomLevel = Math.max(0.5, Math.min(3, zoomLevel));
+
+  viewerImg.style.transform = "scale(" + zoomLevel + ")";
+
+});
+
+////////////////////////////
+// CHAT
+////////////////////////////
+
+const chats={
+  Chris:{
+    photo:"https://i.ibb.co/CKXkQQnS/dice2.png",
+    bg:"https://i.postimg.cc/pTKxwzsN/giphy.gif",
+    status:"online",
+    msgs:["Hola 👋","El space está en mantenimiento"]
+  },
+  Taiga:{
+    photo:"https://i.ibb.co/Kzc35TgL/41-2.png",
+    bg:"https://i.postimg.cc/NfDGG8Bs/giphy-(2).gif",
+    status:"away",
+    msgs:["Eres cotilla 😅"]
+  }
+};
+
+const friends=document.getElementById("friends");
+const chatBox=document.getElementById("chatBox");
+const header=document.getElementById("chatHeader");
+
+Object.keys(chats).forEach(name=>{
+  const f=document.createElement("div");
+  f.className="friend";
+  f.innerHTML=`<img src="${chats[name].photo}">${name}`;
+  f.onclick=()=>loadChat(name);
+  friends.appendChild(f);
+});
+
+// cargar primer chat
+loadChat(Object.keys(chats)[0]);
+
+function loadChat(name){
+  document.querySelectorAll(".friend")
+    .forEach(f=>f.classList.remove("active"));
+
+  [...document.querySelectorAll(".friend")]
+    .find(f=>f.textContent.trim()===name)
+    ?.classList.add("active");
+
+  const user=chats[name];
+  chatBox.innerHTML="";
+  chatBox.scrollTop=0;
+
+  header.innerHTML=`
+    <img src="${user.photo}">
+    <div>
+      <b>${name}</b><br>
+      <small>${user.status}</small>
+    </div>
+  `;
+
+  user.msgs.forEach((m,i)=>{
+    const msg=document.createElement("div");
+    msg.className="msg "+(i%2?"me":"them");
+    msg.textContent=m;
+    chatBox.appendChild(msg);
+  });
+}
+
+const input=document.getElementById("chatInput");
+const btn=document.getElementById("sendBtn");
+
+function sendMessage(){
+  const text=input.value.trim();
+  if(!text) return;
+
+  const msg=document.createElement("div");
+  msg.className="msg me";
+  msg.textContent=text;
+
+  chatBox.appendChild(msg);
+
+  chatBox.scrollTo({
+    top:chatBox.scrollHeight,
+    behavior:"smooth"
+  });
+
+  input.value="";
+}
+
+btn.onclick=sendMessage;
+input.addEventListener("keydown",e=>{
+  if(e.key==="Enter") sendMessage();
+});
+
+////////////////////////////
+// CLOCK
+////////////////////////////
+
+function clock(){
+  const d=new Date();
+
+  document.getElementById("clock").textContent=
+    d.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
+
+  document.getElementById("date").textContent=
+    d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});
+}
+clock();
+setInterval(clock,1000);
+
+////////////////////////////
+// WEATHER
+////////////////////////////
+
+async function loadWeather(){
+  try{
+    const res=await fetch(
+      "https://api.open-meteo.com/v1/forecast?latitude=52.37&longitude=9.72&current_weather=true"
+    );
+    const data=await res.json();
+    const temp=Math.round(data.current_weather.temperature);
+    document.getElementById("weather").textContent=`Hannover ${temp}°`;
+  }catch{
+    document.getElementById("weather").textContent="Hannover --°";
+  }
+}
+loadWeather();
+setInterval(loadWeather,600000);
+
+ function openGallery(type){
+
+  const gallery = document.getElementById("galleryGrid");
+  gallery.innerHTML = "";
+
+  const images = galerias[type];
+
+  if(!images || images.length === 0){
+    gallery.innerHTML = "<p>No hay diseños todavía.</p>";
+    openWin("galleryWin");
+    return;
+  }
+
+images.forEach(src=>{
+  const img = document.createElement("img");
+
+  img.src = src;
+  img.className = "gallery-img";
+
+  img.onclick = () => openViewer(src);
+
+  gallery.appendChild(img);
+});
+
+  openWin("galleryWin");
+
+}
+
+////////////////////////////
+// PARTICLES
+////////////////////////////
+
+const canvas=document.getElementById("particles");
+const ctx=canvas.getContext("2d");
+
+function resizeCanvas(){
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize",resizeCanvas);
+
+const mouse={x:null,y:null};
+window.addEventListener("mousemove",e=>{
+  mouse.x=e.clientX;
+  mouse.y=e.clientY;
+});
+
+const particles=[];
+for(let i=0;i<90;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    vx:(Math.random()-0.5)*0.6,
+    vy:(Math.random()-0.5)*0.6,
+    r:Math.random()*2+1
+  });
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  particles.forEach(p=>{
+    p.x+=p.vx;
+    p.y+=p.vy;
+
+    if(p.x<0||p.x>canvas.width) p.vx*=-1;
+    if(p.y<0||p.y>canvas.height) p.vy*=-1;
+
+    if(mouse.x){
+      const dx=p.x-mouse.x;
+      const dy=p.y-mouse.y;
+      const dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<120){
+        const force=(120-dist)/120;
+        p.x+=dx*force*0.02;
+        p.y+=dy*force*0.02;
+      }
+    }
+
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle="rgba(255,255,255,.6)";
+    ctx.fill();
+  });
+
+  requestAnimationFrame(animate);
+}
+animate();
+
+  ////////////////////////////
+// TRABAJOS GRID
+////////////////////////////
+
+const trabajos = [
+  {
+    title:"Pcbacks",
+    desc:"Dale un estilo único a tu privado",
+    price:"Animado (sencillo): 500 xats // estático: 300 xats",
+    img:"https://i.ibb.co/bjXCrNWr/fondo-molonisimo-hermosisismo-copia.gif"
+  },
+
+  {
+    title:"Banner de perfil",
+    desc:"Tu perfil más único que nunca",
+    price:"xxx xats",
+    img:"https://i.ibb.co/C3JXWwJF/perfilllll-copia.gif"
+  },
+
+  {
+    title:"Otro tipo de diseño",
+    desc:"Portadas de twitter, pack de icons, diseño de space...",
+    price:"Háblame por privado",
+    img:"https://i.ibb.co/9mW2jhVm/banneeer.png"
+  }
+];
+
+const galerias = {
+
+  "Pcbacks":[
+    "https://i.ibb.co/bjXCrNWr/fondo-molonisimo-hermosisismo-copia.gif",
+    "https://i.ibb.co/d0C9p3G/pcback2.gif",
+    "https://i.ibb.co/7jvXnsh/pcback3.gif"
+  ],
+
+  "Banner de perfil":[
+    "https://i.ibb.co/C3JXWwJF/perfilllll-copia.gif",
+    "https://i.ibb.co/vmQkV7Q/banner2.gif",
+    "https://i.ibb.co/mz6kn8r/banner3.gif"
+  ],
+
+  "Otro tipo de diseño":[
+    "https://i.ibb.co/9mW2jhVm/banneeer.png"
+  ]
+
+};
+
+
+const designGrid = document.getElementById("designGrid");
+
+trabajos.forEach(work=>{
+
+  const card=document.createElement("div");
+  card.className="portfolio-item";
+
+  card.innerHTML=`
+    <img src="${work.img}">
+    <div class="work-info">
+      <b>${work.title}</b>
+      <span>${work.desc}</span>
+      <div class="price">${work.price}</div>
+    </div>
+  `;
+
+  card.onclick = () => openGallery(work.title);
+
+  designGrid.appendChild(card);
+
+});
+  
+
+////////////////////////////
+// WALLPAPERS
+////////////////////////////
+
+const wallpapers=[
+  "https://i.ibb.co/S4wLCz9M/1399771.png",
+  "https://i.ibb.co/Mk7tsD8f/1400584.png",
+  "https://i.ibb.co/HyZHc46/1271005.png"
+];
+
+const layers=document.querySelectorAll(".wallpaper-layer");
+const selector=document.getElementById("wallSelector");
+
+let currentWall=Number(localStorage.getItem("wall"))||0;
+let activeLayer=0;
+
+layers[activeLayer].style.backgroundImage=`url(${wallpapers[currentWall]})`;
+layers[activeLayer].classList.add("active");
+
+wallpapers.forEach((src,i)=>{
+  const thumb=document.createElement("div");
+  thumb.className="wall-thumb";
+  thumb.style.backgroundImage=`url(${src})`;
+
+  thumb.onclick=()=>{
+    localStorage.setItem("wall",i);
+    const next=activeLayer?0:1;
+    layers[next].style.backgroundImage=`url(${src})`;
+    layers[next].classList.add("active");
+    layers[activeLayer].classList.remove("active");
+    activeLayer=next;
+  };
+
+  selector.appendChild(thumb);
+});
+
+});
+</script>
+
+
+  </body>
+</html>
+
+
